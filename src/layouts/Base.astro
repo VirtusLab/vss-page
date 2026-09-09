@@ -20,6 +20,12 @@ const { title, description } = Astro.props;
 		<meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
 		<link rel="icon" href={withBase('/favicon.ico')} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Newsreader:opsz,wght@6..72,500&family=Source+Sans+3:wght@400;600&display=swap"
+		/>
 	</head>
 	<body>
 		<slot />
@@ -27,51 +33,61 @@ const { title, description } = Astro.props;
 </html>
 
 <style is:global>
-	/* Placeholder values only: the design task replaces the token values, not the rules below. */
 	:root {
 		color-scheme: light dark;
 
-		--bg: #ffffff;
-		--fg: #1c1c1c;
-		--muted: #5c5c5c;
-		--accent: #1a5fa8;
-		--border: #d9d9d9;
-		--tint: #f4f5f7;
+		/* Warm paper and green-black ink; the accent is the only saturated colour on the page. */
+		--bg: #f8f7f2;
+		--fg: #1b2422;
+		--muted: #56615d;
+		--accent: #0c6355;
+		/* Text drawn on top of a solid --accent fill (the one CTA). */
+		--on-accent: #f8f7f2;
+		--border: #ddd9cd;
+		--tint: #eeece2;
 
-		--font-body: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-		--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+		--font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+		--font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+		--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
+		/* 1.25 above the base; the two steps below it are fixed, a ratio would make them illegible. */
 		--text-xs: 0.75rem;
 		--text-sm: 0.875rem;
 		--text-base: 1rem;
-		--text-lg: 1.125rem;
-		--text-xl: 1.5rem;
-		--text-2xl: 2rem;
+		--text-lg: 1.25rem;
+		--text-xl: 1.5625rem;
+		--text-2xl: 1.953rem;
 		/* Monospace runs wide, so code sits below the prose scale. */
-		--text-code: 0.8125rem;
+		--text-code: 0.75rem;
 
 		/* Cap for running text; the page container is wider to hold the two-column grid. */
 		--measure: 65ch;
 		--page-width: 58rem;
 		/* Height of the sticky nav row; anchors scroll clear of it. */
 		--nav-height: 3rem;
+		--radius: 4px;
+		/* The accent rule that marks a section heading and the active snippet tab. */
+		--rule: var(--space-4);
+		--rule-width: 2px;
 
 		--space-1: 0.25rem;
 		--space-2: 0.5rem;
 		--space-3: 1rem;
-		--space-4: 1.5rem;
-		--space-5: 2.5rem;
+		--space-4: 1.75rem;
+		--space-5: 3rem;
 		--space-6: 4rem;
 	}
 
 	@media (prefers-color-scheme: dark) {
 		:root {
-			--bg: #131417;
-			--fg: #e7e7e7;
-			--muted: #a2a2a2;
-			--accent: #79b0e8;
-			--border: #33353a;
-			--tint: #1c1e22;
+			/* Not an inversion: the dark ground keeps the green cast, the accent lifts to a mint. */
+			--bg: #121614;
+			--fg: #e4e8e2;
+			--muted: #98a39d;
+			--accent: #74cfb9;
+			--on-accent: #0c1211;
+			--border: #2a322f;
+			--tint: #1a201e;
 		}
 	}
 
@@ -84,11 +100,13 @@ const { title, description } = Astro.props;
 		background: var(--bg);
 		color: var(--fg);
 		font-family: var(--font-body);
-		line-height: 1.5;
+		line-height: 1.6;
 	}
 
 	a {
 		color: var(--accent);
+		text-underline-offset: 0.18em;
+		text-decoration-thickness: 1px;
 	}
 
 	:focus-visible {
@@ -102,11 +120,28 @@ const { title, description } = Astro.props;
 		line-height: 1.2;
 	}
 
+	h1,
+	h2 {
+		font-family: var(--font-display);
+		font-weight: 500;
+		letter-spacing: -0.01em;
+	}
+
+	h3 {
+		font-weight: 600;
+	}
+
 	p {
 		max-width: var(--measure);
 	}
 
 	@media (min-width: 720px) {
+		:root {
+			/* One step further up the scale: the hero only has room to be large on the wide layout. */
+			--text-2xl: 2.441rem;
+			--text-code: 0.8125rem;
+		}
+
 		/* The nav is sticky at this width, so an anchor must not land underneath it. */
 		html {
 			scroll-padding-top: var(--nav-height);

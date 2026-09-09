@@ -27,17 +27,34 @@ const { sections, repoLabel, repoUrl } = Astro.props;
 
 <style>
 	.nav {
+		/* --bg is opaque, so the sticky row hides whatever scrolls under it. The negative margin
+		   pulls the paint into the page container's gutters, which content would otherwise cross. */
 		background: var(--bg);
-		border-bottom: 1px solid var(--border);
-		padding: var(--space-2) 0;
+		margin: 0 calc(var(--space-3) * -1);
+		padding: var(--space-2) var(--space-3) 0;
+		font-size: var(--text-sm);
 	}
 
+	/* Chrome, not content: the accent stays reserved for links inside the page body. */
+	.nav a {
+		color: var(--muted);
+		text-decoration: none;
+	}
+
+	.nav a:hover {
+		color: var(--fg);
+		text-decoration: underline;
+	}
+
+	/* The rule sits on the ul, not on the bled-out .nav, so it stops at the content column
+	   like every other rule on the page. */
 	ul {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-2) var(--space-4);
 		margin: 0;
-		padding: 0;
+		padding: 0 0 var(--space-2);
+		border-bottom: 1px solid var(--border);
 		list-style: none;
 	}
 
@@ -48,8 +65,14 @@ const { sections, repoLabel, repoUrl } = Astro.props;
 			z-index: 1;
 			height: var(--nav-height);
 			display: flex;
+			padding: 0 var(--space-3);
+		}
+
+		/* Fills the sticky row, so the rule lands on the row's bottom edge, not under the labels. */
+		ul {
+			flex: 1;
 			align-items: center;
-			padding: 0;
+			padding-bottom: 0;
 		}
 	}
 </style>

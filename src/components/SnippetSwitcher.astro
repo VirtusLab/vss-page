@@ -64,7 +64,7 @@ const tabRules = tabs
 					<Code
 						code={tab.code}
 						lang="scala"
-						themes={{ light: 'github-light', dark: 'github-dark' }}
+						themes={{ light: 'github-light-high-contrast', dark: 'everforest-dark' }}
 						defaultColor={false}
 					/>
 					<p class="panel-links">
@@ -106,11 +106,12 @@ const tabRules = tabs
 		gap: var(--space-1) var(--space-3);
 	}
 
+	/* The page motif again: the 2px rule under a tab is the accent only while that tab is checked. */
 	.tabs label {
 		padding: var(--space-2) 0;
-		border-bottom: 2px solid transparent;
+		border-bottom: var(--rule-width) solid var(--border);
 		color: var(--muted);
-		font-size: var(--text-base);
+		font-size: var(--text-sm);
 		cursor: pointer;
 	}
 
@@ -139,12 +140,14 @@ const tabRules = tabs
 		margin: 0;
 		padding: var(--space-3);
 		border: 1px solid var(--border);
-		border-radius: var(--space-1);
+		border-radius: var(--radius);
 		font-family: var(--font-mono);
 		font-size: var(--text-code);
+		line-height: 1.6;
 		overflow-x: auto;
 		color: var(--shiki-light);
-		background-color: var(--shiki-light-bg);
+		/* Not --shiki-light-bg: the light theme's white would not separate from the paper --bg. */
+		background-color: var(--tint);
 	}
 
 	.panel :global(pre.astro-code span) {

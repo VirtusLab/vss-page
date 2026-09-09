@@ -44,6 +44,16 @@ const { Content } = await render(section.intro);
 		font-size: var(--text-xl);
 	}
 
+	/* The page motif: an accent rule, here marking the start of a section. */
+	h2::before {
+		content: '';
+		display: block;
+		width: var(--rule);
+		height: var(--rule-width);
+		margin-bottom: var(--space-2);
+		background: var(--accent);
+	}
+
 	.intro {
 		color: var(--muted);
 	}
