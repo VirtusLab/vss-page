@@ -27,6 +27,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   scala-skill". The first links to `/llms.txt`; the second is an in-page link to `#scala-skill`,
   the existing AI-tooling component. Nothing new is built for either.
 - No version numbers, star counts, event banners or countdowns.
+- `<title>` and meta description come from hero title and tagline.
 
 ### Snippet switcher
 
@@ -60,6 +61,7 @@ Each section: `<section id="...">` → `<h2>` (YAML `title`) → one `<ul>` of c
 treatment for every section, including the one-component ones. Sizes: Language 1, Tooling 2,
 Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 
+- Between the `<h2>` and the `<ul>`: the section intro paragraph from `content/sections/<id>.md`.
 - Grid: 2 columns above 720px, 1 below, row-wise DOM order.
 - Card contents, in order:
   1. Component name as an `<a href="{url}">`, inside `<h3 id="{id}">` using the YAML `id`

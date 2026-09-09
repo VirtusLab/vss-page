@@ -72,7 +72,7 @@ sections:
         repo: https://github.com/softwaremill/chimp
       - id: orca
         name: Orca
-        description: Tool for running AI coding agents through a repeatable, scripted development workflow.
+        description: Tool for running coding agents through a repeatable, scripted development workflow.
         url: https://github.com/VirtusLab/orca
       - id: cellar
         name: Cellar
@@ -80,7 +80,7 @@ sections:
         url: https://github.com/VirtusLab/cellar
       - id: sandcat
         name: Sandcat
-        description: Docker and dev container setup for running AI coding agents sandboxed behind a proxy.
+        description: Docker and dev container setup for running coding agents sandboxed behind a proxy.
         url: https://github.com/VirtusLab/sandcat
 
   - id: devops
@@ -109,5 +109,5 @@ sections:
 commercial:
   id: commercial
   name: Visdom
-  description: Commercial platform for running and managing AI coding agents across the development lifecycle.
+  description: Commercial platform for running and managing coding agents across the development lifecycle.
   url: https://visdom.virtuslab.com
