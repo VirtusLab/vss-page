@@ -1,32 +1,35 @@
 ---
 /**
- * The contents of the code panel's title bar: three window lights and a drag handle, drawn on the
- * same grid as the rest of the artwork. The bar strip itself, and the panel's outline and shadow,
- * are CSS on the panel. Decorative, hence `aria-hidden`.
+ * The contents of the code panel's title bar: the frog mark, then three window lights. The bar strip
+ * itself, and the panel's outline and shadow, are CSS on the panel. Decorative, hence `aria-hidden`.
  */
 ---
 
-<svg
-	class="bar-art"
-	viewBox="0 0 32 4"
-	shape-rendering="crispEdges"
-	aria-hidden="true"
-	focusable="false"
->
-	<rect x="0" y="0" width="4" height="4" fill="var(--px-2)"></rect>
-	<rect x="6" y="0" width="4" height="4" fill="var(--px-3)"></rect>
-	<rect x="12" y="0" width="4" height="4" fill="var(--px-1)"></rect>
-	<g fill="var(--px-ink)" opacity="0.5">
-		<rect x="20" y="1" width="12" height="1"></rect>
-		<rect x="20" y="3" width="12" height="1"></rect>
-	</g>
+<svg class="bar-art" viewBox="0 0 66 24" aria-hidden="true" focusable="false">
+	{/* The frog reduced to what still reads at 22px: a head, two eyes, a mouth. */}
+	<ellipse cx="12" cy="15.5" rx="9" ry="7" fill="var(--art-frog)"></ellipse>
+	<circle cx="7" cy="9" r="5.2" fill="var(--art-frog-light)"></circle>
+	<circle cx="17" cy="9" r="5.2" fill="var(--art-frog-light)"></circle>
+	<circle cx="7" cy="9" r="3.2" fill="var(--art-eye)"></circle>
+	<circle cx="17" cy="9" r="3.2" fill="var(--art-eye)"></circle>
+	<ellipse cx="7" cy="9" rx="1.3" ry="2.1" fill="var(--art-ink)"></ellipse>
+	<ellipse cx="17" cy="9" rx="1.3" ry="2.1" fill="var(--art-ink)"></ellipse>
+	<path
+		d="M 7 18 Q 12 21.5 17 18"
+		fill="none"
+		stroke="var(--art-frog-dark)"
+		stroke-width="1.6"
+		stroke-linecap="round"></path>
+
+	<circle cx="36" cy="12" r="3.4" fill="var(--art-eye)"></circle>
+	<circle cx="48" cy="12" r="3.4" fill="var(--art-frog-light)"></circle>
+	<circle cx="60" cy="12" r="3.4" fill="var(--art-disc-edge)"></circle>
 </svg>
 
 <style>
 	.bar-art {
 		display: block;
-		/* 32 cells wide at one grid unit each. */
-		width: calc(var(--px) * 32);
-		height: calc(var(--px) * 4);
+		height: var(--mark);
+		width: auto;
 	}
 </style>

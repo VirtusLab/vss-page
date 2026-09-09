@@ -1,4 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" rx="14" fill="#0c6355" />
-  <text x="32" y="33" fill="#ffffff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="40" text-anchor="middle" dominant-baseline="central">λ</text>
+  <rect width="64" height="64" rx="14" fill="#07160f" />
+  <ellipse cx="32" cy="44" rx="23" ry="17" fill="#00c859" />
+  <ellipse cx="32" cy="38" rx="14" ry="8" fill="#67e387" opacity="0.55" />
+  <circle cx="18" cy="26" r="12.5" fill="#b4f5b5" />
+  <circle cx="46" cy="26" r="12.5" fill="#b4f5b5" />
+  <circle cx="18" cy="26" r="9" fill="#b06f0c" />
+  <circle cx="46" cy="26" r="9" fill="#b06f0c" />
+  <circle cx="18" cy="26" r="7.2" fill="#f0a828" />
+  <circle cx="46" cy="26" r="7.2" fill="#f0a828" />
+  <ellipse cx="18" cy="26" rx="3" ry="5" fill="#04100b" />
+  <ellipse cx="46" cy="26" rx="3" ry="5" fill="#04100b" />
+  <circle cx="15" cy="22" r="2.3" fill="#ffffff" />
+  <circle cx="43" cy="22" r="2.3" fill="#ffffff" />
+  <path d="M 19 50 Q 32 59 45 50" fill="none" stroke="#007c3e" stroke-width="3.4" stroke-linecap="round" />
 </svg>

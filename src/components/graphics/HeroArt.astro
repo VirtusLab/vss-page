@@ -1,193 +1,202 @@
 ---
 /**
- * The hero illustration: a pixel terminal running a program on a plain landscape, with tiles
- * dropping in to be assembled. Drawn on a 96 x 72 cell grid; one cell is one grid unit, so at the
- * default size a cell is exactly `--px`. Decorative, hence `aria-hidden`.
+ * The hero illustration: a tree frog sitting on a lily pad inside a lit disc, built from layered
+ * ellipses and lens-shaped leaves — no outlines, no pixels. The frog sits right of the disc's centre
+ * with its head and gaze turned back towards the headline, and the leaves break the disc at one
+ * corner rather than four. Every fill is an `--art-*` token, so the whole scene recolours between
+ * light and dark. Decorative, hence `aria-hidden`.
  */
 ---
 
-<svg
-	class="hero-art pixel-box"
-	viewBox="0 0 96 72"
-	shape-rendering="crispEdges"
-	aria-hidden="true"
-	focusable="false"
->
-	{/* Two dither ramps, the same three-step dissolve as the page's pixel band: one darkening the
-	   top of the sky, one lifting the ground into the horizon. */}
+<svg class="hero-art" viewBox="0 0 320 300" aria-hidden="true" focusable="false">
 	<defs>
-		<pattern id="hero-dither-top" width="4" height="4" patternUnits="userSpaceOnUse">
-			<rect x="0" y="0" width="4" height="1" fill="var(--px-1)"></rect>
-			<rect x="0" y="1" width="1" height="1" fill="var(--px-1)"></rect>
-			<rect x="2" y="1" width="1" height="1" fill="var(--px-1)"></rect>
-			<rect x="0" y="2" width="1" height="1" fill="var(--px-1)"></rect>
-		</pattern>
-		<pattern id="hero-dither-floor" width="4" height="4" patternUnits="userSpaceOnUse">
-			<rect x="0" y="3" width="4" height="1" fill="var(--px-3)"></rect>
-			<rect x="0" y="2" width="1" height="1" fill="var(--px-3)"></rect>
-			<rect x="2" y="2" width="1" height="1" fill="var(--px-3)"></rect>
-			<rect x="0" y="1" width="1" height="1" fill="var(--px-3)"></rect>
-		</pattern>
+		{/* One lens-shaped leaf, reused at several sizes and angles. `use` inherits the fill for the
+		    blade; the vein carries its own stroke, so every leaf is veined the same way. */}
+		<g id="leaf-shape">
+			<path d="M -60 0 C -34 -33 34 -33 60 0 C 34 33 -34 33 -60 0 Z"></path>
+			<path
+				d="M -48 0 L 48 0"
+				fill="none"
+				stroke="var(--art-disc-core)"
+				stroke-width="5"
+				stroke-linecap="round"></path>
+		</g>
+		{/* One eye, drawn about its own centre and placed twice by `use`. The pupil sits left of
+		    centre in both, which is what turns the gaze towards the headline. */}
+		<g id="eye">
+			<circle r="39" fill="var(--art-frog-light)"></circle>
+			<circle r="29" fill="var(--art-eye-dark)"></circle>
+			<circle r="25" fill="var(--art-eye)"></circle>
+			<ellipse cx="-6" rx="9" ry="17" fill="var(--art-ink)"></ellipse>
+			<circle cx="-14" cy="-11" r="7" fill="var(--art-shine)"></circle>
+			<circle cx="3" cy="11" r="3.5" fill="var(--art-shine)" opacity="0.7"></circle>
+		</g>
+		{/* The disc is lit from above rather than flat, so the frog sits in front of light and not
+		    on a plate. */}
+		<radialGradient id="disc-fill" cx="46%" cy="36%" r="72%">
+			<stop offset="0" stop-color="var(--art-disc-core)"></stop>
+			<stop offset="1" stop-color="var(--art-disc)"></stop>
+		</radialGradient>
+		{/* The eyelids slide inside these, so a closing lid never spills onto the face. */}
+		<clipPath id="eye-clip-left"><circle cx="122" cy="88" r="29"></circle></clipPath>
+		<clipPath id="eye-clip-right"><circle cx="218" cy="88" r="29"></circle></clipPath>
 	</defs>
 
-	{/* Sky */}
-	<rect x="0" y="0" width="96" height="72" fill="var(--px-sky)" />
-	<rect x="0" y="0" width="96" height="4" fill="url(#hero-dither-top)" opacity="0.4" />
-
-	{/* Stars; the small group blinks on a stepped cycle. */}
-	<g fill="var(--px-2)" class="twinkle">
-		<rect x="20" y="2" width="2" height="2" />
-		<rect x="88" y="4" width="2" height="2" />
-		<rect x="52" y="10" width="2" height="2" />
+	{/* Three leaves at one corner, on the headline's side, each turned along the line from the disc
+	    centre so what the disc hides is the stem end and what shows is a whole leaf tip. */}
+	<g class="sway" style="--sway-delay: 0s">
+		<use href="#leaf-shape" transform="translate(38 54) rotate(41) scale(0.82)" fill="var(--art-leaf)"></use>
 	</g>
-	<g fill="var(--px-cloud)">
-		<rect x="34" y="4" width="2" height="2" />
-		<rect x="66" y="6" width="2" height="2" />
-		<rect x="4" y="16" width="2" height="2" />
+	<g class="sway" style="--sway-delay: -2.6s">
+		<use href="#leaf-shape" transform="translate(84 22) rotate(20) scale(0.58)" fill="var(--art-leaf-light)"></use>
 	</g>
 
-	{/* Clouds */}
-	<g fill="var(--px-cloud)">
-		<rect x="10" y="6" width="12" height="2" />
-		<rect x="6" y="8" width="20" height="4" />
-		<rect x="78" y="16" width="12" height="2" />
-		<rect x="74" y="18" width="20" height="4" />
+	{/* The disc: the page's one big geometric shape, the thing the frog is framed by. */}
+	<circle cx="160" cy="150" r="136" fill="url(#disc-fill)"></circle>
+	<circle cx="160" cy="150" r="135" fill="none" stroke="var(--art-disc-edge)" stroke-width="2"></circle>
+
+	{/* Lily pad, with veins radiating from the point the frog is sitting on. */}
+	<ellipse cx="172" cy="252" rx="126" ry="28" fill="var(--art-leaf)"></ellipse>
+	<ellipse cx="172" cy="247" rx="126" ry="25" fill="var(--art-leaf-light)"></ellipse>
+	<g fill="none" stroke="var(--art-leaf)" stroke-width="2" stroke-linecap="round" opacity="0.55">
+		<path d="M 172 247 L 58 238"></path>
+		<path d="M 172 247 L 286 238"></path>
+		<path d="M 172 247 L 84 264"></path>
+		<path d="M 172 247 L 260 264"></path>
 	</g>
 
-	{/* Ground */}
-	<rect x="0" y="44" width="96" height="4" fill="url(#hero-dither-floor)" opacity="0.7" />
-	<rect x="0" y="48" width="96" height="24" fill="var(--px-3)" />
-	<rect x="0" y="48" width="96" height="2" fill="var(--px-ink)" />
-	<g fill="var(--px-ink)" opacity="0.35">
-		<rect x="0" y="56" width="96" height="1" />
-		<rect x="0" y="64" width="96" height="1" />
-		<rect x="16" y="50" width="1" height="22" />
-		<rect x="44" y="50" width="1" height="22" />
-		<rect x="76" y="50" width="1" height="22" />
+	{/* Back legs: folded haunches, then a webbed foot on each side. Every toe overlaps the foot bar
+	    in both axes, so the three pads read as one foot and not as loose circles on the pad. */}
+	<g fill="var(--art-frog-dark)">
+		<ellipse cx="106" cy="200" rx="44" ry="37" transform="rotate(-16 106 200)"></ellipse>
+		<ellipse cx="250" cy="200" rx="44" ry="37" transform="rotate(16 250 200)"></ellipse>
+		<rect x="84" y="231" width="60" height="23" rx="11.5"></rect>
+		<rect x="212" y="231" width="60" height="23" rx="11.5"></rect>
+		<circle cx="90" cy="225" r="10"></circle>
+		<circle cx="82" cy="243" r="10"></circle>
+		<circle cx="90" cy="261" r="10"></circle>
+		<circle cx="266" cy="225" r="10"></circle>
+		<circle cx="274" cy="243" r="10"></circle>
+		<circle cx="266" cy="261" r="10"></circle>
 	</g>
 
-	{/* Two tiles have landed as a stack on the floor; the third is still coming down, bobbing a
-	    whole cell at a time. */}
-	<g>
-		<rect x="6" y="36" width="12" height="12" fill="var(--px-ink)" />
-		<rect x="8" y="38" width="8" height="8" fill="var(--px-3)" />
-		<rect x="8" y="38" width="8" height="2" fill="var(--px-cloud)" />
+	{/* Body and head are two overlapping ellipses: a frog has no neck. The head sits eight units left
+	    of the body, which is what reads as the frog looking back over its shoulder. */}
+	<ellipse cx="178" cy="190" rx="86" ry="62" fill="var(--art-frog)"></ellipse>
+	<ellipse cx="170" cy="132" rx="80" ry="60" fill="var(--art-frog)"></ellipse>
+	<ellipse cx="166" cy="106" rx="58" ry="32" fill="var(--art-frog-light)" opacity="0.6"></ellipse>
+	<ellipse cx="180" cy="204" rx="54" ry="46" fill="var(--art-belly)"></ellipse>
+
+	{/* Front arms, angled out at the wrist, each ending in three toe pads. */}
+	<g fill="var(--art-frog)">
+		<rect x="109" y="180" width="26" height="70" rx="13" transform="rotate(7 122 215)"></rect>
+		<rect x="225" y="180" width="26" height="70" rx="13" transform="rotate(-7 238 215)"></rect>
 	</g>
-	<g>
-		<rect x="6" y="24" width="12" height="12" fill="var(--px-ink)" />
-		<rect x="8" y="26" width="8" height="8" fill="var(--px-1)" />
-		<rect x="8" y="26" width="8" height="2" fill="var(--px-cloud)" />
-	</g>
-	<g class="bob">
-		<rect x="76" y="4" width="12" height="12" fill="var(--px-ink)" />
-		<rect x="78" y="6" width="8" height="8" fill="var(--px-2)" />
-		<rect x="78" y="6" width="8" height="2" fill="var(--px-cloud)" />
+	<g fill="var(--art-frog-light)">
+		<circle cx="111" cy="245" r="8.5"></circle>
+		<circle cx="122" cy="252" r="8.5"></circle>
+		<circle cx="134" cy="246" r="8.5"></circle>
+		<circle cx="227" cy="246" r="8.5"></circle>
+		<circle cx="238" cy="252" r="8.5"></circle>
+		<circle cx="250" cy="245" r="8.5"></circle>
 	</g>
 
-	{/* Monitor stand and base, drawn before the shell so the shell sits on top. */}
-	<rect x="42" y="44" width="12" height="12" fill="var(--px-ink)" />
-	<rect x="32" y="56" width="32" height="6" fill="var(--px-ink)" />
-	<rect x="34" y="58" width="28" height="2" fill="var(--px-1)" />
-
-	{/* Monitor shell */}
-	<rect x="24" y="12" width="48" height="36" fill="var(--px-ink)" />
-	<rect x="26" y="14" width="44" height="32" fill="var(--px-1)" />
-	<rect x="26" y="14" width="44" height="2" fill="var(--px-cloud)" />
-	<rect x="26" y="44" width="44" height="2" fill="var(--px-ink)" />
-
-	{/* Screen */}
-	<rect x="29" y="17" width="38" height="22" fill="var(--px-ink)" />
-
-	{/* Program on the screen: a prompt line, then the two glyphs direct-style Scala is written
-	    with — `=>` and `<-` — each with a line of output beside it, and a blinking cursor. */}
-	<g fill="var(--px-2)">
-		<rect x="31" y="19" width="2" height="2" />
-		<rect x="33" y="21" width="2" height="2" />
-		<rect x="31" y="23" width="2" height="2" />
+	{/* Eyes: the same drawing placed twice. */}
+	<use href="#eye" x="122" y="88"></use>
+	<use href="#eye" x="218" y="88"></use>
+	{/* Lids park above the eye and drop through it on the blink cycle. */}
+	<g clip-path="url(#eye-clip-left)">
+		<circle class="lid" cx="122" cy="88" r="30" fill="var(--art-frog-light)"></circle>
 	</g>
-	<rect x="37" y="19" width="20" height="2" fill="var(--px-cloud)" />
-
-	{/* `=>` */}
-	<g fill="var(--px-2)">
-		<rect x="37" y="25" width="5" height="1" />
-		<rect x="37" y="27" width="5" height="1" />
-		<rect x="42" y="24" width="1" height="1" />
-		<rect x="43" y="25" width="1" height="1" />
-		<rect x="44" y="26" width="1" height="1" />
-		<rect x="43" y="27" width="1" height="1" />
-		<rect x="42" y="28" width="1" height="1" />
+	<g clip-path="url(#eye-clip-right)">
+		<circle class="lid" cx="218" cy="88" r="30" fill="var(--art-frog-light)"></circle>
 	</g>
-	<rect x="48" y="25" width="14" height="2" fill="var(--px-3)" />
 
-	{/* `<-` */}
-	<g fill="var(--px-3)">
-		<rect x="39" y="31" width="1" height="1" />
-		<rect x="38" y="32" width="1" height="1" />
-		<rect x="37" y="33" width="1" height="1" />
-		<rect x="38" y="34" width="1" height="1" />
-		<rect x="39" y="35" width="1" height="1" />
-		<rect x="40" y="33" width="5" height="1" />
+	{/* Nostrils and a wide mouth: the two marks that make the blob read as a face. */}
+	<g fill="var(--art-frog-dark)">
+		<ellipse cx="156" cy="128" rx="4.5" ry="3.5"></ellipse>
+		<ellipse cx="184" cy="128" rx="4.5" ry="3.5"></ellipse>
 	</g>
-	<rect x="48" y="32" width="9" height="2" fill="var(--px-cloud)" />
-	<rect x="59" y="32" width="3" height="2" fill="var(--px-2)" class="caret" />
+	<path
+		d="M 130 152 Q 170 184 210 152"
+		fill="none"
+		stroke="var(--art-frog-dark)"
+		stroke-width="6"
+		stroke-linecap="round"></path>
 
-	{/* Scanlines over the screen, and the power light on the shell. */}
-	<g fill="var(--px-ink)" opacity="0.25">
-		<rect x="29" y="18" width="38" height="1" />
-		<rect x="29" y="22" width="38" height="1" />
-		<rect x="29" y="26" width="38" height="1" />
-		<rect x="29" y="30" width="38" height="1" />
-		<rect x="29" y="34" width="38" height="1" />
-		<rect x="29" y="38" width="38" height="1" />
+	{/* Three points of amber drifting in the dark: the only motion above the frog. */}
+	<g fill="var(--art-eye)">
+		<circle class="glow" style="--glow-delay: 0s" cx="50" cy="122" r="5"></circle>
+		<circle class="glow" style="--glow-delay: -1.4s" cx="284" cy="146" r="4"></circle>
+		<circle class="glow" style="--glow-delay: -2.8s" cx="72" cy="76" r="3.5"></circle>
 	</g>
-	<rect x="62" y="41" width="3" height="2" fill="var(--px-2)" />
-	<rect x="31" y="41" width="14" height="2" fill="var(--px-ink)" />
+
+	{/* One leaf in front of the pad, so the frog sits inside the scene and not on top of it. The
+	    transform lives on an inner element: `.sway` animates the outer group's CSS transform, which
+	    would otherwise replace this attribute rather than compose with it. */}
+	<g class="sway" style="--sway-delay: -0.7s">
+		<use href="#leaf-shape" transform="translate(52 250) rotate(-38) scale(0.64)" fill="var(--art-leaf)"></use>
+	</g>
 </svg>
 
 <style>
-	/* The wrapper in Hero.astro owns the width; the art fills it. Box and shadow come from
-	   `.pixel-box`. */
+	/* The wrapper in Hero.astro owns the width; the art fills it. `overflow: visible` because the
+	   upper-left leaf tips reach past the viewBox edge into the page gutter on purpose. */
 	.hero-art {
 		display: block;
 		width: 100%;
 		height: auto;
+		overflow: visible;
 	}
 
-	.caret {
-		animation: caret-blink 1.2s steps(1, end) infinite;
+	/* Parked above the eye for most of the cycle, so the frog is open-eyed by default. */
+	.lid {
+		transform: translateY(-62px);
+		animation: blink 7s ease-in-out infinite;
 	}
 
-	.twinkle {
-		animation: twinkle 2.4s steps(1, end) infinite;
+	.sway {
+		transform-origin: 160px 180px;
+		animation: sway 9s ease-in-out infinite;
+		animation-delay: var(--sway-delay);
 	}
 
-	.bob {
-		animation: bob 2.4s steps(1, end) infinite;
+	.glow {
+		animation: glow 4.5s ease-in-out infinite;
+		animation-delay: var(--glow-delay);
 	}
 
-	@keyframes caret-blink {
-		50% {
-			opacity: 0;
+	@keyframes blink {
+		0%,
+		92%,
+		100% {
+			transform: translateY(-62px);
+		}
+		95.5% {
+			transform: translateY(0);
 		}
 	}
 
-	@keyframes twinkle {
+	@keyframes sway {
 		50% {
-			opacity: 0.25;
+			transform: rotate(1.4deg);
 		}
 	}
 
-	/* A whole cell up and back: the tile stays on the grid at every frame. */
-	@keyframes bob {
+	@keyframes glow {
+		0%,
+		100% {
+			opacity: 0.35;
+		}
 		50% {
-			transform: translateY(-1px);
+			opacity: 1;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.caret,
-		.twinkle,
-		.bob {
+		.lid,
+		.sway,
+		.glow {
 			animation: none;
 		}
 	}

@@ -1,8 +1,8 @@
 ---
 /**
- * One pixel icon per stack section, keyed by the section id. All six are drawn on the same 12 x 12
- * cell grid, on an ink tile and in the same three accents, so they read as one sprite set.
- * Decorative, hence `aria-hidden`.
+ * One icon per stack section, keyed by the section id. All six are the same frog on the same rounded
+ * tile, drawn at the same coordinates, with a different prop over its right shoulder and the pupils
+ * turned towards it — so the set reads as one family at 48px. Decorative, hence `aria-hidden`.
  */
 interface Props {
 	/** A section id from `content/components.yaml`. An id with no icon fails the build. */
@@ -11,76 +11,76 @@ interface Props {
 
 const { name } = Astro.props;
 const drawn = ['template', 'language', 'tooling', 'backend', 'ai', 'devops'];
-if (!drawn.includes(name)) throw new Error(`No pixel icon drawn for section "${name}"`);
+if (!drawn.includes(name)) throw new Error(`No frog icon drawn for section "${name}"`);
+
+// Where the pupils sit inside the iris. Every frog but the DevOps one is looking at its prop; that
+// one is watching the chevrons climb out of frame.
+const gaze = name === 'devops' ? { x: 0, y: -1.6 } : { x: 1.1, y: -1.1 };
+const eyes = [15.5, 33.5];
+// Six teeth around the tooling gear, placed by rotation so they stay evenly spaced.
+const teeth = [0, 60, 120, 180, 240, 300];
 ---
 
-<svg
-	class="icon"
-	viewBox="0 0 12 12"
-	shape-rendering="crispEdges"
-	aria-hidden="true"
-	focusable="false"
->
-	<rect x="0" y="0" width="12" height="12" fill="var(--px-ink)"></rect>
+<svg class="icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+	<rect x="0.5" y="0.5" width="47" height="47" rx="12" fill="var(--art-disc)" stroke="var(--art-disc-edge)"></rect>
+
+	{/* The prop, drawn before the frog so the frog sits in front of it. */}
 	{
 		name === 'template' && (
 			<g>
-				{/* A page already laid out: a header bar over two unequal columns. */}
-				<rect x="2" y="1" width="8" height="2" fill="var(--px-1)" />
-				<rect x="2" y="4" width="3" height="7" fill="var(--px-2)" />
-				<rect x="6" y="4" width="4" height="7" fill="var(--px-3)" />
+				{/* A page already laid out: a header bar over two columns. */}
+				<rect x="25" y="3.5" width="17" height="15.5" rx="3" fill="var(--art-leaf-light)" />
+				<g fill="var(--art-disc)">
+					<rect x="27.5" y="6" width="12" height="3" rx="1.5" />
+					<rect x="27.5" y="10.5" width="5" height="6" rx="1" />
+					<rect x="34.5" y="10.5" width="5" height="6" rx="1" />
+				</g>
 			</g>
 		)
 	}
 	{
 		name === 'language' && (
-			<g>
-				{/* A lambda standing on a ground line. */}
-				<g fill="var(--px-2)">
-					<rect x="4" y="2" width="2" height="2" />
-					<rect x="5" y="4" width="2" height="2" />
-					<rect x="6" y="6" width="2" height="2" />
-					<rect x="7" y="8" width="2" height="2" />
-					<rect x="3" y="6" width="2" height="2" />
-					<rect x="1" y="8" width="2" height="2" />
-				</g>
-				<rect x="1" y="10" width="10" height="1" fill="var(--px-3)" />
+			<g fill="none" stroke="var(--art-leaf-light)" stroke-linecap="round" stroke-width="3.4">
+				{/* A lambda: one long stroke, one leg off its middle. */}
+				<path d="M 26.5 19.5 L 34.5 3.5" />
+				<path d="M 30.5 11.5 L 40 20" />
 			</g>
 		)
 	}
 	{
 		name === 'tooling' && (
 			<g>
-				{/* A gear: a hollow hub with four teeth, the teeth picked out in the second accent. */}
-				<rect x="3" y="3" width="6" height="6" fill="var(--px-1)" />
-				<g fill="var(--px-2)">
-					<rect x="5" y="1" width="2" height="2" />
-					<rect x="5" y="9" width="2" height="2" />
-					<rect x="1" y="5" width="2" height="2" />
-					<rect x="9" y="5" width="2" height="2" />
+				{/* A gear: six teeth around a hollow hub. */}
+				<g fill="var(--art-leaf)">
+					{teeth.map((angle) => (
+						<rect
+							x="32.3"
+							y="3.4"
+							width="3.4"
+							height="4.4"
+							rx="1.2"
+							transform={`rotate(${angle} 34 12)`}
+						/>
+					))}
 				</g>
-				<rect x="5" y="5" width="2" height="2" fill="var(--px-ink)" />
+				<circle cx="34" cy="12" r="6.4" fill="var(--art-leaf-light)" />
+				<circle cx="34" cy="12" r="2.6" fill="var(--art-disc)" />
 			</g>
 		)
 	}
 	{
 		name === 'backend' && (
 			<g>
-				{/* A rack of three service units, each with a status light. */}
-				<g fill="var(--px-1)">
-					<rect x="1" y="2" width="10" height="2" />
-					<rect x="1" y="5" width="10" height="2" />
-					<rect x="1" y="8" width="10" height="2" />
+				{/* A rack of service units, each with a lit status dot. */}
+				<g fill="var(--art-leaf-light)">
+					<rect x="24" y="3.5" width="20" height="5" rx="1.8" />
+					<rect x="24" y="10" width="20" height="5" rx="1.8" />
+					<rect x="24" y="16.5" width="20" height="5" rx="1.8" />
 				</g>
-				<g fill="var(--px-3)">
-					<rect x="2" y="2" width="4" height="1" />
-					<rect x="2" y="5" width="4" height="1" />
-					<rect x="2" y="8" width="4" height="1" />
-				</g>
-				<g fill="var(--px-2)">
-					<rect x="9" y="2" width="1" height="1" />
-					<rect x="9" y="5" width="1" height="1" />
-					<rect x="9" y="8" width="1" height="1" />
+				<g fill="var(--art-eye)">
+					<circle cx="27.8" cy="6" r="1.4" />
+					<circle cx="27.8" cy="12.5" r="1.4" />
+					<circle cx="27.8" cy="19" r="1.4" />
 				</g>
 			</g>
 		)
@@ -88,52 +88,61 @@ if (!drawn.includes(name)) throw new Error(`No pixel icon drawn for section "${n
 	{
 		name === 'ai' && (
 			<g>
-				{/* A robot head with a lit antenna. */}
-				<rect x="5" y="0" width="2" height="2" fill="var(--px-2)" />
-				<rect x="5" y="2" width="2" height="1" fill="var(--px-1)" />
-				<rect x="2" y="3" width="8" height="7" fill="var(--px-1)" />
-				<g fill="var(--px-1)">
-					<rect x="1" y="5" width="1" height="3" />
-					<rect x="10" y="5" width="1" height="3" />
-				</g>
-				<g fill="var(--px-3)">
-					<rect x="3" y="5" width="2" height="2" />
-					<rect x="7" y="5" width="2" height="2" />
-				</g>
-				<rect x="4" y="8" width="4" height="1" fill="var(--px-2)" />
+				{/* A four-point spark with two smaller ones: the mark every model tool wears. */}
+				<path
+					d="M 34 3 C 35.2 9.4 36.6 10.8 43 12 C 36.6 13.2 35.2 14.6 34 21 C 32.8 14.6 31.4 13.2 25 12 C 31.4 10.8 32.8 9.4 34 3 Z"
+					fill="var(--art-leaf-light)"
+				/>
+				<path
+					d="M 43 15.5 C 43.4 17.8 43.7 18.1 46 18.5 C 43.7 18.9 43.4 19.2 43 21.5 C 42.6 19.2 42.3 18.9 40 18.5 C 42.3 18.1 42.6 17.8 43 15.5 Z"
+					fill="var(--art-eye)"
+				/>
+				<path
+					d="M 25 4 C 25.3 5.7 25.5 5.9 27.2 6.2 C 25.5 6.5 25.3 6.7 25 8.4 C 24.7 6.7 24.5 6.5 22.8 6.2 C 24.5 5.9 24.7 5.7 25 4 Z"
+					fill="var(--art-eye)"
+				/>
 			</g>
 		)
 	}
 	{
 		name === 'devops' && (
-			<g>
-				{/* A rocket climbing past two clouds. */}
-				<g fill="var(--px-cloud)">
-					<rect x="0" y="3" width="3" height="2" />
-					<rect x="9" y="7" width="3" height="2" />
-				</g>
-				<rect x="5" y="0" width="2" height="2" fill="var(--px-2)" />
-				<rect x="4" y="2" width="4" height="7" fill="var(--px-1)" />
-				<rect x="5" y="3" width="2" height="2" fill="var(--px-3)" />
-				<g fill="var(--px-1)">
-					<rect x="2" y="6" width="2" height="3" />
-					<rect x="8" y="6" width="2" height="3" />
-				</g>
-				<g fill="var(--px-2)">
-					<rect x="4" y="9" width="4" height="1" />
-					<rect x="5" y="10" width="2" height="2" />
-				</g>
+			<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.4">
+				{/* Two chevrons climbing out of frame: ship, then ship again. */}
+				<path d="M 26.5 11.5 L 34 4 L 41.5 11.5" stroke="var(--art-leaf-light)" />
+				<path d="M 26.5 19.5 L 34 12 L 41.5 19.5" stroke="var(--art-leaf)" />
 			</g>
 		)
 	}
+
+	{/* The frog, identical in all six. */}
+	<ellipse cx="24" cy="35" rx="16.5" ry="12" fill="var(--art-frog)"></ellipse>
+	<ellipse cx="24" cy="31.5" rx="10" ry="5.5" fill="var(--art-frog-light)" opacity="0.5"></ellipse>
+	<g fill="var(--art-frog-light)">
+		<circle cx="12" cy="43" r="3.2"></circle>
+		<circle cx="36" cy="43" r="3.2"></circle>
+	</g>
+	{eyes.map((cx) => <circle cx={cx} cy="26" r="8.4" fill="var(--art-frog-light)" />)}
+	{eyes.map((cx) => <circle cx={cx} cy="26" r="6.1" fill="var(--art-eye-dark)" />)}
+	{eyes.map((cx) => <circle cx={cx} cy="26" r="4.9" fill="var(--art-eye)" />)}
+	{
+		eyes.map((cx) => (
+			<ellipse cx={cx + gaze.x} cy={26 + gaze.y} rx="2.05" ry="3.2" fill="var(--art-ink)" />
+		))
+	}
+	{eyes.map((cx) => <circle cx={cx - 2} cy="23" r="1.55" fill="var(--art-shine)" />)}
+	<path
+		d="M 15 39.5 Q 24 45 33 39.5"
+		fill="none"
+		stroke="var(--art-frog-dark)"
+		stroke-width="2.2"
+		stroke-linecap="round"></path>
 </svg>
 
 <style>
 	.icon {
 		display: block;
 		flex: none;
-		/* Twelve cells wide, one grid unit per cell, so a cell is never a fractional pixel. */
-		width: calc(var(--px) * 12);
-		height: calc(var(--px) * 12);
+		width: var(--icon);
+		height: var(--icon);
 	}
 </style>

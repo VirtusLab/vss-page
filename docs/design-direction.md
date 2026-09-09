@@ -1,99 +1,99 @@
 # Design direction
 
-Derived from a random seed. Every value below is a CSS custom property in
-`src/layouts/Base.astro`; components reference tokens only.
+Every value below is a CSS custom property in `src/layouts/Base.astro`; components use tokens only,
+and no hex appears outside that file.
 
 ## Direction
 
-An arcade at dusk. Lilac paper or a night sky, everything drawn outline-first on a 4px pixel grid:
-square corners, chunky borders, hard drawn shadows, a pixel display face, hand-drawn pixel-art
-graphics in three accents. The page is still a document a developer reads — running text stays in a
-clean sans — but every frame around that text is a sprite.
+Warm green, VirtusLab's. Clean geometry and a lot of empty space on a warm off-white ground, deep
+forest green in dark mode, bright VL green as the signature accent, amber used sparingly. Artwork is
+smooth layered vector — never outlined, never pixel. One soft shadow, one green rule.
+
+## The animal: a tree frog
+
+Green body, amber eyes: the animal is already the palette. It reads at 48px from silhouette alone —
+a wide body and two domed eyes — which a chameleon (long body, curled tail) and a gecko (a plain
+lizard outline) do not. It fits the argument too: direct style is a jump, not a pipeline. It appears
+as the hero (off-centre on a lily pad in a lit disc, gaze turned back to the headline), the six
+section icons (one prop each, pupils on the prop), the commercial block (figure-sized, with an amber
+briefcase — the one prop that is not open source), the code panel's mark, and the favicon.
 
 ## Palette
 
-Violet leads (links, the CTA, most artwork), gold marks the paid thing, teal carries the graphics
-and section rules. Gold is a fill, not an ink: `--accent-2` is always paired with `--on-accent-2`,
-and `--accent-2-text` is that gold taken down until it clears 4.5:1 on the page ground. Every text
-pair is AA at 4.5:1, headings included.
+Light: warm paper, green-black ink. Text greens are the saturated VL greens; the bright `#00c859` is
+a fill only. Not text: `--line` `#dbe3d3`, `--line-strong` `#bed0b2`, `--accent-bright` `#00c859`.
 
-Light. Lilac paper, indigo ink, dark outlines; the drawn shadow is darker than the ground. Not
-text: `--line` `--shadow` `#2b2350`, `--shadow-far` `#b3a6d6`, `--bevel-shade` `#3a1c80`,
-`--bevel-light` `#8a67d8`.
-
-| token | hex | on `--bg` `#f4f1fa` | on `--tint` `#e8e3f4` |
+| token | hex | on `--bg` `#f9f6f5` | on `--surface` `#eef3e7` |
 | --- | --- | ---: | ---: |
-| `--fg` | `#1a1433` | 15.78 | 14.03 |
-| `--muted` | `#4d4468` | 8.03 | 7.14 |
-| `--accent` | `#5a2fbe` | 7.28 | 6.47 |
-| `--accent-2-text` | `#8a5000` | 5.83 | 5.18 |
-| `--accent-3` | `#0a6a66` | 5.76 | 5.12 |
-| `--on-accent` | `#f4f1fa` | 7.28 on `--accent`, 5.76 on `--accent-3` | – |
-| `--accent-2` | `#e0a020` | fill only; `--on-accent-2` `#1a1433` on it is 7.74 | – |
+| `--fg` | `#16211a` | 15.42 | 14.69 |
+| `--muted` | `#4a5b50` | 6.73 | 6.41 |
+| `--accent` | `#046b39` | 6.17 | 5.88 |
+| `--accent-2-text` | `#8a4a00` | 6.38 | 6.08 |
+| `--on-accent` | `#f9f6f5` | 6.17 on `--accent` | – |
+| `--accent-2` | `#e2a02c` | fill only; `--on-accent-2` `#16211a` on it is 7.34 | – |
 
-Dark. Not an inversion: the ground becomes a night sky, the outline flips to a lit violet, and the
-accents brighten to arcade phosphor. Both shadow steps flip too — a shadow darker than a night sky
-is invisible, so here it is a lit rim that still fades with distance. Not text: `--line` and
-`--shadow` `#4a3f78`, `--shadow-far` `#3a3160`, `--bevel-shade` `#7d63d6`, `--bevel-light` `#d8cbff`.
+Dark: not an inversion — the ground becomes forest green-black and the greens brighten, so the green
+that was fill-only in light mode carries text. Not text: `--line` `#22402e`, `--line-strong` `#2f5a40`.
 
-| token | hex | on `--bg` `#141120` | on `--tint` `#1e1934` |
+| token | hex | on `--bg` `#07160f` | on `--surface` `#0f2418` |
 | --- | --- | ---: | ---: |
-| `--fg` | `#ece8fa` | 15.47 | 14.06 |
-| `--muted` | `#a79dc6` | 7.32 | 6.66 |
-| `--accent` | `#b39aff` | 7.94 | 7.22 |
-| `--accent-2-text` | `#f0c04f` | 10.93 | 9.94 |
-| `--accent-3` | `#57d7c3` | 10.54 | 9.58 |
-| `--on-accent` | `#141120` | 7.94 on `--accent`, 10.54 on `--accent-3` | – |
-| `--accent-2` | `#f0c04f` | fill only; `--on-accent-2` `#141120` on it is 10.93 | – |
+| `--fg` | `#eaf4ea` | 16.47 | 14.49 |
+| `--muted` | `#a7c1ae` | 9.62 | 8.46 |
+| `--accent` | `#67e387` | 11.42 | 10.04 |
+| `--accent-2-text` | `#f0b756` | 10.27 | 9.03 |
+| `--on-accent` | `#07160f` | 11.42 on `--accent` | – |
+| `--accent-2` | `#f0b756` | fill only; `--on-accent-2` `#07160f` on it is 10.27 | – |
 
-Graphics use a fill-only set — `--px-ink`, `--px-sky`, `--px-cloud`, `--px-1/2/3` — so the artwork
-can carry brighter colour than any text pair is allowed to.
+Artwork uses a fill-only ramp from the VL green scale (`--art-ink`, `--art-frog-dark/-frog/-frog-light`,
+`--art-belly`, `--art-leaf/-leaf-light`, `--art-disc/-disc-core/-disc-edge`, `--art-eye/-eye-dark`,
+`--art-shine`), so the frog carries more colour than any text pair may. Text also sits on the two
+`--ground` washes; their composited peaks clear 4.5:1 (worst 5.53, `--accent` on `#d9f0e1`).
 
 ## Type
 
-- Display (`h1`–`h3`, nav, tabs, the CTA, eyebrows, footer and repo links): **Silkscreen** 400/700,
-  fallback `'Courier New', ui-monospace, monospace`. Over Press Start 2P because it is narrower:
-  seven nav labels and four tab labels still fit at 360px.
-- Body: **Source Sans 3** 400/600 — a pixel face is kept off running text on purpose, since
-  Silkscreen at paragraph length is slower to read at any size. Mono: **JetBrains Mono** 400.
-- Scale unchanged: 1rem base, ×1.25 up (2.441rem for the `h1` ≥720px), 0.875 and 0.75rem below, code
-  at 0.8125rem. Line height 1.6 body, 1.45 headings — a pixel face sits tight in its em box.
+- Display (`h1`–`h3`, nav, tabs, CTA, eyebrow, footer and repo links): **Montserrat** 600/700, the
+  face virtuslab.com uses for headlines, tracked tight (−0.03em on the `h1`).
+- Body: **Source Sans 3** 400. Mono: **JetBrains Mono** 400. Only rendered weights are requested.
+- Scale: 1rem base, ×1.25 up (3.052rem for the `h1` ≥720px), 0.875 and 0.75rem below, code
+  0.8125rem. Line height 1.65 body, 1.2 headings.
 
-## Grid and space
+## Space, radius, depth
 
-- `--px: 4px` is the grid unit. Borders are `--edge` (1 unit), `--hair` (half, also the underline
-  thickness and the focus ring) or `--grid-line` (1px, the page's own 32px grid); spacing is
-  `1 / 2 / 4 / 7 / 12 / 16` units. Corners are square; there is no radius token.
-- `.pixel-box` in `Base.astro` is the one raised-box rule — `--edge` outline plus `--shadow-step`,
-  two hard steps one and two units down-right. Components override the background and border colour,
-  and drop to `--shadow-flat` (the first step alone) for a box closer to the page.
-- `--bevel` is the opposite state, shaded top-left and lit bottom-right: what pressed looks like.
-  Only the checked tab is pressed. The CTA travels one unit on `:active` and drops one step, so
-  its footprint does not move.
+- Spacing `4 / 8 / 16 / 28 / 48 / 72`px. Borders `--border` 1px, `--border-thick` 2px (also the focus
+  ring), `--rule` 3px for the green mark. Page container 62rem. Sizes are tokens too.
+- Radius `--radius-sm` 8, `--radius` 14, `--radius-pill`, and `--radius-lg` 26 on the code panel
+  alone. Nothing has a square corner.
+- `.panel` is the one surface rule — hairline, radius, `--shadow-soft` — and the only thing that may
+  use that name: a scoped `.panel` elsewhere still matches it and doubles the hairline, which is why
+  the snippet panels are `.snippet-panel`. `--shadow-lift` is it raised; the code panel wears that at
+  rest, cards and the CTA on hover. `:focus-visible` sets no radius, so the ring keeps the element's
+  own shape.
+- Ground: the warm colour plus two faint radial washes, placed and sized in pixels — a percentage
+  offset resolves against the whole page height and pushes them off the only screen they tint.
+  Illustration sizes: `--icon` 48, `--mark` 22, `--figure` 120.
 
 ## Motifs
 
-All hand-drawn inline SVG with `shape-rendering="crispEdges"`, all `aria-hidden`, all sized in grid
-units so a cell never becomes a fractional pixel.
-- `graphics/HeroArt.astro` — 96×72 cells: a pixel terminal on a tiled floor, its screen running the
-  two glyphs direct-style Scala is written with, `=>` and `<-`, over a prompt line and a blinking
-  cursor; two tiles have landed as a stack beside it, a third is still coming down. Beside the hero
-  text ≥720px, under it below, at three device pixels per cell once 384px stops fitting.
-- `graphics/SectionIcon.astro` — six 12×12 sprites on ink tiles, one per section heading: a page
-  layout, a lambda, a gear, a rack, a robot head, a rocket past two clouds.
-- `graphics/PixelDivider.astro` — a solid bar dithering away downwards over eight rows, run edge to
-  edge like the nav, under the hero and above the footer; the hero art reuses the ramp at its sky.
-- `graphics/CodeBar.astro` — the window lights and drag handle in the code panel's title bar; the
-  frame is the panel's `.pixel-box` outline and shadow plus the bar strip.
+All hand-drawn inline SVG in `src/components/graphics/`, `aria-hidden`, filled from `--art-*`.
+- `HeroArt.astro` — 320×300: leaves breaking the disc at the headline's corner only, a veined lily
+  pad, and the frog 18 units right of the disc centre with its head 8 units left of its body, so it
+  looks back at the headline. Every toe overlaps the foot bar, so nothing floats. One eye is drawn
+  once and placed twice with `use`; only the blink clip-paths are per-eye. `overflow: visible`,
+  because the leaf tips reach past the viewBox into the gutter on purpose. On desktop the art takes
+  the wider column and bleeds out through the container's gutter; on mobile it is centred.
+- `SectionIcon.astro` — six 48×48 tiles, the same frog at the same coordinates with one prop over its
+  right shoulder: a page, a lambda, a gear, a rack, a spark, two chevrons. Head and toe pads clear
+  the tile's rounded corners.
+- `Divider.astro` — a 40px three-leaf sprig with a green rule fading out to each page edge.
+- `CommercialArt.astro` — 120×120: the frog holding an amber briefcase, beside the copy above 720px.
+- `CodeBar.astro` — a head, two eyes and three window lights; the same head in `public/favicon.svg`.
 
 ## Code themes
 
-Shiki `github-light-high-contrast` and `github-dark-high-contrast`. Both panel backgrounds are our
-own tokens, not the themes': `#e8e3f4` light, the same surface as the cards, and `#0d0b16` dark, a
-violet-black in the palette. Every syntax colour clears 4.5:1 on its panel — worst 6.42, 9.20.
+Shiki `github-light-high-contrast` and `github-dark-high-contrast`, on our own panel backgrounds
+(`#f2f5ec` light, `#041009` dark). Every syntax colour clears 4.5:1 — worst 7.31 light, 9.14 dark.
 
 ## Motion
 
-CSS only, all stepped, all off under `prefers-reduced-motion: reduce`: a blinking cursor, twinkling
-stars, and the falling tile bobbing one whole cell. Hover and press states move by a whole grid
-unit, never a fraction.
+CSS only, all eased, all off under `prefers-reduced-motion: reduce`: the frog blinks every seven
+seconds, the leaves sway 1.4°, the amber points pulse, cards and the CTA lift on hover.

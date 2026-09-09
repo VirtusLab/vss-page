@@ -31,7 +31,7 @@ const canonical = pageUrl(Astro.site);
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Silkscreen:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap"
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Montserrat:wght@600;700&family=Source+Sans+3:wght@400&display=swap"
 		/>
 	</head>
 	<body>
@@ -43,45 +43,47 @@ const canonical = pageUrl(Astro.site);
 	:root {
 		color-scheme: light dark;
 
-		/* The pixel grid unit. Every border, offset, radius and spacing step below is a multiple of
-		   it, so nothing on the page can land off the grid. */
-		--px: 4px;
+		/* Warm paper, green-black ink, and VirtusLab's greens: a saturated green carries text and
+		   links, the bright one is a fill only, and one amber marks the eyes and the paid block. */
+		--bg: #f9f6f5;
+		--surface: #eef3e7;
+		--fg: #16211a;
+		--muted: #4a5b50;
+		--accent: #046b39;
+		/* Too bright to read as text on the warm ground; used for fills, rules and the artwork. */
+		--accent-bright: #00c859;
+		/* Amber is a fill, not an ink. --accent-2-text is the same amber taken down until it clears
+		   4.5:1 on both grounds. */
+		--accent-2: #e2a02c;
+		--accent-2-text: #8a4a00;
+		/* Text drawn on top of a solid --accent fill, and on a solid --accent-2 one. */
+		--on-accent: #f9f6f5;
+		--on-accent-2: #16211a;
+		/* Hairlines. Never text: --line separates, --line-strong outlines the thing being looked at. */
+		--line: #dbe3d3;
+		--line-strong: #bed0b2;
 
-		/* Lilac paper, indigo ink, and a three-accent arcade set: violet leads, gold marks the
-		   active thing, teal carries the graphics. */
-		--bg: #f4f1fa;
-		--tint: #e8e3f4;
-		--fg: #1a1433;
-		--muted: #4d4468;
-		--accent: #5a2fbe;
-		/* Gold is a fill, not an ink: bright enough to read as gold, too bright to sit on the page
-		   ground as text. --accent-2-text is the same gold taken down until it clears 4.5:1 there. */
-		--accent-2: #e0a020;
-		--accent-2-text: #8a5000;
-		--accent-3: #0a6a66;
-		/* Text drawn on top of a solid --accent or --accent-3 fill, and on a solid --accent-2 one. */
-		--on-accent: #f4f1fa;
-		--on-accent-2: #1a1433;
-		/* Chunky outline around every raised box. Dark in light mode: pixel art is drawn outline-first. */
-		--line: #2b2350;
-		/* The two steps of the hard drop shadow: the near one strong, the far one fading out. */
-		--shadow: #2b2350;
-		--shadow-far: #b3a6d6;
-		/* Inner bevel of a pressed box: shaded top-left, lit bottom-right. Both are shades of the
-		   accent the bevel is drawn on, since only the checked tab is pressed. */
-		--bevel-shade: #3a1c80;
-		--bevel-light: #8a67d8;
-		/* Fill-only colours for the SVG graphics; never used for text. */
-		--px-ink: #1a1433;
-		--px-sky: #ded4f4;
-		--px-cloud: #ffffff;
-		--px-1: #5a2fbe;
-		--px-2: #e0a020;
-		--px-3: #17a394;
-		/* Background of the code panel; the light Shiki theme's own white would not read as a panel. */
-		--code-bg: #e8e3f4;
+		/* Fill-only colours for the frog artwork; never used for text. The frog ramp is the VL green
+		   scale, so the illustration and the interface are the same palette. */
+		--art-ink: #10241a;
+		--art-frog-dark: #00693a;
+		--art-frog: #00a74e;
+		--art-frog-light: #67e387;
+		--art-belly: #d5f3c2;
+		--art-leaf: #007c3e;
+		--art-leaf-light: #00c859;
+		--art-disc: #e5f7de;
+		--art-disc-core: #f4fcee;
+		--art-disc-edge: #b4f5b5;
+		--art-eye: #f0a828;
+		--art-eye-dark: #b06f0c;
+		--art-shine: #ffffff;
 
-		--font-display: 'Silkscreen', 'Courier New', ui-monospace, monospace;
+		/* Background of the code panel: a hair greener and darker than the page, so the panel reads
+		   as a surface without an outline doing the work. */
+		--code-bg: #f2f5ec;
+
+		--font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 		--font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 		--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
@@ -98,66 +100,93 @@ const canonical = pageUrl(Astro.site);
 
 		/* Cap for running text; the page container is wider to hold the two-column grid. */
 		--measure: 65ch;
-		--page-width: 60rem;
+		--page-width: 62rem;
 		/* Height of the sticky nav row; anchors scroll clear of it. */
-		--nav-height: 3.5rem;
+		--nav-height: 3.75rem;
+		/* Section-icon tile, the frog mark in the code panel's title bar, and the one figure-sized
+		   illustration outside the hero. */
+		--icon: 48px;
+		--mark: 22px;
+		--figure: 120px;
 
-		/* Chunky outline, the half-unit rule used where an outline would be too loud, and the
-		   single-pixel line the page's own grid is drawn with. */
-		--edge: var(--px);
-		--hair: calc(var(--px) / 2);
-		--grid-line: 1px;
+		--border: 1px;
+		--border-thick: 2px;
+		/* The bright-green underline motif: thick enough to read as a mark, not as a border. */
+		--rule: 3px;
 
-		--space-1: calc(var(--px) * 1);
-		--space-2: calc(var(--px) * 2);
-		--space-3: calc(var(--px) * 4);
-		--space-4: calc(var(--px) * 7);
-		--space-5: calc(var(--px) * 12);
-		--space-6: calc(var(--px) * 16);
+		--space-1: 4px;
+		--space-2: 8px;
+		--space-3: 16px;
+		--space-4: 28px;
+		--space-5: 48px;
+		--space-6: 72px;
 
-		/* One hard step, then a second lighter one: a drawn shadow, not a blurred one. */
-		--shadow-step:
-			var(--px) var(--px) 0 0 var(--shadow),
-			calc(var(--px) * 2) calc(var(--px) * 2) 0 0 var(--shadow-far);
-		/* The same shadow collapsed to its first step, for a box that is pressed in. */
-		--shadow-flat: var(--px) var(--px) 0 0 var(--shadow);
-		/* Pressed: shaded top-left, lit bottom-right, the opposite of the raised boxes the drop
-		   shadow makes. Drawn inside the box, so pressing does not shift layout. */
-		--bevel:
-			inset var(--px) var(--px) 0 0 var(--bevel-shade),
-			inset calc(var(--px) * -1) calc(var(--px) * -1) 0 0 var(--bevel-light);
+		/* One soft shadow, and the same shadow lifted; nothing on the page casts a third. */
+		--radius-sm: 8px;
+		--radius: 14px;
+		/* The code panel only: the one surface big enough to carry a larger corner. */
+		--radius-lg: 26px;
+		--radius-pill: 999px;
+		--shadow-soft:
+			0 1px 2px rgb(16 36 26 / 0.05),
+			0 8px 22px rgb(16 36 26 / 0.07);
+		--shadow-lift:
+			0 2px 6px rgb(16 36 26 / 0.07),
+			0 18px 40px rgb(16 36 26 / 0.12);
+
+		/* Two washes over the warm ground: the page has weather, not a grid. Placed and sized in
+		   pixels — a percentage offset resolves against the whole page height, which pushes both
+		   washes far below the only screen they were meant to tint. */
+		--ground:
+			radial-gradient(940px 640px at 14% 60px, rgb(0 200 89 / 0.13), transparent 70%),
+			radial-gradient(780px 540px at 94% 190px, rgb(226 160 44 / 0.11), transparent 68%);
 	}
 
 	@media (prefers-color-scheme: dark) {
 		:root {
-			/* Not an inversion: the ground becomes a night sky, the outline flips to a lit violet,
-			   and the accents brighten to arcade phosphor rather than staying the same hues. */
-			--bg: #141120;
-			--tint: #1e1934;
-			--fg: #ece8fa;
-			--muted: #a79dc6;
-			--accent: #b39aff;
-			--accent-2: #f0c04f;
-			/* On the night ground the bright gold already clears 4.5:1, so text and fill agree. */
-			--accent-2-text: #f0c04f;
-			--accent-3: #57d7c3;
-			--on-accent: #141120;
-			--on-accent-2: #141120;
-			--line: #4a3f78;
-			/* Both steps are lighter than the ground: a shadow darker than a night sky is invisible,
-			   so here the drawn shadow is a lit rim that fades with distance, as it does in light mode. */
-			--shadow: #4a3f78;
-			--shadow-far: #3a3160;
-			--bevel-shade: #7d63d6;
-			--bevel-light: #d8cbff;
-			--px-ink: #0a0814;
-			--px-sky: #221c3a;
-			--px-cloud: #362e58;
-			--px-1: #a98cff;
-			--px-2: #f5c451;
-			--px-3: #4fd6c2;
-			/* github-dark-high-contrast on a violet-black of our own, so the panel joins the palette. */
-			--code-bg: #0d0b16;
+			/* Not an inversion: the ground becomes a deep forest green-black and the greens brighten,
+			   so the accent that was fill-only in light mode becomes the one that carries text. */
+			--bg: #07160f;
+			--surface: #0f2418;
+			--fg: #eaf4ea;
+			--muted: #a7c1ae;
+			--accent: #67e387;
+			--accent-bright: #00c859;
+			--accent-2: #f0b756;
+			/* On the forest ground the bright amber already clears 4.5:1, so text and fill agree. */
+			--accent-2-text: #f0b756;
+			--on-accent: #07160f;
+			--on-accent-2: #07160f;
+			--line: #22402e;
+			--line-strong: #2f5a40;
+
+			--art-ink: #04100b;
+			--art-frog-dark: #007c3e;
+			--art-frog: #00c859;
+			--art-frog-light: #b4f5b5;
+			--art-belly: #d5f3c2;
+			--art-leaf: #00a74e;
+			--art-leaf-light: #67e387;
+			--art-disc: #0d2a1b;
+			--art-disc-core: #123723;
+			--art-disc-edge: #1d4a30;
+			--art-eye: #f7c15c;
+			--art-eye-dark: #c07d16;
+			--art-shine: #f9f6f5;
+
+			/* github-dark-high-contrast on a forest black of our own, so the panel joins the palette. */
+			--code-bg: #041009;
+
+			--shadow-soft:
+				0 1px 2px rgb(0 0 0 / 0.4),
+				0 8px 22px rgb(0 0 0 / 0.45);
+			--shadow-lift:
+				0 2px 6px rgb(0 0 0 / 0.45),
+				0 18px 40px rgb(0 0 0 / 0.55);
+
+			--ground:
+				radial-gradient(940px 640px at 14% 60px, rgb(0 200 89 / 0.13), transparent 70%),
+				radial-gradient(780px 540px at 94% 190px, rgb(240 183 86 / 0.09), transparent 68%);
 		}
 	}
 
@@ -167,50 +196,56 @@ const canonical = pageUrl(Astro.site);
 
 	body {
 		margin: 0;
-		background: var(--bg);
+		background-color: var(--bg);
+		background-image: var(--ground);
+		background-repeat: no-repeat;
 		color: var(--fg);
 		font-family: var(--font-body);
-		line-height: 1.6;
-		/* The page ground is a faint pixel grid: two hairlines repeating on the grid unit. */
-		background-image:
-			linear-gradient(to right, var(--tint) var(--grid-line), transparent var(--grid-line)),
-			linear-gradient(to bottom, var(--tint) var(--grid-line), transparent var(--grid-line));
-		background-size: calc(var(--px) * 8) calc(var(--px) * 8);
+		line-height: 1.65;
+		-webkit-font-smoothing: antialiased;
 	}
 
 	a {
 		color: var(--accent);
 		text-underline-offset: 0.18em;
-		text-decoration-thickness: var(--hair);
+		text-decoration-thickness: 1px;
 	}
 
-	/* Gold, the one colour used nowhere else as a line on the page ground, at the weight that
-	   clears 4.5:1 there. */
+	a:hover {
+		text-decoration-thickness: var(--border-thick);
+	}
+
+	/* No radius here: the outline follows whatever shape the focused element already has, and forcing
+	   one on every element squared off the pill-shaped nav links and tabs. */
 	:focus-visible {
-		outline: var(--hair) solid var(--accent-2-text);
-		outline-offset: var(--hair);
+		outline: var(--border-thick) solid var(--accent-2-text);
+		outline-offset: var(--border-thick);
 	}
 
-	/* Every raised box on the page: chunky outline, two hard shadow steps. Components override the
-	   background, the border colour, and the number of steps. */
-	.pixel-box {
-		border: var(--edge) solid var(--line);
-		box-shadow: var(--shadow-step);
+	/* Every surface on the page: a hairline, a soft shadow and the shared radius. Components override
+	   the background and the border colour; only the card and the CTA lift on hover. */
+	.panel {
+		border: var(--border) solid var(--line);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow-soft);
 	}
 
 	h1,
 	h2,
 	h3 {
 		font-family: var(--font-display);
-		font-weight: 400;
-		/* A pixel face sits tight in its em box, so headings need more leading than a serif would. */
-		line-height: 1.45;
-		letter-spacing: 0;
+		font-weight: 700;
+		line-height: 1.2;
+		letter-spacing: -0.015em;
 	}
 
-	h1,
-	h2 {
-		font-weight: 700;
+	h1 {
+		letter-spacing: -0.03em;
+	}
+
+	h3 {
+		font-weight: 600;
+		letter-spacing: -0.005em;
 	}
 
 	p {
@@ -223,8 +258,8 @@ const canonical = pageUrl(Astro.site);
 
 	@media (min-width: 720px) {
 		:root {
-			/* One step further up the scale: the hero only has room to be large on the wide layout. */
-			--text-2xl: 2.441rem;
+			/* Two steps further up the scale: the hero only has room to be large on the wide layout. */
+			--text-2xl: 3.052rem;
 		}
 
 		/* The nav is sticky at this width, so an anchor must not land underneath it. */

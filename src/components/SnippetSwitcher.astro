@@ -31,13 +31,13 @@ const tabRules = tabs
 		(tab) => `
 #${radioId(tab.id)}:checked ~ .tabs label[for="${radioId(tab.id)}"] {
 	background: var(--accent);
+	border-color: var(--accent);
 	color: var(--on-accent);
-	box-shadow: var(--bevel);
-	transform: translate(var(--px), var(--px));
+	box-shadow: var(--shadow-soft);
 }
 #${radioId(tab.id)}:focus-visible ~ .tabs label[for="${radioId(tab.id)}"] {
-	outline: var(--hair) solid var(--accent-2-text);
-	outline-offset: var(--hair);
+	outline: var(--border-thick) solid var(--accent-2-text);
+	outline-offset: var(--border-thick);
 }
 #${radioId(tab.id)}:checked ~ .panels #${panelId(tab.id)} {
 	visibility: visible;
@@ -61,14 +61,14 @@ const tabRules = tabs
 			))
 		}
 		<div class="tabs">
-			{tabs.map((tab) => <label class="pixel-box" for={radioId(tab.id)}>{tab.label}</label>)}
+			{tabs.map((tab) => <label for={radioId(tab.id)}>{tab.label}</label>)}
 		</div>
 		{/* Inside the fieldset, so every panel stays a sibling of the radios that switch it. */}
 		<div class="panels">
 			{
 				tabs.map((tab) => (
-					<div class="panel" id={panelId(tab.id)}>
-						<div class="frame pixel-box">
+					<div class="snippet-panel" id={panelId(tab.id)}>
+						<div class="frame panel">
 							<div class="bar">
 								<CodeBar />
 							</div>
@@ -134,31 +134,35 @@ const tabRules = tabs
 		white-space: nowrap;
 	}
 
-	/* Tracks fit themselves to the width: two rows of two on a phone, one row of four on a desktop.
-	   The gap leaves room for each key's hard shadow. */
+	/* Tracks fit themselves to the width: two rows of two on a phone, one row of four on a desktop. */
 	.tabs {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-		gap: var(--space-2) var(--space-3);
+		gap: var(--space-2);
 		margin-bottom: var(--space-3);
 	}
 
-	/* Every tab is a raised key, one step off the board; the rules above press the checked one in. */
+	/* Every tab is an outlined pill; the rules above fill the checked one with green. */
 	.tabs label {
-		padding: var(--space-2);
-		background: var(--tint);
-		box-shadow: var(--shadow-flat);
+		padding: var(--space-2) var(--space-3);
+		border: var(--border) solid var(--line-strong);
+		border-radius: var(--radius-pill);
+		background: var(--surface);
 		color: var(--fg);
 		font-family: var(--font-display);
 		font-size: var(--text-xs);
+		font-weight: 600;
 		line-height: 1.5;
 		text-align: center;
 		cursor: pointer;
+		transition:
+			background 0.15s ease,
+			color 0.15s ease;
 	}
 
 	.tabs label:hover {
-		background: var(--accent-3);
-		color: var(--on-accent);
+		border-color: var(--accent);
+		color: var(--accent);
 	}
 
 	/* All panels share one grid cell, so the box is as tall as the tallest snippet and never jumps. */
@@ -166,24 +170,31 @@ const tabRules = tabs
 		display: grid;
 	}
 
-	.panel {
+	/* Not `.panel`: that is the global surface utility, and sharing the name put a second hairline
+	   and a card outline around every panel, links included. */
+	.snippet-panel {
 		grid-area: 1 / 1;
 		/* Without this a wide snippet stretches the grid cell instead of scrolling inside the panel. */
 		min-width: 0;
 		visibility: hidden;
 	}
 
-	/* The pixel frame around the code; outline and shadow come from `.pixel-box`. */
+	/* The code panel is the hero content: the one surface on the lifted shadow and the large radius.
+	   Hairline and base radius come from `.panel`. */
 	.frame {
 		background: var(--code-bg);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-lift);
+		overflow: hidden;
 	}
 
 	.bar {
 		display: flex;
 		align-items: center;
-		padding: var(--space-2);
-		border-bottom: var(--edge) solid var(--line);
-		background: var(--bg);
+		gap: var(--space-2);
+		padding: var(--space-2) var(--space-3);
+		border-bottom: var(--border) solid var(--line);
+		background: var(--surface);
 	}
 
 	.code {
@@ -197,44 +208,45 @@ const tabRules = tabs
 		content: '';
 		position: absolute;
 		inset: 0 0 0 auto;
-		/* Short and steep, so it reads as "the line carries on" and not as a soft vignette. */
-		width: calc(var(--px) * 6);
-		background: linear-gradient(to right, transparent, var(--code-bg) 60%);
+		width: var(--space-4);
+		background: linear-gradient(to right, transparent, var(--code-bg) 72%);
 		pointer-events: none;
 	}
 
 	.panel-links {
 		display: flex;
-		gap: var(--space-4);
+		flex-wrap: wrap;
+		gap: var(--space-2) var(--space-4);
 		margin: var(--space-3) 0 0;
 		font-family: var(--font-display);
 		font-size: var(--text-xs);
+		font-weight: 600;
 	}
 
 	/* Shiki renders both themes as CSS variables (defaultColor: false); pick one per color scheme.
 	   The panel background is our own token in both modes, so it belongs to the palette. */
-	.panel :global(pre.astro-code) {
+	.snippet-panel :global(pre.astro-code) {
 		margin: 0;
 		padding: var(--space-3);
 		font-family: var(--font-mono);
 		font-size: var(--text-code);
-		line-height: 1.6;
+		line-height: 1.65;
 		overflow-x: auto;
 		scrollbar-width: thin;
 		color: var(--shiki-light);
 		background-color: var(--code-bg);
 	}
 
-	.panel :global(pre.astro-code span) {
+	.snippet-panel :global(pre.astro-code span) {
 		color: var(--shiki-light);
 	}
 
 	@media (prefers-color-scheme: dark) {
-		.panel :global(pre.astro-code) {
+		.snippet-panel :global(pre.astro-code) {
 			color: var(--shiki-dark);
 		}
 
-		.panel :global(pre.astro-code span) {
+		.snippet-panel :global(pre.astro-code span) {
 			color: var(--shiki-dark);
 		}
 	}
@@ -242,6 +254,12 @@ const tabRules = tabs
 	@media (min-width: 720px) {
 		.code::after {
 			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tabs label {
+			transition: none;
 		}
 	}
 </style>

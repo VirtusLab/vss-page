@@ -1,0 +1,57 @@
+---
+/**
+ * The band that separates the major blocks of the page: a three-leaf sprig with a green rule fading
+ * out of it to both edges — the same lens-shaped leaf the hero art is built from.
+ * Decorative, hence `aria-hidden`.
+ */
+---
+
+<div class="divider" aria-hidden="true">
+	<span class="rule rule-left"></span>
+	<svg class="sprig" viewBox="0 0 100 40" focusable="false">
+		<g transform="rotate(-26 20 20)">
+			<path d="M 4 20 C 11 9 27 9 34 20 C 27 31 11 31 4 20 Z" fill="var(--art-leaf)"></path>
+			<path d="M 8 20 L 30 20" stroke="var(--art-disc)" stroke-width="1.8" stroke-linecap="round"></path>
+		</g>
+		<g transform="rotate(26 80 20)">
+			<path d="M 66 20 C 73 9 89 9 96 20 C 89 31 73 31 66 20 Z" fill="var(--art-leaf)"></path>
+			<path d="M 70 20 L 92 20" stroke="var(--art-disc)" stroke-width="1.8" stroke-linecap="round"></path>
+		</g>
+		<path d="M 30 20 C 40 5 60 5 70 20 C 60 35 40 35 30 20 Z" fill="var(--accent-bright)"></path>
+		<path d="M 35 20 L 65 20" stroke="var(--art-disc)" stroke-width="2.4" stroke-linecap="round"></path>
+	</svg>
+	<span class="rule rule-right"></span>
+</div>
+
+<style>
+	/* Edge to edge like the nav row: the negative margin pulls the band into the page container's
+	   gutters, so the rule reads as a line crossing the page and not as a border inside the column. */
+	.divider {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		width: calc(100% + var(--space-3) * 2);
+		margin: 0 calc(var(--space-3) * -1);
+	}
+
+	/* Green where it meets the sprig, gone by the time it reaches the page edge. */
+	.rule {
+		flex: 1;
+		height: var(--border-thick);
+		border-radius: var(--radius-pill);
+	}
+
+	.rule-left {
+		background: linear-gradient(to right, transparent, var(--accent-bright));
+	}
+
+	.rule-right {
+		background: linear-gradient(to left, transparent, var(--accent-bright));
+	}
+
+	.sprig {
+		flex: none;
+		height: calc(var(--icon) - var(--space-2));
+		width: auto;
+	}
+</style>
