@@ -20,6 +20,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Scala CLI
+        uses: VirtusLab/scala-cli-setup@v1
+        with:
+          jvm: temurin:21
+      - name: Cache Coursier
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/coursier
+          key: coursier-${{ hashFiles('snippets/*.scala') }}
+          restore-keys: coursier-
+      - name: Compile snippets
+        run: ./scripts/compile-snippets.sh
       - name: Install, build, and upload site
         uses: withastro/action@v6
         with:

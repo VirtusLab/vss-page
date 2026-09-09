@@ -46,7 +46,8 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   collapse the stack and lose the fixed height.
 - Panel: 12-15 lines of highlighted Scala, no inner scrollbar. Each `.scala` file compiles in
   full, but the panel renders only the lines between `// snippet:start` and `// snippet:end`;
-  using-directives, imports and `@main` stay outside the markers — compiled, not shown.
+  using-directives and imports stay outside the markers; `@main` is inside only when the run
+  call is the payoff (http-server, infra).
 - Under each panel, two text links: the component's anchor on this page (`#tapir`, `#ox`,
   `#sttp-ai`, `#besom`), and "full example" → the whole `.scala` file in the repo. The
   `#sttp-ai` link is what stops a reader hunting for it in the AI section.

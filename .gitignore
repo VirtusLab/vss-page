@@ -4,3 +4,4 @@ node_modules/
 dist/
 .scala-build/
 .astro/
+.bsp/
