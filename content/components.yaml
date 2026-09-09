@@ -2,7 +2,8 @@ sections:
   - id: language
     title: Language
     components:
-      - name: Scala 3
+      - id: scala-3
+        name: Scala 3
         description: The direct-style-friendly successor to Scala 2, formerly known as Dotty.
         url: https://www.scala-lang.org
         repo: https://github.com/scala/scala3
@@ -10,11 +11,13 @@ sections:
   - id: tooling
     title: Tooling
     components:
-      - name: Scala CLI
+      - id: scala-cli
+        name: Scala CLI
         description: Command-line tool to compile, run, test, and package Scala code.
         url: https://scala-cli.virtuslab.org
         repo: https://github.com/VirtusLab/scala-cli
-      - name: Metals
+      - id: metals
+        name: Metals
         description: Scala language server providing IDE features (completions, diagnostics, navigation).
         url: https://scalameta.org/metals/
         repo: https://github.com/scalameta/metals
@@ -22,56 +25,69 @@ sections:
   - id: backend
     title: Backend
     components:
-      - name: Tapir
+      - id: tapir
+        name: Tapir
         description: Library for building HTTP APIs from typed endpoint descriptions, and generating API docs from them.
         url: https://tapir.softwaremill.com
         repo: https://github.com/softwaremill/tapir
-      - name: sttp
+      - id: sttp
+        name: sttp
         description: Scala HTTP client with a typed, direct-style API.
         url: https://sttp.softwaremill.com
         repo: https://github.com/softwaremill/sttp
-      - name: Ox
+      - id: ox
+        name: Ox
         description: Direct-style streaming, concurrency, and resiliency library for Scala on the JVM.
         url: https://ox.softwaremill.com
         repo: https://github.com/softwaremill/ox
-      - name: sttp-ai
+      - id: sttp-ai
+        name: sttp-ai
         description: Scala toolkit for calling third-party LLM APIs (OpenAI, Claude, and compatible providers).
         url: https://sttp-ai.softwaremill.com
         repo: https://github.com/softwaremill/sttp-ai
-      - name: Parlance
+      - id: parlance
+        name: Parlance
         description: Functional ORM for Scala, modeled on the Active Record pattern.
         url: https://github.com/lbialy/parlance
-      - name: MacWire
+      - id: macwire
+        name: MacWire
         description: Compile-time dependency injection library for Scala, with no runtime overhead.
         url: https://github.com/softwaremill/macwire
-      - name: Quicklens
+      - id: quicklens
+        name: Quicklens
         description: Library for modifying deeply nested case class fields in Scala.
         url: https://github.com/softwaremill/quicklens
 
   - id: ai
-    title: AI
+    title: AI tooling
     components:
-      - name: scala-skill
+      - id: scala-skill
+        name: scala-skill
         description: Claude Code and Codex skills for generating direct-style Scala applications.
         url: https://github.com/VirtusLab/scala-skill
-      - name: Chimp
+      - id: chimp
+        name: Chimp
         description: Library for building type-safe MCP servers and clients in Scala.
         url: https://chimp.softwaremill.com
         repo: https://github.com/softwaremill/chimp
-      - name: Orca
+      - id: orca
+        name: Orca
         description: Tool for running AI coding agents through a repeatable, scripted development workflow.
         url: https://github.com/VirtusLab/orca
-      - name: Cellar
+      - id: cellar
+        name: Cellar
         description: Command-line tool to query a Maven JVM dependency's API (symbols, packages, dependency trees).
         url: https://github.com/VirtusLab/cellar
-      - name: Sandcat
+      - id: sandcat
+        name: Sandcat
         description: Docker and dev container setup for running AI coding agents sandboxed behind a proxy.
         url: https://github.com/VirtusLab/sandcat
 
   - id: devops
     title: DevOps
     components:
-      - name: Besom
+      - id: besom
+        name: Besom
         description: Scala SDK for Pulumi, for defining cloud infrastructure as code.
         url: https://virtuslab.github.io/besom/
         repo: https://github.com/VirtusLab/besom
@@ -79,16 +95,19 @@ sections:
   - id: template
     title: Template
     components:
-      - name: Bootzooka
+      - id: bootzooka
+        name: Bootzooka
         description: Template project for starting a Scala-based microservice or web application.
         url: https://softwaremill.github.io/bootzooka/
         repo: https://github.com/softwaremill/bootzooka
-      - name: Adopt Tapir
+      - id: adopt-tapir
+        name: Adopt Tapir
         description: Generator for a starter Tapir project, configurable via a web UI.
         url: https://adopt-tapir.softwaremill.com
         repo: https://github.com/softwaremill/adopt-tapir
 
 commercial:
+  id: commercial
   name: Visdom
   description: Commercial platform for running and managing AI coding agents across the development lifecycle.
   url: https://visdom.virtuslab.com
