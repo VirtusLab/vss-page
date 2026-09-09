@@ -1,0 +1,170 @@
+---
+import { Code } from 'astro:components';
+
+/**
+ * CSS-only tabbed snippets: one radio per tab, all panels always in the DOM, stacked in a single
+ * grid cell so switching never changes the page height. No client-side JavaScript.
+ */
+interface Props {
+	tabs: {
+		id: string;
+		label: string;
+		code: string;
+		componentId: string;
+		componentName: string;
+		fullExampleHref: string;
+	}[];
+	fullExampleLabel: string;
+}
+
+const { tabs, fullExampleLabel } = Astro.props;
+
+const radioId = (id: string) => `snippet-${id}`;
+const panelId = (id: string) => `panel-${id}`;
+
+// One rule set per tab, generated so that adding a snippet to the YAML needs no CSS change. The
+// selectors need the concrete ids, which only exist here.
+const tabRules = tabs
+	.map(
+		(tab) => `
+#${radioId(tab.id)}:checked ~ .tabs label[for="${radioId(tab.id)}"] {
+	color: var(--fg);
+	border-bottom-color: var(--accent);
+}
+#${radioId(tab.id)}:focus-visible ~ .tabs label[for="${radioId(tab.id)}"] {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+#${radioId(tab.id)}:checked ~ .panels #${panelId(tab.id)} {
+	visibility: visible;
+}`,
+	)
+	.join('\n');
+---
+
+<div class="switcher">
+	{
+		tabs.map((tab, i) => (
+			<input
+				class="radio"
+				type="radio"
+				name="snippet"
+				id={radioId(tab.id)}
+				checked={i === 0}
+			/>
+		))
+	}
+	<div class="tabs">
+		{tabs.map((tab) => <label for={radioId(tab.id)}>{tab.label}</label>)}
+	</div>
+	<div class="panels">
+		{
+			tabs.map((tab) => (
+				<div class="panel" id={panelId(tab.id)}>
+					<Code
+						code={tab.code}
+						lang="scala"
+						themes={{ light: 'github-light', dark: 'github-dark' }}
+						defaultColor={false}
+					/>
+					<p class="panel-links">
+						<a href={`#${tab.componentId}`}>{tab.componentName}</a>
+						<a href={tab.fullExampleHref}>{fullExampleLabel}</a>
+					</p>
+				</div>
+			))
+		}
+	</div>
+</div>
+
+{/* Global CSS, not scoped: the rules are anchored on the unique `#snippet-*` / `#panel-*` ids. */}
+<style is:inline set:html={tabRules}></style>
+
+<style>
+	.switcher {
+		position: relative;
+		margin: var(--space-5) 0;
+	}
+
+	/* Visually hidden but focusable, so the native arrow-key switching of a radio group still works. */
+	.radio {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		border: 0;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.tabs {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-1) var(--space-3);
+	}
+
+	.tabs label {
+		padding: var(--space-2) 0;
+		border-bottom: 2px solid transparent;
+		color: var(--muted);
+		font-size: var(--text-base);
+		cursor: pointer;
+	}
+
+	/* All panels share one grid cell, so the box is as tall as the tallest snippet and never jumps. */
+	.panels {
+		display: grid;
+	}
+
+	.panel {
+		grid-area: 1 / 1;
+		/* Without this a wide snippet stretches the grid cell instead of scrolling inside the panel. */
+		min-width: 0;
+		visibility: hidden;
+		padding-top: var(--space-3);
+	}
+
+	.panel-links {
+		display: flex;
+		gap: var(--space-4);
+		margin: var(--space-2) 0 0;
+		font-size: var(--text-sm);
+	}
+
+	/* Shiki renders both themes as CSS variables (defaultColor: false); pick one per color scheme. */
+	.panel :global(pre.astro-code) {
+		margin: 0;
+		padding: var(--space-3);
+		border: 1px solid var(--border);
+		border-radius: var(--space-1);
+		font-family: var(--font-mono);
+		font-size: var(--text-code);
+		overflow-x: auto;
+		color: var(--shiki-light);
+		background-color: var(--shiki-light-bg);
+	}
+
+	.panel :global(pre.astro-code span) {
+		color: var(--shiki-light);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.panel :global(pre.astro-code) {
+			color: var(--shiki-dark);
+			background-color: var(--shiki-dark-bg);
+		}
+
+		.panel :global(pre.astro-code span) {
+			color: var(--shiki-dark);
+		}
+	}
+
+	@media (min-width: 720px) {
+		.tabs {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+</style>

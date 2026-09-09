@@ -1,0 +1,55 @@
+---
+/**
+ * The one navigation row, placed between the hero and the switcher. Section labels are the section
+ * titles verbatim, so nav and headings cannot diverge. Sticky above the 720px breakpoint only.
+ */
+interface Props {
+	sections: { id: string; title: string }[];
+	repoLabel: string;
+	repoUrl: string;
+}
+
+const { sections, repoLabel, repoUrl } = Astro.props;
+---
+
+<nav class="nav">
+	<ul>
+		{
+			sections.map((section) => (
+				<li>
+					<a href={`#${section.id}`}>{section.title}</a>
+				</li>
+			))
+		}
+		<li><a href={repoUrl}>{repoLabel}</a></li>
+	</ul>
+</nav>
+
+<style>
+	.nav {
+		background: var(--bg);
+		border-bottom: 1px solid var(--border);
+		padding: var(--space-2) 0;
+	}
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2) var(--space-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	@media (min-width: 720px) {
+		.nav {
+			position: sticky;
+			top: 0;
+			z-index: 1;
+			height: var(--nav-height);
+			display: flex;
+			align-items: center;
+			padding: 0;
+		}
+	}
+</style>

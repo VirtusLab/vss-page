@@ -1,17 +1,44 @@
 ---
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import Base from '../layouts/Base.astro';
+import Commercial from '../components/Commercial.astro';
+import ComponentSection from '../components/ComponentSection.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import Nav from '../components/Nav.astro';
+import SnippetSwitcher from '../components/SnippetSwitcher.astro';
+import { loadSite } from '../lib/content';
+import { snippetRegion } from '../lib/snippets';
+
+const { hero, sections, commercial, visdom, footer, labels, snippets } = await loadSite();
+
+const tabs = snippets.map((snippet) => ({
+	id: snippet.id,
+	label: snippet.label,
+	code: snippetRegion(snippet.file),
+	componentId: snippet.component.id,
+	componentName: snippet.component.name,
+	fullExampleHref: `${footer.repoUrl}/blob/main/${snippet.file}`,
+}));
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
-		<link rel="icon" href={`${base}/favicon.ico`} />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>VirtusLab Scala Stack</title>
-	</head>
-	<body>
-		<h1>VirtusLab Scala Stack</h1>
-	</body>
-</html>
+<Base title={hero.title} description={hero.tagline}>
+	<div class="page">
+		<main>
+			<Hero hero={hero} />
+			{/* The nav sits between the hero and the switcher, so the first screen is hero + code. */}
+			<Nav sections={sections} repoLabel={footer.repoLabel} repoUrl={footer.repoUrl} />
+			<SnippetSwitcher tabs={tabs} fullExampleLabel={labels.fullExample} />
+			{sections.map((section) => <ComponentSection section={section} repoLabel={labels.repo} />)}
+			<Commercial commercial={commercial} visdom={visdom} />
+		</main>
+		<Footer footer={footer} />
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: var(--page-width);
+		margin: 0 auto;
+		padding: 0 var(--space-3);
+	}
+</style>

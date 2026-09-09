@@ -1,0 +1,78 @@
+---
+import { render } from 'astro:content';
+import type { Site } from '../lib/content';
+
+/** One stack section: title, intro paragraph, and a card per component. */
+interface Props {
+	section: Site['sections'][number];
+	repoLabel: string;
+}
+
+const { section, repoLabel } = Astro.props;
+const { Content } = await render(section.intro);
+---
+
+<section id={section.id}>
+	<h2>{section.title}</h2>
+	<div class="intro"><Content /></div>
+	<ul class="components">
+		{
+			section.components.map((component) => (
+				<li>
+					<h3 id={component.id}>
+						<a href={component.url}>{component.name}</a>
+					</h3>
+					<p>{component.description}</p>
+					{component.repo && component.repo !== component.url && (
+						<p class="repo">
+							<a href={component.repo}>{repoLabel}</a>
+						</p>
+					)}
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	section {
+		padding-top: var(--space-5);
+	}
+
+	h2 {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-xl);
+	}
+
+	.intro {
+		color: var(--muted);
+	}
+
+	.components {
+		display: grid;
+		gap: var(--space-4);
+		margin: var(--space-4) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	h3 {
+		margin: 0 0 var(--space-1);
+		font-size: var(--text-base);
+	}
+
+	.components p {
+		margin: 0;
+	}
+
+	.repo {
+		margin-top: var(--space-1);
+		font-size: var(--text-sm);
+	}
+
+	@media (min-width: 720px) {
+		.components {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>

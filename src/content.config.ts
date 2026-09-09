@@ -18,6 +18,10 @@ type ComponentsFile = {
 
 const readComponentsFile = (text: string) => parseYaml(text) as ComponentsFile;
 
+// `getCollection` returns entries sorted by id, so the position in the file is attached here and
+// used to restore the authored order on the page. Not a field anyone writes in the YAML.
+const withOrder = <T>(entries: T[]) => entries.map((entry, order) => ({ ...entry, order }));
+
 const failOnDuplicates = (what: string, ids: string[]) => {
 	const seen = new Set<string>();
 	for (const id of ids) {
@@ -89,10 +93,11 @@ const component = z
 
 /** Section titles and their components; the intro paragraphs live in `sectionIntros`. */
 const sections = defineCollection({
-	loader: file(componentsFile, { parser: (text) => readComponentsFile(text).sections }),
+	loader: file(componentsFile, { parser: (text) => withOrder(readComponentsFile(text).sections) }),
 	schema: z
 		.object({
 			id,
+			order: z.number(),
 			title: z.string(),
 			components: z.array(component).nonempty(),
 		})
@@ -107,10 +112,11 @@ const commercial = defineCollection({
 
 // The "full example" link is built as footer `repoUrl` + `/blob/main/` + this `file`.
 const snippets = defineCollection({
-	loader: file(snippetsFile, { parser: (text) => parseYaml(text) }),
+	loader: file(snippetsFile, { parser: (text) => withOrder(parseYaml(text)) }),
 	schema: z
 		.object({
 			id,
+			order: z.number(),
 			label: z.string(),
 			description: z.string(),
 			file: z
@@ -152,7 +158,8 @@ const footer = defineCollection({
 	loader: glob({ base: 'content', pattern: 'footer.md' }),
 	schema: z
 		.object({
-			maintainers: z.string(),
+			// Exactly two: the footer names them as "<first> and <second>".
+			maintainers: z.array(z.object({ label: z.string(), url: z.url() }).strict()).length(2),
 			repoLabel: z.string(),
 			repoUrl: z.url(),
 			llmsLabel: z.string(),

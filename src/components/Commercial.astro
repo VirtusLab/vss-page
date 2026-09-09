@@ -1,0 +1,55 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+
+/**
+ * The single paid entry, after all six sections. Card-shaped but deliberately not in the card grid:
+ * full width, bordered and tinted, so it reads as an offer and not as part of the open-source stack.
+ */
+interface Props {
+	commercial: CollectionEntry<'commercial'>['data'];
+	visdom: CollectionEntry<'visdom'>;
+}
+
+const { commercial, visdom } = Astro.props;
+const { Content } = await render(visdom);
+---
+
+<section id="commercial">
+	<p class="eyebrow">{visdom.data.eyebrow}</p>
+	<h2><a href={commercial.url}>{commercial.name}</a></h2>
+	<p>{commercial.description}</p>
+	<div class="note"><Content /></div>
+</section>
+
+<style>
+	section {
+		margin: var(--space-6) 0 var(--space-5);
+		padding: var(--space-4);
+		border: 1px solid var(--border);
+		border-radius: var(--space-1);
+		background: var(--tint);
+	}
+
+	.eyebrow {
+		margin: 0 0 var(--space-1);
+		font-size: var(--text-xs);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	h2 {
+		margin: 0 0 var(--space-1);
+		font-size: var(--text-lg);
+	}
+
+	p {
+		margin: 0;
+	}
+
+	.note {
+		margin-top: var(--space-2);
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+</style>
