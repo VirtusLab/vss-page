@@ -1,0 +1,55 @@
+---
+/**
+ * A decorative pixel band that separates the major blocks of the page: a solid bar dithering away
+ * downwards. Tiled with an SVG pattern in CSS pixels — no viewBox — so the squares stay exactly one
+ * grid unit at any container width. `id` must be unique on the page; it names the pattern.
+ * Decorative, hence `aria-hidden`.
+ */
+interface Props {
+	id: string;
+}
+
+const { id } = Astro.props;
+const patternId = `band-${id}`;
+---
+
+<svg class="band" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+	<defs>
+		{/* Eight rows of one grid unit: solid, solid, three quarters, half, half offset, quarter,
+		    eighth, empty. Two cells of each of the other accents keep the band in the palette. */}
+		<pattern id={patternId} width="32" height="32" patternUnits="userSpaceOnUse">
+			<rect x="0" y="0" width="32" height="8" fill="var(--px-1)"></rect>
+			<rect x="0" y="8" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="4" y="8" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="8" y="8" width="4" height="4" fill="var(--px-2)"></rect>
+			<rect x="16" y="8" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="20" y="8" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="24" y="8" width="4" height="4" fill="var(--px-3)"></rect>
+			<rect x="0" y="12" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="8" y="12" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="16" y="12" width="4" height="4" fill="var(--px-3)"></rect>
+			<rect x="24" y="12" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="4" y="16" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="12" y="16" width="4" height="4" fill="var(--px-2)"></rect>
+			<rect x="20" y="16" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="28" y="16" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="0" y="20" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="16" y="20" width="4" height="4" fill="var(--px-1)"></rect>
+			<rect x="8" y="24" width="4" height="4" fill="var(--px-1)"></rect>
+		</pattern>
+	</defs>
+	<rect width="100%" height="100%" fill={`url(#${patternId})`}></rect>
+</svg>
+
+<style>
+	/* Edge to edge like the nav row: the negative margin pulls the band into the page container's
+	   gutters, so the ramp is read as a bar crossing the page and not as a rule inside the column. */
+	.band {
+		display: block;
+		/* The extra two gutters, plus the negative margin, are what carry the band past the page
+		   container's padding; an SVG with `width: auto` would fall back to its default 300px. */
+		width: calc(100% + var(--space-3) * 2);
+		margin: 0 calc(var(--space-3) * -1);
+		height: calc(var(--px) * 8);
+	}
+</style>

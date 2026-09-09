@@ -26,36 +26,41 @@ const { sections, repoLabel, repoUrl } = Astro.props;
 </nav>
 
 <style>
+	/* The bar is opaque and bled into the container's gutters, so the sticky row hides whatever
+	   scrolls under it edge to edge. */
 	.nav {
-		/* --bg is opaque, so the sticky row hides whatever scrolls under it. The negative margin
-		   pulls the paint into the page container's gutters, which content would otherwise cross. */
-		background: var(--bg);
+		background: var(--tint);
 		margin: 0 calc(var(--space-3) * -1);
-		padding: var(--space-2) var(--space-3) 0;
-		font-size: var(--text-sm);
+		padding: var(--space-2) var(--space-3);
+		border-top: var(--edge) solid var(--line);
+		border-bottom: var(--edge) solid var(--line);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
 	}
 
-	/* Chrome, not content: the accent stays reserved for links inside the page body. */
-	.nav a {
-		color: var(--muted);
-		text-decoration: none;
-	}
-
-	.nav a:hover {
-		color: var(--fg);
-		text-decoration: underline;
-	}
-
-	/* The rule sits on the ul, not on the bled-out .nav, so it stops at the content column
-	   like every other rule on the page. */
 	ul {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-2) var(--space-4);
+		gap: var(--space-1) var(--space-2);
 		margin: 0;
-		padding: 0 0 var(--space-2);
-		border-bottom: 1px solid var(--border);
+		padding: 0;
 		list-style: none;
+	}
+
+	/* Chrome, not content: each label is its own little key, lit only on hover and focus. */
+	.nav a {
+		display: block;
+		padding: var(--space-2);
+		border: var(--hair) solid transparent;
+		color: var(--fg);
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.nav a:hover {
+		border-color: var(--line);
+		background: var(--accent);
+		color: var(--on-accent);
 	}
 
 	@media (min-width: 720px) {
@@ -65,14 +70,14 @@ const { sections, repoLabel, repoUrl } = Astro.props;
 			z-index: 1;
 			min-height: var(--nav-height);
 			display: flex;
-			padding: 0 var(--space-3);
+			align-items: center;
+			box-shadow: 0 var(--px) 0 0 var(--shadow-far);
 		}
 
-		/* Fills the sticky row, so the rule lands on the row's bottom edge, not under the labels. */
 		ul {
 			flex: 1;
 			align-items: center;
-			padding-bottom: 0;
+			gap: var(--space-1) var(--space-3);
 		}
 	}
 </style>

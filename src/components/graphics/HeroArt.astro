@@ -1,0 +1,194 @@
+---
+/**
+ * The hero illustration: a pixel terminal running a program on a plain landscape, with tiles
+ * dropping in to be assembled. Drawn on a 96 x 72 cell grid; one cell is one grid unit, so at the
+ * default size a cell is exactly `--px`. Decorative, hence `aria-hidden`.
+ */
+---
+
+<svg
+	class="hero-art pixel-box"
+	viewBox="0 0 96 72"
+	shape-rendering="crispEdges"
+	aria-hidden="true"
+	focusable="false"
+>
+	{/* Two dither ramps, the same three-step dissolve as the page's pixel band: one darkening the
+	   top of the sky, one lifting the ground into the horizon. */}
+	<defs>
+		<pattern id="hero-dither-top" width="4" height="4" patternUnits="userSpaceOnUse">
+			<rect x="0" y="0" width="4" height="1" fill="var(--px-1)"></rect>
+			<rect x="0" y="1" width="1" height="1" fill="var(--px-1)"></rect>
+			<rect x="2" y="1" width="1" height="1" fill="var(--px-1)"></rect>
+			<rect x="0" y="2" width="1" height="1" fill="var(--px-1)"></rect>
+		</pattern>
+		<pattern id="hero-dither-floor" width="4" height="4" patternUnits="userSpaceOnUse">
+			<rect x="0" y="3" width="4" height="1" fill="var(--px-3)"></rect>
+			<rect x="0" y="2" width="1" height="1" fill="var(--px-3)"></rect>
+			<rect x="2" y="2" width="1" height="1" fill="var(--px-3)"></rect>
+			<rect x="0" y="1" width="1" height="1" fill="var(--px-3)"></rect>
+		</pattern>
+	</defs>
+
+	{/* Sky */}
+	<rect x="0" y="0" width="96" height="72" fill="var(--px-sky)" />
+	<rect x="0" y="0" width="96" height="4" fill="url(#hero-dither-top)" opacity="0.4" />
+
+	{/* Stars; the small group blinks on a stepped cycle. */}
+	<g fill="var(--px-2)" class="twinkle">
+		<rect x="20" y="2" width="2" height="2" />
+		<rect x="88" y="4" width="2" height="2" />
+		<rect x="52" y="10" width="2" height="2" />
+	</g>
+	<g fill="var(--px-cloud)">
+		<rect x="34" y="4" width="2" height="2" />
+		<rect x="66" y="6" width="2" height="2" />
+		<rect x="4" y="16" width="2" height="2" />
+	</g>
+
+	{/* Clouds */}
+	<g fill="var(--px-cloud)">
+		<rect x="10" y="6" width="12" height="2" />
+		<rect x="6" y="8" width="20" height="4" />
+		<rect x="78" y="16" width="12" height="2" />
+		<rect x="74" y="18" width="20" height="4" />
+	</g>
+
+	{/* Ground */}
+	<rect x="0" y="44" width="96" height="4" fill="url(#hero-dither-floor)" opacity="0.7" />
+	<rect x="0" y="48" width="96" height="24" fill="var(--px-3)" />
+	<rect x="0" y="48" width="96" height="2" fill="var(--px-ink)" />
+	<g fill="var(--px-ink)" opacity="0.35">
+		<rect x="0" y="56" width="96" height="1" />
+		<rect x="0" y="64" width="96" height="1" />
+		<rect x="16" y="50" width="1" height="22" />
+		<rect x="44" y="50" width="1" height="22" />
+		<rect x="76" y="50" width="1" height="22" />
+	</g>
+
+	{/* Two tiles have landed as a stack on the floor; the third is still coming down, bobbing a
+	    whole cell at a time. */}
+	<g>
+		<rect x="6" y="36" width="12" height="12" fill="var(--px-ink)" />
+		<rect x="8" y="38" width="8" height="8" fill="var(--px-3)" />
+		<rect x="8" y="38" width="8" height="2" fill="var(--px-cloud)" />
+	</g>
+	<g>
+		<rect x="6" y="24" width="12" height="12" fill="var(--px-ink)" />
+		<rect x="8" y="26" width="8" height="8" fill="var(--px-1)" />
+		<rect x="8" y="26" width="8" height="2" fill="var(--px-cloud)" />
+	</g>
+	<g class="bob">
+		<rect x="76" y="4" width="12" height="12" fill="var(--px-ink)" />
+		<rect x="78" y="6" width="8" height="8" fill="var(--px-2)" />
+		<rect x="78" y="6" width="8" height="2" fill="var(--px-cloud)" />
+	</g>
+
+	{/* Monitor stand and base, drawn before the shell so the shell sits on top. */}
+	<rect x="42" y="44" width="12" height="12" fill="var(--px-ink)" />
+	<rect x="32" y="56" width="32" height="6" fill="var(--px-ink)" />
+	<rect x="34" y="58" width="28" height="2" fill="var(--px-1)" />
+
+	{/* Monitor shell */}
+	<rect x="24" y="12" width="48" height="36" fill="var(--px-ink)" />
+	<rect x="26" y="14" width="44" height="32" fill="var(--px-1)" />
+	<rect x="26" y="14" width="44" height="2" fill="var(--px-cloud)" />
+	<rect x="26" y="44" width="44" height="2" fill="var(--px-ink)" />
+
+	{/* Screen */}
+	<rect x="29" y="17" width="38" height="22" fill="var(--px-ink)" />
+
+	{/* Program on the screen: a prompt line, then the two glyphs direct-style Scala is written
+	    with — `=>` and `<-` — each with a line of output beside it, and a blinking cursor. */}
+	<g fill="var(--px-2)">
+		<rect x="31" y="19" width="2" height="2" />
+		<rect x="33" y="21" width="2" height="2" />
+		<rect x="31" y="23" width="2" height="2" />
+	</g>
+	<rect x="37" y="19" width="20" height="2" fill="var(--px-cloud)" />
+
+	{/* `=>` */}
+	<g fill="var(--px-2)">
+		<rect x="37" y="25" width="5" height="1" />
+		<rect x="37" y="27" width="5" height="1" />
+		<rect x="42" y="24" width="1" height="1" />
+		<rect x="43" y="25" width="1" height="1" />
+		<rect x="44" y="26" width="1" height="1" />
+		<rect x="43" y="27" width="1" height="1" />
+		<rect x="42" y="28" width="1" height="1" />
+	</g>
+	<rect x="48" y="25" width="14" height="2" fill="var(--px-3)" />
+
+	{/* `<-` */}
+	<g fill="var(--px-3)">
+		<rect x="39" y="31" width="1" height="1" />
+		<rect x="38" y="32" width="1" height="1" />
+		<rect x="37" y="33" width="1" height="1" />
+		<rect x="38" y="34" width="1" height="1" />
+		<rect x="39" y="35" width="1" height="1" />
+		<rect x="40" y="33" width="5" height="1" />
+	</g>
+	<rect x="48" y="32" width="9" height="2" fill="var(--px-cloud)" />
+	<rect x="59" y="32" width="3" height="2" fill="var(--px-2)" class="caret" />
+
+	{/* Scanlines over the screen, and the power light on the shell. */}
+	<g fill="var(--px-ink)" opacity="0.25">
+		<rect x="29" y="18" width="38" height="1" />
+		<rect x="29" y="22" width="38" height="1" />
+		<rect x="29" y="26" width="38" height="1" />
+		<rect x="29" y="30" width="38" height="1" />
+		<rect x="29" y="34" width="38" height="1" />
+		<rect x="29" y="38" width="38" height="1" />
+	</g>
+	<rect x="62" y="41" width="3" height="2" fill="var(--px-2)" />
+	<rect x="31" y="41" width="14" height="2" fill="var(--px-ink)" />
+</svg>
+
+<style>
+	/* The wrapper in Hero.astro owns the width; the art fills it. Box and shadow come from
+	   `.pixel-box`. */
+	.hero-art {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.caret {
+		animation: caret-blink 1.2s steps(1, end) infinite;
+	}
+
+	.twinkle {
+		animation: twinkle 2.4s steps(1, end) infinite;
+	}
+
+	.bob {
+		animation: bob 2.4s steps(1, end) infinite;
+	}
+
+	@keyframes caret-blink {
+		50% {
+			opacity: 0;
+		}
+	}
+
+	@keyframes twinkle {
+		50% {
+			opacity: 0.25;
+		}
+	}
+
+	/* A whole cell up and back: the tile stays on the grid at every frame. */
+	@keyframes bob {
+		50% {
+			transform: translateY(-1px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.caret,
+		.twinkle,
+		.bob {
+			animation: none;
+		}
+	}
+</style>

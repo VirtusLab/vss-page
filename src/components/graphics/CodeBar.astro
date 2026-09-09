@@ -1,0 +1,32 @@
+---
+/**
+ * The contents of the code panel's title bar: three window lights and a drag handle, drawn on the
+ * same grid as the rest of the artwork. The bar strip itself, and the panel's outline and shadow,
+ * are CSS on the panel. Decorative, hence `aria-hidden`.
+ */
+---
+
+<svg
+	class="bar-art"
+	viewBox="0 0 32 4"
+	shape-rendering="crispEdges"
+	aria-hidden="true"
+	focusable="false"
+>
+	<rect x="0" y="0" width="4" height="4" fill="var(--px-2)"></rect>
+	<rect x="6" y="0" width="4" height="4" fill="var(--px-3)"></rect>
+	<rect x="12" y="0" width="4" height="4" fill="var(--px-1)"></rect>
+	<g fill="var(--px-ink)" opacity="0.5">
+		<rect x="20" y="1" width="12" height="1"></rect>
+		<rect x="20" y="3" width="12" height="1"></rect>
+	</g>
+</svg>
+
+<style>
+	.bar-art {
+		display: block;
+		/* 32 cells wide at one grid unit each. */
+		width: calc(var(--px) * 32);
+		height: calc(var(--px) * 4);
+	}
+</style>

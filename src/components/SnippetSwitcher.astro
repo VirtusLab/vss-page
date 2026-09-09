@@ -1,5 +1,6 @@
 ---
 import { Code } from 'astro:components';
+import CodeBar from './graphics/CodeBar.astro';
 
 /**
  * CSS-only tabbed snippets: one radio per tab, all panels always in the DOM, stacked in a single
@@ -29,12 +30,14 @@ const tabRules = tabs
 	.map(
 		(tab) => `
 #${radioId(tab.id)}:checked ~ .tabs label[for="${radioId(tab.id)}"] {
-	color: var(--fg);
-	border-bottom-color: var(--accent);
+	background: var(--accent);
+	color: var(--on-accent);
+	box-shadow: var(--bevel);
+	transform: translate(var(--px), var(--px));
 }
 #${radioId(tab.id)}:focus-visible ~ .tabs label[for="${radioId(tab.id)}"] {
-	outline: 2px solid var(--accent);
-	outline-offset: 2px;
+	outline: var(--hair) solid var(--accent-2-text);
+	outline-offset: var(--hair);
 }
 #${radioId(tab.id)}:checked ~ .panels #${panelId(tab.id)} {
 	visibility: visible;
@@ -58,20 +61,25 @@ const tabRules = tabs
 			))
 		}
 		<div class="tabs">
-			{tabs.map((tab) => <label for={radioId(tab.id)}>{tab.label}</label>)}
+			{tabs.map((tab) => <label class="pixel-box" for={radioId(tab.id)}>{tab.label}</label>)}
 		</div>
 		{/* Inside the fieldset, so every panel stays a sibling of the radios that switch it. */}
 		<div class="panels">
 			{
 				tabs.map((tab) => (
 					<div class="panel" id={panelId(tab.id)}>
-						<div class="code">
-							<Code
-								code={tab.code}
-								lang="scala"
-								themes={{ light: 'github-light-high-contrast', dark: 'everforest-dark' }}
-								defaultColor={false}
-							/>
+						<div class="frame pixel-box">
+							<div class="bar">
+								<CodeBar />
+							</div>
+							<div class="code">
+								<Code
+									code={tab.code}
+									lang="scala"
+									themes={{ light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' }}
+									defaultColor={false}
+								/>
+							</div>
 						</div>
 						<p class="panel-links">
 							<a href={`#${tab.componentId}`}>{tab.componentName}</a>
@@ -91,8 +99,6 @@ const tabRules = tabs
 	.switcher {
 		position: relative;
 		margin: var(--space-5) 0;
-		/* Colour the fade over the code; Shiki puts --shiki-dark-bg on the <pre> only, out of reach. */
-		--code-bg: var(--tint);
 	}
 
 	/* Groups the radios for screen readers; every default box of a fieldset is unwanted here. */
@@ -128,20 +134,31 @@ const tabRules = tabs
 		white-space: nowrap;
 	}
 
-	/* Tracks fit themselves to the width: two rows of two on a phone, one row of four on a desktop. */
+	/* Tracks fit themselves to the width: two rows of two on a phone, one row of four on a desktop.
+	   The gap leaves room for each key's hard shadow. */
 	.tabs {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-		gap: var(--space-1) var(--space-3);
+		gap: var(--space-2) var(--space-3);
+		margin-bottom: var(--space-3);
 	}
 
-	/* The page motif again: the 2px rule under a tab is the accent only while that tab is checked. */
+	/* Every tab is a raised key, one step off the board; the rules above press the checked one in. */
 	.tabs label {
-		padding: var(--space-2) 0;
-		border-bottom: var(--rule-width) solid var(--border);
-		color: var(--muted);
-		font-size: var(--text-sm);
+		padding: var(--space-2);
+		background: var(--tint);
+		box-shadow: var(--shadow-flat);
+		color: var(--fg);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
+		line-height: 1.5;
+		text-align: center;
 		cursor: pointer;
+	}
+
+	.tabs label:hover {
+		background: var(--accent-3);
+		color: var(--on-accent);
 	}
 
 	/* All panels share one grid cell, so the box is as tall as the tallest snippet and never jumps. */
@@ -154,7 +171,19 @@ const tabRules = tabs
 		/* Without this a wide snippet stretches the grid cell instead of scrolling inside the panel. */
 		min-width: 0;
 		visibility: hidden;
-		padding-top: var(--space-3);
+	}
+
+	/* The pixel frame around the code; outline and shadow come from `.pixel-box`. */
+	.frame {
+		background: var(--code-bg);
+	}
+
+	.bar {
+		display: flex;
+		align-items: center;
+		padding: var(--space-2);
+		border-bottom: var(--edge) solid var(--line);
+		background: var(--bg);
 	}
 
 	.code {
@@ -167,35 +196,33 @@ const tabRules = tabs
 	.code::after {
 		content: '';
 		position: absolute;
-		/* The 1px insets keep the box's own border visible under the solid end of the gradient. */
-		inset: 1px 1px 1px auto;
-		width: var(--space-5);
-		border-radius: 0 var(--radius) var(--radius) 0;
-		background: linear-gradient(to right, transparent, var(--code-bg));
+		inset: 0 0 0 auto;
+		/* Short and steep, so it reads as "the line carries on" and not as a soft vignette. */
+		width: calc(var(--px) * 6);
+		background: linear-gradient(to right, transparent, var(--code-bg) 60%);
 		pointer-events: none;
 	}
 
 	.panel-links {
 		display: flex;
 		gap: var(--space-4);
-		margin: var(--space-2) 0 0;
-		font-size: var(--text-sm);
+		margin: var(--space-3) 0 0;
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
 	}
 
-	/* Shiki renders both themes as CSS variables (defaultColor: false); pick one per color scheme. */
+	/* Shiki renders both themes as CSS variables (defaultColor: false); pick one per color scheme.
+	   The panel background is our own token in both modes, so it belongs to the palette. */
 	.panel :global(pre.astro-code) {
 		margin: 0;
 		padding: var(--space-3);
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
 		font-family: var(--font-mono);
 		font-size: var(--text-code);
 		line-height: 1.6;
 		overflow-x: auto;
 		scrollbar-width: thin;
 		color: var(--shiki-light);
-		/* Not --shiki-light-bg: the light theme's white would not separate from the paper --bg. */
-		background-color: var(--tint);
+		background-color: var(--code-bg);
 	}
 
 	.panel :global(pre.astro-code span) {
@@ -203,14 +230,8 @@ const tabRules = tabs
 	}
 
 	@media (prefers-color-scheme: dark) {
-		/* everforest-dark's background, the value Shiki writes into --shiki-dark-bg below. */
-		.switcher {
-			--code-bg: #2d353b;
-		}
-
 		.panel :global(pre.astro-code) {
 			color: var(--shiki-dark);
-			background-color: var(--shiki-dark-bg);
 		}
 
 		.panel :global(pre.astro-code span) {

@@ -20,7 +20,7 @@ const canonical = pageUrl(Astro.site);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
-		{/* No og:image: there is no artwork for the page, and a bad one is worse than none. */}
+		{/* No og:image: the hero art is inline SVG, and a raster export would be a second source of truth. */}
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
@@ -31,7 +31,7 @@ const canonical = pageUrl(Astro.site);
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Newsreader:opsz,wght@6..72,500&family=Source+Sans+3:wght@400;600&display=swap"
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Silkscreen:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap"
 		/>
 	</head>
 	<body>
@@ -43,17 +43,45 @@ const canonical = pageUrl(Astro.site);
 	:root {
 		color-scheme: light dark;
 
-		/* Warm paper and green-black ink; the accent is the only saturated colour on the page. */
-		--bg: #f8f7f2;
-		--fg: #1b2422;
-		--muted: #56615d;
-		--accent: #0c6355;
-		/* Text drawn on top of a solid --accent fill (the one CTA). */
-		--on-accent: #f8f7f2;
-		--border: #ddd9cd;
-		--tint: #eeece2;
+		/* The pixel grid unit. Every border, offset, radius and spacing step below is a multiple of
+		   it, so nothing on the page can land off the grid. */
+		--px: 4px;
 
-		--font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+		/* Lilac paper, indigo ink, and a three-accent arcade set: violet leads, gold marks the
+		   active thing, teal carries the graphics. */
+		--bg: #f4f1fa;
+		--tint: #e8e3f4;
+		--fg: #1a1433;
+		--muted: #4d4468;
+		--accent: #5a2fbe;
+		/* Gold is a fill, not an ink: bright enough to read as gold, too bright to sit on the page
+		   ground as text. --accent-2-text is the same gold taken down until it clears 4.5:1 there. */
+		--accent-2: #e0a020;
+		--accent-2-text: #8a5000;
+		--accent-3: #0a6a66;
+		/* Text drawn on top of a solid --accent or --accent-3 fill, and on a solid --accent-2 one. */
+		--on-accent: #f4f1fa;
+		--on-accent-2: #1a1433;
+		/* Chunky outline around every raised box. Dark in light mode: pixel art is drawn outline-first. */
+		--line: #2b2350;
+		/* The two steps of the hard drop shadow: the near one strong, the far one fading out. */
+		--shadow: #2b2350;
+		--shadow-far: #b3a6d6;
+		/* Inner bevel of a pressed box: shaded top-left, lit bottom-right. Both are shades of the
+		   accent the bevel is drawn on, since only the checked tab is pressed. */
+		--bevel-shade: #3a1c80;
+		--bevel-light: #8a67d8;
+		/* Fill-only colours for the SVG graphics; never used for text. */
+		--px-ink: #1a1433;
+		--px-sky: #ded4f4;
+		--px-cloud: #ffffff;
+		--px-1: #5a2fbe;
+		--px-2: #e0a020;
+		--px-3: #17a394;
+		/* Background of the code panel; the light Shiki theme's own white would not read as a panel. */
+		--code-bg: #e8e3f4;
+
+		--font-display: 'Silkscreen', 'Courier New', ui-monospace, monospace;
 		--font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 		--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
@@ -70,32 +98,66 @@ const canonical = pageUrl(Astro.site);
 
 		/* Cap for running text; the page container is wider to hold the two-column grid. */
 		--measure: 65ch;
-		--page-width: 58rem;
+		--page-width: 60rem;
 		/* Height of the sticky nav row; anchors scroll clear of it. */
-		--nav-height: 3rem;
-		--radius: 4px;
-		/* The accent rule that marks a section heading and the active snippet tab. */
-		--rule: var(--space-4);
-		--rule-width: 2px;
+		--nav-height: 3.5rem;
 
-		--space-1: 0.25rem;
-		--space-2: 0.5rem;
-		--space-3: 1rem;
-		--space-4: 1.75rem;
-		--space-5: 3rem;
-		--space-6: 4rem;
+		/* Chunky outline, the half-unit rule used where an outline would be too loud, and the
+		   single-pixel line the page's own grid is drawn with. */
+		--edge: var(--px);
+		--hair: calc(var(--px) / 2);
+		--grid-line: 1px;
+
+		--space-1: calc(var(--px) * 1);
+		--space-2: calc(var(--px) * 2);
+		--space-3: calc(var(--px) * 4);
+		--space-4: calc(var(--px) * 7);
+		--space-5: calc(var(--px) * 12);
+		--space-6: calc(var(--px) * 16);
+
+		/* One hard step, then a second lighter one: a drawn shadow, not a blurred one. */
+		--shadow-step:
+			var(--px) var(--px) 0 0 var(--shadow),
+			calc(var(--px) * 2) calc(var(--px) * 2) 0 0 var(--shadow-far);
+		/* The same shadow collapsed to its first step, for a box that is pressed in. */
+		--shadow-flat: var(--px) var(--px) 0 0 var(--shadow);
+		/* Pressed: shaded top-left, lit bottom-right, the opposite of the raised boxes the drop
+		   shadow makes. Drawn inside the box, so pressing does not shift layout. */
+		--bevel:
+			inset var(--px) var(--px) 0 0 var(--bevel-shade),
+			inset calc(var(--px) * -1) calc(var(--px) * -1) 0 0 var(--bevel-light);
 	}
 
 	@media (prefers-color-scheme: dark) {
 		:root {
-			/* Not an inversion: the dark ground keeps the green cast, the accent lifts to a mint. */
-			--bg: #121614;
-			--fg: #e4e8e2;
-			--muted: #98a39d;
-			--accent: #74cfb9;
-			--on-accent: #0c1211;
-			--border: #2a322f;
-			--tint: #1a201e;
+			/* Not an inversion: the ground becomes a night sky, the outline flips to a lit violet,
+			   and the accents brighten to arcade phosphor rather than staying the same hues. */
+			--bg: #141120;
+			--tint: #1e1934;
+			--fg: #ece8fa;
+			--muted: #a79dc6;
+			--accent: #b39aff;
+			--accent-2: #f0c04f;
+			/* On the night ground the bright gold already clears 4.5:1, so text and fill agree. */
+			--accent-2-text: #f0c04f;
+			--accent-3: #57d7c3;
+			--on-accent: #141120;
+			--on-accent-2: #141120;
+			--line: #4a3f78;
+			/* Both steps are lighter than the ground: a shadow darker than a night sky is invisible,
+			   so here the drawn shadow is a lit rim that fades with distance, as it does in light mode. */
+			--shadow: #4a3f78;
+			--shadow-far: #3a3160;
+			--bevel-shade: #7d63d6;
+			--bevel-light: #d8cbff;
+			--px-ink: #0a0814;
+			--px-sky: #221c3a;
+			--px-cloud: #362e58;
+			--px-1: #a98cff;
+			--px-2: #f5c451;
+			--px-3: #4fd6c2;
+			/* github-dark-high-contrast on a violet-black of our own, so the panel joins the palette. */
+			--code-bg: #0d0b16;
 		}
 	}
 
@@ -109,38 +171,54 @@ const canonical = pageUrl(Astro.site);
 		color: var(--fg);
 		font-family: var(--font-body);
 		line-height: 1.6;
+		/* The page ground is a faint pixel grid: two hairlines repeating on the grid unit. */
+		background-image:
+			linear-gradient(to right, var(--tint) var(--grid-line), transparent var(--grid-line)),
+			linear-gradient(to bottom, var(--tint) var(--grid-line), transparent var(--grid-line));
+		background-size: calc(var(--px) * 8) calc(var(--px) * 8);
 	}
 
 	a {
 		color: var(--accent);
 		text-underline-offset: 0.18em;
-		text-decoration-thickness: 1px;
+		text-decoration-thickness: var(--hair);
 	}
 
+	/* Gold, the one colour used nowhere else as a line on the page ground, at the weight that
+	   clears 4.5:1 there. */
 	:focus-visible {
-		outline: 2px solid var(--accent);
-		outline-offset: 2px;
+		outline: var(--hair) solid var(--accent-2-text);
+		outline-offset: var(--hair);
+	}
+
+	/* Every raised box on the page: chunky outline, two hard shadow steps. Components override the
+	   background, the border colour, and the number of steps. */
+	.pixel-box {
+		border: var(--edge) solid var(--line);
+		box-shadow: var(--shadow-step);
 	}
 
 	h1,
 	h2,
 	h3 {
-		line-height: 1.2;
+		font-family: var(--font-display);
+		font-weight: 400;
+		/* A pixel face sits tight in its em box, so headings need more leading than a serif would. */
+		line-height: 1.45;
+		letter-spacing: 0;
 	}
 
 	h1,
 	h2 {
-		font-family: var(--font-display);
-		font-weight: 500;
-		letter-spacing: -0.01em;
-	}
-
-	h3 {
-		font-weight: 600;
+		font-weight: 700;
 	}
 
 	p {
 		max-width: var(--measure);
+	}
+
+	code {
+		font-family: var(--font-mono);
 	}
 
 	@media (min-width: 720px) {
@@ -151,7 +229,7 @@ const canonical = pageUrl(Astro.site);
 
 		/* The nav is sticky at this width, so an anchor must not land underneath it. */
 		html {
-			scroll-padding-top: var(--nav-height);
+			scroll-padding-top: calc(var(--nav-height) + var(--space-3));
 		}
 	}
 </style>

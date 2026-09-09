@@ -1,0 +1,139 @@
+---
+/**
+ * One pixel icon per stack section, keyed by the section id. All six are drawn on the same 12 x 12
+ * cell grid, on an ink tile and in the same three accents, so they read as one sprite set.
+ * Decorative, hence `aria-hidden`.
+ */
+interface Props {
+	/** A section id from `content/components.yaml`. An id with no icon fails the build. */
+	name: string;
+}
+
+const { name } = Astro.props;
+const drawn = ['template', 'language', 'tooling', 'backend', 'ai', 'devops'];
+if (!drawn.includes(name)) throw new Error(`No pixel icon drawn for section "${name}"`);
+---
+
+<svg
+	class="icon"
+	viewBox="0 0 12 12"
+	shape-rendering="crispEdges"
+	aria-hidden="true"
+	focusable="false"
+>
+	<rect x="0" y="0" width="12" height="12" fill="var(--px-ink)"></rect>
+	{
+		name === 'template' && (
+			<g>
+				{/* A page already laid out: a header bar over two unequal columns. */}
+				<rect x="2" y="1" width="8" height="2" fill="var(--px-1)" />
+				<rect x="2" y="4" width="3" height="7" fill="var(--px-2)" />
+				<rect x="6" y="4" width="4" height="7" fill="var(--px-3)" />
+			</g>
+		)
+	}
+	{
+		name === 'language' && (
+			<g>
+				{/* A lambda standing on a ground line. */}
+				<g fill="var(--px-2)">
+					<rect x="4" y="2" width="2" height="2" />
+					<rect x="5" y="4" width="2" height="2" />
+					<rect x="6" y="6" width="2" height="2" />
+					<rect x="7" y="8" width="2" height="2" />
+					<rect x="3" y="6" width="2" height="2" />
+					<rect x="1" y="8" width="2" height="2" />
+				</g>
+				<rect x="1" y="10" width="10" height="1" fill="var(--px-3)" />
+			</g>
+		)
+	}
+	{
+		name === 'tooling' && (
+			<g>
+				{/* A gear: a hollow hub with four teeth, the teeth picked out in the second accent. */}
+				<rect x="3" y="3" width="6" height="6" fill="var(--px-1)" />
+				<g fill="var(--px-2)">
+					<rect x="5" y="1" width="2" height="2" />
+					<rect x="5" y="9" width="2" height="2" />
+					<rect x="1" y="5" width="2" height="2" />
+					<rect x="9" y="5" width="2" height="2" />
+				</g>
+				<rect x="5" y="5" width="2" height="2" fill="var(--px-ink)" />
+			</g>
+		)
+	}
+	{
+		name === 'backend' && (
+			<g>
+				{/* A rack of three service units, each with a status light. */}
+				<g fill="var(--px-1)">
+					<rect x="1" y="2" width="10" height="2" />
+					<rect x="1" y="5" width="10" height="2" />
+					<rect x="1" y="8" width="10" height="2" />
+				</g>
+				<g fill="var(--px-3)">
+					<rect x="2" y="2" width="4" height="1" />
+					<rect x="2" y="5" width="4" height="1" />
+					<rect x="2" y="8" width="4" height="1" />
+				</g>
+				<g fill="var(--px-2)">
+					<rect x="9" y="2" width="1" height="1" />
+					<rect x="9" y="5" width="1" height="1" />
+					<rect x="9" y="8" width="1" height="1" />
+				</g>
+			</g>
+		)
+	}
+	{
+		name === 'ai' && (
+			<g>
+				{/* A robot head with a lit antenna. */}
+				<rect x="5" y="0" width="2" height="2" fill="var(--px-2)" />
+				<rect x="5" y="2" width="2" height="1" fill="var(--px-1)" />
+				<rect x="2" y="3" width="8" height="7" fill="var(--px-1)" />
+				<g fill="var(--px-1)">
+					<rect x="1" y="5" width="1" height="3" />
+					<rect x="10" y="5" width="1" height="3" />
+				</g>
+				<g fill="var(--px-3)">
+					<rect x="3" y="5" width="2" height="2" />
+					<rect x="7" y="5" width="2" height="2" />
+				</g>
+				<rect x="4" y="8" width="4" height="1" fill="var(--px-2)" />
+			</g>
+		)
+	}
+	{
+		name === 'devops' && (
+			<g>
+				{/* A rocket climbing past two clouds. */}
+				<g fill="var(--px-cloud)">
+					<rect x="0" y="3" width="3" height="2" />
+					<rect x="9" y="7" width="3" height="2" />
+				</g>
+				<rect x="5" y="0" width="2" height="2" fill="var(--px-2)" />
+				<rect x="4" y="2" width="4" height="7" fill="var(--px-1)" />
+				<rect x="5" y="3" width="2" height="2" fill="var(--px-3)" />
+				<g fill="var(--px-1)">
+					<rect x="2" y="6" width="2" height="3" />
+					<rect x="8" y="6" width="2" height="3" />
+				</g>
+				<g fill="var(--px-2)">
+					<rect x="4" y="9" width="4" height="1" />
+					<rect x="5" y="10" width="2" height="2" />
+				</g>
+			</g>
+		)
+	}
+</svg>
+
+<style>
+	.icon {
+		display: block;
+		flex: none;
+		/* Twelve cells wide, one grid unit per cell, so a cell is never a fractional pixel. */
+		width: calc(var(--px) * 12);
+		height: calc(var(--px) * 12);
+	}
+</style>

@@ -3,7 +3,8 @@ import { render, type CollectionEntry } from 'astro:content';
 
 /**
  * The single paid entry, after all six sections. Card-shaped but deliberately not in the card grid:
- * full width, bordered and tinted, so it reads as an offer and not as part of the open-source stack.
+ * full width, and the only block on the page outlined in the gold accent, so it reads as an offer
+ * and not as part of the open-source stack.
  */
 interface Props {
 	commercial: CollectionEntry<'commercial'>['data'];
@@ -14,7 +15,7 @@ const { commercial, visdom } = Astro.props;
 const { Content } = await render(visdom);
 ---
 
-<section id="commercial">
+<section id="commercial" class="pixel-box">
 	<p class="eyebrow">{visdom.data.eyebrow}</p>
 	<h2 id={commercial.id}><a href={commercial.url}>{commercial.name}</a></h2>
 	<p>{commercial.description}</p>
@@ -22,24 +23,28 @@ const { Content } = await render(visdom);
 </section>
 
 <style>
+	/* The only box outlined in gold rather than in the page's ink. */
 	section {
 		margin: var(--space-6) 0 var(--space-5);
 		padding: var(--space-4);
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
+		border-color: var(--accent-2);
 		background: var(--tint);
 	}
 
+	/* A filled label, not a line of small caps: the one place the gold accent is a solid block. */
 	.eyebrow {
-		margin: 0 0 var(--space-1);
+		display: inline-block;
+		margin: 0 0 var(--space-3);
+		padding: var(--space-1) var(--space-2);
+		background: var(--accent-2);
+		color: var(--on-accent-2);
+		font-family: var(--font-display);
 		font-size: var(--text-xs);
-		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: var(--muted);
 	}
 
 	h2 {
-		margin: 0 0 var(--space-1);
+		margin: 0 0 var(--space-2);
 		font-size: var(--text-lg);
 	}
 
@@ -48,7 +53,7 @@ const { Content } = await render(visdom);
 	}
 
 	.note {
-		margin-top: var(--space-2);
+		margin-top: var(--space-3);
 		font-size: var(--text-sm);
 		color: var(--muted);
 	}

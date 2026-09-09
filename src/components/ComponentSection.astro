@@ -1,8 +1,9 @@
 ---
 import { render } from 'astro:content';
 import type { Site } from '../lib/content';
+import SectionIcon from './graphics/SectionIcon.astro';
 
-/** One stack section: title, intro paragraph, and a card per component. */
+/** One stack section: a pixel icon and title, an intro paragraph, and a card per component. */
 interface Props {
 	section: Site['sections'][number];
 	repoLabel: string;
@@ -13,12 +14,15 @@ const { Content } = await render(section.intro);
 ---
 
 <section id={section.id}>
-	<h2>{section.title}</h2>
+	<h2>
+		<SectionIcon name={section.id} />
+		<span>{section.title}</span>
+	</h2>
 	<div class="intro"><Content /></div>
 	<ul class="components">
 		{
 			section.components.map((component) => (
-				<li>
+				<li class="pixel-box">
 					<h3 id={component.id}>
 						<a href={component.url}>{component.name}</a>
 					</h3>
@@ -40,22 +44,19 @@ const { Content } = await render(section.intro);
 	}
 
 	h2 {
-		margin: 0 0 var(--space-2);
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		margin: 0 0 var(--space-3);
 		font-size: var(--text-xl);
 	}
 
-	/* The page motif: an accent rule, here marking the start of a section. */
-	h2::before {
-		content: '';
-		display: block;
-		width: var(--rule);
-		height: var(--rule-width);
-		margin-bottom: var(--space-2);
-		background: var(--accent);
-	}
-
+	/* The section has two left edges and no more: the icon, the rule and the cards all start at
+	   zero, and the intro text starts where the heading text does, past the icon and its gap. */
 	.intro {
 		color: var(--muted);
+		border-left: var(--edge) solid var(--accent-3);
+		padding-left: calc(var(--px) * 12 + var(--space-3) - var(--edge));
 	}
 
 	/* An intro of two paragraphs keeps the same rhythm as a one-paragraph one. `:global`, because
@@ -76,8 +77,21 @@ const { Content } = await render(section.intro);
 		list-style: none;
 	}
 
+	/* A card sits closer to the page than the code panel does, so it keeps only the first step. */
+	.components li {
+		padding: var(--space-3);
+		background: var(--tint);
+		box-shadow: var(--shadow-flat);
+	}
+
+	/* Hovering lifts the card by exactly one grid unit onto a two-step shadow. */
+	.components li:hover {
+		transform: translate(calc(var(--px) * -1), calc(var(--px) * -1));
+		box-shadow: var(--shadow-step);
+	}
+
 	h3 {
-		margin: 0 0 var(--space-1);
+		margin: 0 0 var(--space-2);
 		font-size: var(--text-base);
 	}
 
@@ -86,13 +100,20 @@ const { Content } = await render(section.intro);
 	}
 
 	.repo {
-		margin-top: var(--space-1);
+		margin-top: var(--space-2);
 		font-size: var(--text-sm);
+		font-family: var(--font-display);
 	}
 
 	@media (min-width: 720px) {
 		.components {
 			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.components li:hover {
+			transform: none;
 		}
 	}
 </style>

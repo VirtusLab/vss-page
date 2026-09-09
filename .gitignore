@@ -5,3 +5,4 @@ dist/
 .scala-build/
 .astro/
 .bsp/
+.superpowers/

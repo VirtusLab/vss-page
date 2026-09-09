@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../lib/base';
+import HeroArt from './graphics/HeroArt.astro';
+import PixelDivider from './graphics/PixelDivider.astro';
 
 /** Title, tagline, lede, the single CTA, and one line pointing coding agents at llms.txt and scala-skill. */
 interface Props {
@@ -12,31 +14,45 @@ const { hero, labels } = Astro.props;
 ---
 
 <header class="hero">
-	<h1>{hero.title}</h1>
-	<p class="tagline">{hero.tagline}</p>
-	<p class="lede">{hero.lede}</p>
-	<p><a class="cta" href={hero.ctaHref}>{hero.ctaLabel}</a></p>
-	{/* Kept on one line: the build drops a whitespace-only text node between two tags. */}
-	<p class="agents">
-		{hero.agentLabel} <a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a> · <a href={hero.agentSkillHref}>{hero.agentSkillLabel}</a>
-	</p>
+	<div class="cols">
+		<div class="text">
+			<h1>{hero.title}</h1>
+			<p class="tagline">{hero.tagline}</p>
+			<p class="lede">{hero.lede}</p>
+			<p class="cta-row"><a class="cta pixel-box" href={hero.ctaHref}>{hero.ctaLabel}</a></p>
+			{/* Kept on one line: the build drops a whitespace-only text node between two tags. */}
+			<p class="agents">
+				{hero.agentLabel} <a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a> · <a href={hero.agentSkillHref}>{hero.agentSkillLabel}</a>
+			</p>
+		</div>
+		<div class="art"><HeroArt /></div>
+	</div>
+	<PixelDivider id="hero" />
 </header>
 
 <style>
 	.hero {
-		padding: var(--space-6) 0 var(--space-5);
+		padding: var(--space-5) 0 var(--space-4);
+	}
+
+	.cols {
+		display: grid;
+		gap: var(--space-5);
+		margin-bottom: var(--space-5);
 	}
 
 	h1 {
 		max-width: var(--measure);
 		margin: 0 0 var(--space-3);
 		font-size: var(--text-2xl);
+		/* A hard drawn shadow behind the display face, one grid unit down and right. */
+		text-shadow: var(--px) var(--px) 0 var(--shadow-far);
 	}
 
 	.tagline {
 		margin: 0 0 var(--space-3);
 		font-size: var(--text-lg);
-		color: var(--muted);
+		font-weight: 600;
 	}
 
 	.lede {
@@ -45,19 +61,69 @@ const { hero, labels } = Astro.props;
 		color: var(--muted);
 	}
 
+	.cta-row {
+		margin: 0;
+	}
+
+	/* The one filled button on the page. Box, outline and shadow come from `.pixel-box`. */
 	.cta {
 		display: inline-block;
-		padding: var(--space-2) var(--space-4);
-		border-radius: var(--radius);
+		padding: var(--space-3) var(--space-4);
 		background: var(--accent);
 		color: var(--on-accent);
+		font-family: var(--font-display);
+		font-size: var(--text-sm);
 		text-decoration: none;
-		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	.cta:hover {
+		background: var(--accent-3);
+	}
+
+	/* Pressing moves the button one grid unit onto its own shadow and drops exactly one step, so
+	   the button and its shadow keep the same footprint. */
+	.cta:active {
+		transform: translate(var(--px), var(--px));
+		box-shadow: var(--shadow-flat);
 	}
 
 	.agents {
-		margin: var(--space-3) 0 0;
+		margin: var(--space-4) 0 0;
 		font-size: var(--text-sm);
 		color: var(--muted);
+	}
+
+	/* 96 cells at one grid unit each. The width has to carry the art's own outline too: the SVG is
+	   `border-box`, so without the two edges its drawing surface would be 8px short and every cell
+	   would land on a fraction of a device pixel. Below the width where that fits, the art steps
+	   down to three device pixels per cell rather than scaling, and takes a gutter instead. */
+	.art {
+		width: calc(var(--px) * 96 + var(--edge) * 2);
+		max-width: 100%;
+		justify-self: center;
+	}
+
+	@media (max-width: 423px) {
+		.art {
+			width: calc(var(--px) * 72 + var(--edge) * 2);
+		}
+	}
+
+	@media (min-width: 720px) {
+		.hero {
+			padding-top: var(--space-6);
+		}
+
+		/* Text first, art beside it. Equal columns, so the art keeps its full size on a wide screen
+		   and shrinks with the page instead of squeezing the text. */
+		.cols {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			align-items: center;
+		}
+
+		.art {
+			justify-self: end;
+		}
 	}
 </style>

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../lib/base';
+import PixelDivider from './graphics/PixelDivider.astro';
 
 /** Who maintains the page, where its source is, the agent mirror, and the license when there is one. */
 interface Props {
@@ -13,28 +14,34 @@ const { maintainers } = footer;
 ---
 
 <footer>
-	<p>
-		Maintained by
-		{maintainers.map((maintainer, i) => (
-			<>
-				{i === 0 ? ' ' : i === maintainers.length - 1 ? ' and ' : ', '}<a href={maintainer.url}>{maintainer.label}</a>
-			</>
-		))}.
-	</p>
-	<p class="links">
-		<a href={footer.repoUrl}>{footer.repoLabel}</a>
-		<a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a>
-	</p>
-	{footer.license && <p class="license">{footer.license}</p>}
+	<PixelDivider id="footer" />
+	<div class="rows">
+		<p>
+			Maintained by
+			{maintainers.map((maintainer, i) => (
+				<>
+					{i === 0 ? ' ' : i === maintainers.length - 1 ? ' and ' : ', '}<a href={maintainer.url}>{maintainer.label}</a>
+				</>
+			))}.
+		</p>
+		<p class="links">
+			<a href={footer.repoUrl}>{footer.repoLabel}</a>
+			<a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a>
+		</p>
+		{footer.license && <p class="license">{footer.license}</p>}
+	</div>
 </footer>
 
 <style>
 	footer {
+		padding-bottom: var(--space-6);
+	}
+
+	.rows {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-2);
-		padding: var(--space-4) 0 var(--space-6);
-		border-top: 1px solid var(--border);
+		padding-top: var(--space-4);
 		font-size: var(--text-sm);
 		color: var(--muted);
 	}
@@ -47,11 +54,14 @@ const { maintainers } = footer;
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-1) var(--space-4);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
 	}
 
 	@media (min-width: 720px) {
-		footer {
+		.rows {
 			flex-direction: row;
+			align-items: baseline;
 			justify-content: space-between;
 			gap: var(--space-4);
 		}
