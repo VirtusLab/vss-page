@@ -1,4 +1,18 @@
 sections:
+  - id: template
+    title: Template
+    components:
+      - id: bootzooka
+        name: Bootzooka
+        description: Template project for starting a Scala-based microservice or web application.
+        url: https://softwaremill.github.io/bootzooka/
+        repo: https://github.com/softwaremill/bootzooka
+      - id: adopt-tapir
+        name: Adopt Tapir
+        description: Generator for a starter Tapir project, configurable via a web UI.
+        url: https://adopt-tapir.softwaremill.com
+        repo: https://github.com/softwaremill/adopt-tapir
+
   - id: language
     title: Language
     components:
@@ -91,20 +105,6 @@ sections:
         description: Scala SDK for Pulumi, for defining cloud infrastructure as code.
         url: https://virtuslab.github.io/besom/
         repo: https://github.com/VirtusLab/besom
-
-  - id: template
-    title: Template
-    components:
-      - id: bootzooka
-        name: Bootzooka
-        description: Template project for starting a Scala-based microservice or web application.
-        url: https://softwaremill.github.io/bootzooka/
-        repo: https://github.com/softwaremill/bootzooka
-      - id: adopt-tapir
-        name: Adopt Tapir
-        description: Generator for a starter Tapir project, configurable via a web UI.
-        url: https://adopt-tapir.softwaremill.com
-        repo: https://github.com/softwaremill/adopt-tapir
 
 commercial:
   id: visdom

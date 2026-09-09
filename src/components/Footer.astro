@@ -9,12 +9,18 @@ interface Props {
 }
 
 const { footer, labels } = Astro.props;
-// The schema guarantees exactly two, so the sentence can name them directly.
-const [first, second] = footer.maintainers;
+const { maintainers } = footer;
 ---
 
 <footer>
-	<p>Maintained by <a href={first.url}>{first.label}</a> and <a href={second.url}>{second.label}</a>.</p>
+	<p>
+		Maintained by
+		{maintainers.map((maintainer, i) => (
+			<>
+				{i === 0 ? ' ' : i === maintainers.length - 1 ? ' and ' : ', '}<a href={maintainer.url}>{maintainer.label}</a>
+			</>
+		))}.
+	</p>
 	<p class="links">
 		<a href={footer.repoUrl}>{footer.repoLabel}</a>
 		<a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a>

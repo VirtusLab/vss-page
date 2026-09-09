@@ -86,7 +86,7 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 
 ### Footer
 
-- One row on desktop, stacked on mobile. Who maintains the page (VirtusLab / SoftwareMill), link
+- One row on desktop, stacked on mobile. Who maintains the page (VirtusLab), link
   to the page's own repo, link to `llms.txt`, license line. No newsletter, no sponsor strip,
   no social icons.
 

@@ -165,8 +165,8 @@ const footer = defineCollection({
 	loader: glob({ base: 'content', pattern: 'footer.md' }),
 	schema: z
 		.object({
-			// Exactly two: the footer names them as "<first> and <second>".
-			maintainers: z.array(z.object({ label: z.string(), url: z.url() }).strict()).length(2),
+			// At least one: the footer names them all, joined naturally.
+			maintainers: z.array(z.object({ label: z.string(), url: z.url() }).strict()).min(1),
 			repoLabel: z.string(),
 			repoUrl: z.url(),
 			// Empty hides the license line.
