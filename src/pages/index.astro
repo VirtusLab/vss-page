@@ -24,14 +24,18 @@ const tabs = snippets.map((snippet) => ({
 <Base title={hero.title} description={hero.tagline}>
 	<div class="page">
 		<main>
-			<Hero hero={hero} />
+			<Hero hero={hero} labels={labels} />
 			{/* The nav sits between the hero and the switcher, so the first screen is hero + code. */}
 			<Nav sections={sections} repoLabel={footer.repoLabel} repoUrl={footer.repoUrl} />
-			<SnippetSwitcher tabs={tabs} fullExampleLabel={labels.fullExample} />
+			<SnippetSwitcher
+				tabs={tabs}
+				fullExampleLabel={labels.fullExample}
+				legend={labels.snippetsLegend}
+			/>
 			{sections.map((section) => <ComponentSection section={section} repoLabel={labels.repo} />)}
 			<Commercial commercial={commercial} visdom={visdom} />
 		</main>
-		<Footer footer={footer} />
+		<Footer footer={footer} labels={labels} />
 	</div>
 </Base>
 

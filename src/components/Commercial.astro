@@ -16,7 +16,7 @@ const { Content } = await render(visdom);
 
 <section id="commercial">
 	<p class="eyebrow">{visdom.data.eyebrow}</p>
-	<h2><a href={commercial.url}>{commercial.name}</a></h2>
+	<h2 id={commercial.id}><a href={commercial.url}>{commercial.name}</a></h2>
 	<p>{commercial.description}</p>
 	<div class="note"><Content /></div>
 </section>

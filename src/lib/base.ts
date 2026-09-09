@@ -5,3 +5,12 @@
  */
 export const withBase = (path: string): string =>
 	`${import.meta.env.BASE_URL.replace(/\/$/, '')}${path}`;
+
+/**
+ * Absolute URL of the page, from the configured `site` and `base`. Used for the canonical link, the
+ * Open Graph tags and llms.txt, so none of them can hardcode the deployed address.
+ */
+export const pageUrl = (site: URL | undefined): string => {
+	if (!site) throw new Error('astro.config.mjs must set `site`');
+	return new URL(withBase('/'), site).href;
+};

@@ -15,9 +15,10 @@ interface Props {
 		fullExampleHref: string;
 	}[];
 	fullExampleLabel: string;
+	legend: string;
 }
 
-const { tabs, fullExampleLabel } = Astro.props;
+const { tabs, fullExampleLabel, legend } = Astro.props;
 
 const radioId = (id: string) => `snippet-${id}`;
 const panelId = (id: string) => `panel-${id}`;
@@ -43,38 +44,44 @@ const tabRules = tabs
 ---
 
 <div class="switcher">
-	{
-		tabs.map((tab, i) => (
-			<input
-				class="radio"
-				type="radio"
-				name="snippet"
-				id={radioId(tab.id)}
-				checked={i === 0}
-			/>
-		))
-	}
-	<div class="tabs">
-		{tabs.map((tab) => <label for={radioId(tab.id)}>{tab.label}</label>)}
-	</div>
-	<div class="panels">
+	<fieldset>
+		<legend>{legend}</legend>
 		{
-			tabs.map((tab) => (
-				<div class="panel" id={panelId(tab.id)}>
-					<Code
-						code={tab.code}
-						lang="scala"
-						themes={{ light: 'github-light-high-contrast', dark: 'everforest-dark' }}
-						defaultColor={false}
-					/>
-					<p class="panel-links">
-						<a href={`#${tab.componentId}`}>{tab.componentName}</a>
-						<a href={tab.fullExampleHref}>{fullExampleLabel}</a>
-					</p>
-				</div>
+			tabs.map((tab, i) => (
+				<input
+					class="radio"
+					type="radio"
+					name="snippet"
+					id={radioId(tab.id)}
+					checked={i === 0}
+				/>
 			))
 		}
-	</div>
+		<div class="tabs">
+			{tabs.map((tab) => <label for={radioId(tab.id)}>{tab.label}</label>)}
+		</div>
+		{/* Inside the fieldset, so every panel stays a sibling of the radios that switch it. */}
+		<div class="panels">
+			{
+				tabs.map((tab) => (
+					<div class="panel" id={panelId(tab.id)}>
+						<div class="code">
+							<Code
+								code={tab.code}
+								lang="scala"
+								themes={{ light: 'github-light-high-contrast', dark: 'everforest-dark' }}
+								defaultColor={false}
+							/>
+						</div>
+						<p class="panel-links">
+							<a href={`#${tab.componentId}`}>{tab.componentName}</a>
+							<a href={tab.fullExampleHref}>{fullExampleLabel}</a>
+						</p>
+					</div>
+				))
+			}
+		</div>
+	</fieldset>
 </div>
 
 {/* Global CSS, not scoped: the rules are anchored on the unique `#snippet-*` / `#panel-*` ids. */}
@@ -84,6 +91,27 @@ const tabRules = tabs
 	.switcher {
 		position: relative;
 		margin: var(--space-5) 0;
+		/* Colour the fade over the code; Shiki puts --shiki-dark-bg on the <pre> only, out of reach. */
+		--code-bg: var(--tint);
+	}
+
+	/* Groups the radios for screen readers; every default box of a fieldset is unwanted here. */
+	fieldset {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		min-width: 0;
+	}
+
+	legend {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
 	/* Visually hidden but focusable, so the native arrow-key switching of a radio group still works. */
@@ -100,9 +128,10 @@ const tabRules = tabs
 		white-space: nowrap;
 	}
 
+	/* Tracks fit themselves to the width: two rows of two on a phone, one row of four on a desktop. */
 	.tabs {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
 		gap: var(--space-1) var(--space-3);
 	}
 
@@ -128,6 +157,24 @@ const tabRules = tabs
 		padding-top: var(--space-3);
 	}
 
+	.code {
+		position: relative;
+	}
+
+	/* Hint that the code scrolls sideways: a fade over the right edge of the code box, phones only,
+	   where the snippet is always wider than the screen and the thin scrollbar is easy to miss.
+	   Positioned, so it paints over the code text and not only over the box background. */
+	.code::after {
+		content: '';
+		position: absolute;
+		/* The 1px insets keep the box's own border visible under the solid end of the gradient. */
+		inset: 1px 1px 1px auto;
+		width: var(--space-5);
+		border-radius: 0 var(--radius) var(--radius) 0;
+		background: linear-gradient(to right, transparent, var(--code-bg));
+		pointer-events: none;
+	}
+
 	.panel-links {
 		display: flex;
 		gap: var(--space-4);
@@ -145,6 +192,7 @@ const tabRules = tabs
 		font-size: var(--text-code);
 		line-height: 1.6;
 		overflow-x: auto;
+		scrollbar-width: thin;
 		color: var(--shiki-light);
 		/* Not --shiki-light-bg: the light theme's white would not separate from the paper --bg. */
 		background-color: var(--tint);
@@ -155,6 +203,11 @@ const tabRules = tabs
 	}
 
 	@media (prefers-color-scheme: dark) {
+		/* everforest-dark's background, the value Shiki writes into --shiki-dark-bg below. */
+		.switcher {
+			--code-bg: #2d353b;
+		}
+
 		.panel :global(pre.astro-code) {
 			color: var(--shiki-dark);
 			background-color: var(--shiki-dark-bg);
@@ -166,8 +219,8 @@ const tabRules = tabs
 	}
 
 	@media (min-width: 720px) {
-		.tabs {
-			grid-template-columns: repeat(4, 1fr);
+		.code::after {
+			display: none;
 		}
 	}
 </style>

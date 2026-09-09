@@ -22,5 +22,5 @@ def storage(using Context): Stack =
 
   Stack(versioning).exports(bucketName = bucket.bucket)
 
-@main def main = Pulumi.run(storage)
+@main def run = Pulumi.run(storage)
 // snippet:end

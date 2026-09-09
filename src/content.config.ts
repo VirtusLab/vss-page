@@ -47,8 +47,13 @@ const sectionIds = failOnDuplicates(
 	'section',
 	componentsYaml.sections.map((section) => section.id),
 );
+const sectionComponentIds = failOnDuplicates(
+	'component',
+	componentsYaml.sections.flatMap((section) => section.components.map((c) => c.id)),
+);
+// Again with the commercial entry, which cannot reuse a section component's id either.
 const componentIds = failOnDuplicates('component', [
-	...componentsYaml.sections.flatMap((section) => section.components.map((c) => c.id)),
+	...sectionComponentIds,
 	componentsYaml.commercial.id,
 ]);
 
@@ -122,7 +127,10 @@ const snippets = defineCollection({
 			file: z
 				.string()
 				.refine((path) => existsSync(new URL(path, repoRoot)), 'no such file in the repo'),
-			component: z.string().refine((c) => componentIds.has(c), 'unknown component id'),
+			// The tab links to the component's card, and the commercial entry has no card.
+			component: z
+				.string()
+				.refine((c) => sectionComponentIds.has(c), 'unknown section component id'),
 		})
 		.strict(),
 });
@@ -133,11 +141,10 @@ const hero = defineCollection({
 		.object({
 			title: z.string(),
 			tagline: z.string(),
+			lede: z.string(),
 			ctaLabel: z.string(),
 			ctaHref: anchor(sectionIds, 'section'),
 			agentLabel: z.string(),
-			agentLlmsLabel: z.string(),
-			agentLlmsHref: z.string(),
 			agentSkillLabel: z.string(),
 			agentSkillHref: anchor(componentIds, 'component'),
 		})
@@ -162,18 +169,26 @@ const footer = defineCollection({
 			maintainers: z.array(z.object({ label: z.string(), url: z.url() }).strict()).length(2),
 			repoLabel: z.string(),
 			repoUrl: z.url(),
-			llmsLabel: z.string(),
-			llmsHref: z.string(),
 			// Empty hides the license line.
 			license: z.string(),
 		})
 		.strict(),
 });
 
-/** Link texts that repeat across the page. */
+/** Link texts that repeat across the page, and the one llms.txt link, used in two places. */
 const labels = defineCollection({
 	loader: glob({ base: 'content', pattern: 'labels.md' }),
-	schema: z.object({ fullExample: z.string(), repo: z.string() }).strict(),
+	schema: z
+		.object({
+			fullExample: z.string(),
+			repo: z.string(),
+			llmsLabel: z.string(),
+			// Goes through `withBase`, which only handles site-absolute paths.
+			llmsHref: z.string().refine((h) => h.startsWith('/'), 'must be a site-absolute path'),
+			// Names the snippet tab group for screen readers; not shown.
+			snippetsLegend: z.string(),
+		})
+		.strict(),
 });
 
 /** One intro paragraph per section, keyed by the file name, which is the section id. */

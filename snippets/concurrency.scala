@@ -21,7 +21,7 @@ def cheapest(): Quote =
     ),
     timeoutOption(1.second)(ask("globex", 1100, 200.millis))
   )
-  (List(cached, acme) ++ globex).minBy(_.priceCents)
+  (List(cached, acme) ++ globex.toList).minBy(_.priceCents)
 // snippet:end
 
 @main def run(): Unit = println(cheapest())

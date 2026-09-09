@@ -47,7 +47,7 @@ sections:
         repo: https://github.com/softwaremill/sttp-ai
       - id: parlance
         name: Parlance
-        description: Functional ORM for Scala, modeled on the Active Record pattern.
+        description: SQL database access for Scala, modeled on the Active Record pattern.
         url: https://github.com/lbialy/parlance
       - id: macwire
         name: MacWire
@@ -63,16 +63,16 @@ sections:
     components:
       - id: scala-skill
         name: scala-skill
-        description: Claude Code and Codex skills for generating direct-style Scala applications.
+        description: Guides that teach Claude Code and Codex agents to generate direct-style Scala applications.
         url: https://github.com/VirtusLab/scala-skill
       - id: chimp
         name: Chimp
-        description: Library for building type-safe MCP servers and clients in Scala.
+        description: Library for building type-safe Model Context Protocol (MCP) servers and clients in Scala.
         url: https://chimp.softwaremill.com
         repo: https://github.com/softwaremill/chimp
       - id: orca
         name: Orca
-        description: Tool for running coding agents through a repeatable, scripted development workflow.
+        description: Define software development workflows as Scala scripts, with coding agents doing the coding.
         url: https://github.com/VirtusLab/orca
       - id: cellar
         name: Cellar
@@ -107,7 +107,7 @@ sections:
         repo: https://github.com/softwaremill/adopt-tapir
 
 commercial:
-  id: commercial
+  id: visdom
   name: Visdom
   description: Commercial platform for running and managing coding agents across the development lifecycle.
   url: https://visdom.virtuslab.com

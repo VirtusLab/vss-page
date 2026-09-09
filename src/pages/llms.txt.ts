@@ -1,6 +1,10 @@
 import type { APIRoute } from 'astro';
+import { pageUrl } from '../lib/base';
 import { loadSite } from '../lib/content';
-import { readSnippet } from '../lib/snippets';
+import { snippetFile } from '../lib/snippets';
+
+/** Markdown link to its text: the intros are markdown, this file is plain text. */
+const plainLinks = (text: string) => text.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
 
 /** id, name, description, url and repo, the fields decision 2.10 lists for every component. */
 const entry = (c: { id: string; name: string; description: string; url: string; repo?: string }) =>
@@ -17,19 +21,21 @@ const entry = (c: { id: string; name: string; description: string; url: string; 
  * the same `.scala` files, so it cannot drift. Carries every component and every snippet in full,
  * which the hidden switcher panels do not give a rendered-text extractor.
  */
-export const GET: APIRoute = async () => {
-	const { hero, sections, commercial, visdom, snippets } = await loadSite();
+export const GET: APIRoute = async ({ site }) => {
+	const { hero, sections, commercial, visdom, footer, snippets } = await loadSite();
 
-	const blocks: string[] = [`# ${hero.title}`, hero.tagline];
+	const blocks: string[] = [`# ${hero.title}`, pageUrl(site), hero.tagline, hero.lede];
 
 	for (const section of sections) {
 		blocks.push(`## ${section.title}`);
 		const intro = section.intro.body?.trim();
-		if (intro) blocks.push(intro);
+		if (intro) blocks.push(plainLinks(intro));
 		blocks.push(...section.components.map(entry));
 	}
 
 	blocks.push(`## ${visdom.data.eyebrow}`, entry(commercial));
+	const note = visdom.body?.trim();
+	if (note) blocks.push(note);
 
 	blocks.push('## Snippets');
 	for (const snippet of snippets) {
@@ -37,9 +43,9 @@ export const GET: APIRoute = async () => {
 			[
 				`### ${snippet.label}`,
 				snippet.description,
-				`file: ${snippet.file}`,
+				`url: ${footer.repoUrl}/blob/main/${snippet.file}`,
 				'',
-				readSnippet(snippet.file).trimEnd(),
+				snippetFile(snippet.file),
 			].join('\n'),
 		);
 	}

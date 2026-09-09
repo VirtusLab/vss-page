@@ -35,7 +35,8 @@ export const loadSite = async () => {
 	return {
 		hero: (await getEntry('hero', 'hero'))!.data,
 		sections,
-		commercial: (await getEntry('commercial', 'commercial'))!.data,
+		// The collection has exactly one entry, so the code never names the commercial id.
+		commercial: (await getCollection('commercial'))[0]!.data,
 		visdom: (await getEntry('visdom', 'visdom'))!,
 		footer: (await getEntry('footer', 'footer'))!.data,
 		labels: (await getEntry('labels', 'labels'))!.data,

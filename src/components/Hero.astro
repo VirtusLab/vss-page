@@ -2,21 +2,23 @@
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../lib/base';
 
-/** Title, tagline, the single CTA, and one line pointing coding agents at llms.txt and scala-skill. */
+/** Title, tagline, lede, the single CTA, and one line pointing coding agents at llms.txt and scala-skill. */
 interface Props {
 	hero: CollectionEntry<'hero'>['data'];
+	labels: CollectionEntry<'labels'>['data'];
 }
 
-const { hero } = Astro.props;
+const { hero, labels } = Astro.props;
 ---
 
 <header class="hero">
 	<h1>{hero.title}</h1>
 	<p class="tagline">{hero.tagline}</p>
+	<p class="lede">{hero.lede}</p>
 	<p><a class="cta" href={hero.ctaHref}>{hero.ctaLabel}</a></p>
 	{/* Kept on one line: the build drops a whitespace-only text node between two tags. */}
 	<p class="agents">
-		{hero.agentLabel} <a href={withBase(hero.agentLlmsHref)}>{hero.agentLlmsLabel}</a> · <a href={hero.agentSkillHref}>{hero.agentSkillLabel}</a>
+		{hero.agentLabel} <a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a> · <a href={hero.agentSkillHref}>{hero.agentSkillLabel}</a>
 	</p>
 </header>
 
@@ -32,8 +34,14 @@ const { hero } = Astro.props;
 	}
 
 	.tagline {
-		margin: 0 0 var(--space-4);
+		margin: 0 0 var(--space-3);
 		font-size: var(--text-lg);
+		color: var(--muted);
+	}
+
+	.lede {
+		margin: 0 0 var(--space-4);
+		font-size: var(--text-base);
 		color: var(--muted);
 	}
 

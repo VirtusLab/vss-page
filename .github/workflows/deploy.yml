@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -19,13 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Scala CLI
         uses: VirtusLab/scala-cli-setup@v1
         with:
           jvm: temurin:21
       - name: Cache Coursier
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/coursier
           key: coursier-${{ hashFiles('snippets/*.scala') }}
@@ -40,10 +38,14 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # Only the deploy job needs write access to Pages and an OIDC token.
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

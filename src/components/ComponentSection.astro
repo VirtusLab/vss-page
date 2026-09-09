@@ -58,6 +58,16 @@ const { Content } = await render(section.intro);
 		color: var(--muted);
 	}
 
+	/* An intro of two paragraphs keeps the same rhythm as a one-paragraph one. `:global`, because
+	   the paragraphs come from <Content /> and carry no scope attribute. */
+	.intro :global(p) {
+		margin: 0 0 var(--space-2);
+	}
+
+	.intro :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
 	.components {
 		display: grid;
 		gap: var(--space-4);

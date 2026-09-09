@@ -5,7 +5,7 @@ const START = '// snippet:start';
 const END = '// snippet:end';
 
 /** Whole snippet file, including using-directives and imports. `file` is relative to the repo root. */
-export const readSnippet = (file: string): string => {
+const readSnippet = (file: string): string => {
 	const source = files[`/${file}`];
 	if (source === undefined) throw new Error(`No such snippet file: ${file}`);
 	return source;
@@ -34,3 +34,14 @@ export const snippetRegion = (file: string): string => {
 		.join('\n')
 		.replace(/\s+$/, '');
 };
+
+/**
+ * Whole snippet file as llms.txt shows it: using-directives, imports and the region, with the
+ * `snippet:start` / `snippet:end` lines dropped, since they only mark what the page cuts out.
+ */
+export const snippetFile = (file: string): string =>
+	readSnippet(file)
+		.split('\n')
+		.filter((line) => line.trim() !== START && line.trim() !== END)
+		.join('\n')
+		.trimEnd();

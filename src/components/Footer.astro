@@ -5,9 +5,10 @@ import { withBase } from '../lib/base';
 /** Who maintains the page, where its source is, the agent mirror, and the license when there is one. */
 interface Props {
 	footer: CollectionEntry<'footer'>['data'];
+	labels: CollectionEntry<'labels'>['data'];
 }
 
-const { footer } = Astro.props;
+const { footer, labels } = Astro.props;
 // The schema guarantees exactly two, so the sentence can name them directly.
 const [first, second] = footer.maintainers;
 ---
@@ -16,7 +17,7 @@ const [first, second] = footer.maintainers;
 	<p>Maintained by <a href={first.url}>{first.label}</a> and <a href={second.url}>{second.label}</a>.</p>
 	<p class="links">
 		<a href={footer.repoUrl}>{footer.repoLabel}</a>
-		<a href={withBase(footer.llmsHref)}>{footer.llmsLabel}</a>
+		<a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a>
 	</p>
 	{footer.license && <p class="license">{footer.license}</p>}
 </footer>

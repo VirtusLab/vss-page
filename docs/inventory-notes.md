@@ -1,5 +1,7 @@
 # Inventory notes (Task 1)
 
+Outcome: MacWire and Quicklens were accepted into `content/components.yaml`; the other proposals below were not.
+
 Working notes from compiling `content/components.yaml`. Not part of the site content — for Adam to review.
 
 ## Bootzooka dependency check
