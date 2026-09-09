@@ -1,0 +1,22 @@
+{
+  "name": "vss-page",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check-links": "linkinator dist --recurse --skip \"^(?!http)\" --url-rewrite-search \"^(https?://(?:localhost|127\\.0\\.0\\.1):[0-9]+)/vss-page/\" --url-rewrite-replace '$1/'"
+  },
+  "dependencies": {
+    "astro": "^7.3.2"
+  },
+  "devDependencies": {
+    "linkinator": "^8.1.0"
+  }
+}

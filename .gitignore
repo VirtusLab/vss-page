@@ -1,2 +1,6 @@
 spec.md
 plan.md
+node_modules/
+dist/
+.scala-build/
+.astro/
