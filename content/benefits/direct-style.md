@@ -1,13 +1,15 @@
 ---
 order: 1
 title: Direct style
-tagline: "Control flow is plain and reads top to bottom, and coding agents write it well."
+tagline: "Familiar style"
 ---
 
-There are no effect wrappers to lift into and no combinators to learn. Functions
-return values, errors are thrown or returned, and if, for and try work the way
-they do everywhere else. Coding agents write this style well, because it looks
-like the code they have seen most.
+Direct-style is programming as we all know it - it is immediately familiar for
+anyone looking at the code, be it a human developer or an AI coding agent.
 
-A call made with sttp hands back the response body, which you pass to the next
-function without unwrapping anything first.
+Results of functions are immediately available, there's no need to wrestle with
+`Future`s, `IO`s or `Promise`s. There's no `async`/`await` which pollutes the
+code, and no `suspend`able or "regular" function distinction.
+
+At the same time, thanks to Java's virtual threads, direct-style Scala retains
+the performance known from asynchronous, reactive programming styles.

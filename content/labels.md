@@ -7,8 +7,8 @@ starsPending: Star
 llmsLabel: llms.txt
 llmsHref: /llms.txt
 snippetsLegend: Code examples
-snippetsHeading: "VSS in action:"
-snippetsNote: Each tab is an excerpt of a complete scala-cli script that compiles as-is.
+snippetsHeading: "VSS in action!"
+snippetsNote: Each tab is an excerpt of a runnable scala-cli script.
 chapterSnippets: In action
 chapterBenefits: Benefits
 chapterComponents: The stack

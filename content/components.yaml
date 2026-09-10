@@ -4,12 +4,12 @@ sections:
     components:
       - id: bootzooka
         name: Bootzooka
-        description: Template project for starting a Scala-based microservice or web application.
+        description: Template project to quickly start developing a Scala-based microservice or web application.
         url: https://softwaremill.github.io/bootzooka/
         repo: https://github.com/softwaremill/bootzooka
       - id: adopt-tapir
         name: Adopt Tapir
-        description: Generator for a starter Tapir project, configurable via a web UI.
+        description: Generate a Tapir-based project, choosing the target effect system, JSON library, and Tapir features.
         url: https://adopt-tapir.softwaremill.com
         action:
           label: Wizard
@@ -20,7 +20,7 @@ sections:
     components:
       - id: scala-3
         name: Scala 3
-        description: The direct-style-friendly successor to Scala 2, formerly known as Dotty.
+        description: Combines the best features of functional & object-oriented programming.
         url: https://www.scala-lang.org
         repo: https://github.com/scala/scala3
 
@@ -43,30 +43,30 @@ sections:
     components:
       - id: tapir
         name: Tapir
-        description: Library for building HTTP APIs from typed endpoint descriptions, and generating API docs from them.
+        description: Rapid development of self-documenting APIs.
         url: https://tapir.softwaremill.com
         repo: https://github.com/softwaremill/tapir
       - id: sttp
         name: sttp
-        description: Scala HTTP client with a typed, direct-style API.
+        description: The Scala HTTP client you always wanted!
         url: https://sttp.softwaremill.com
         repo: https://github.com/softwaremill/sttp
       - id: ox
         name: Ox
-        description: Direct-style streaming, concurrency, and resiliency library for Scala on the JVM.
+        description: Safe direct-style streaming, concurrency and resiliency for Scala on the JVM.
         url: https://ox.softwaremill.com
         repo: https://github.com/softwaremill/ox
       - id: parlance
         name: Parlance
-        description: SQL database access for Scala, modeled on the Active Record pattern.
+        description: High-velocity, opinionated functional ORM inspired by Active Record patterns.
         url: https://github.com/lbialy/parlance
       - id: macwire
         name: MacWire
-        description: Compile-time dependency injection library for Scala, with no runtime overhead.
+        description: Zero-cost, compile-time, type-safe dependency injection library.
         url: https://github.com/softwaremill/macwire
       - id: quicklens
         name: Quicklens
-        description: Library for modifying deeply nested case class fields in Scala.
+        description: Modify deeply nested case class fields.
         url: https://github.com/softwaremill/quicklens
 
   - id: ai
@@ -74,29 +74,29 @@ sections:
     components:
       - id: sttp-ai
         name: sttp-ai
-        description: Scala toolkit for calling third-party LLM APIs (OpenAI, Claude, and compatible providers).
+        description: Scala toolkit for working with third-party LLMs. Define agents, call provider APIs, use MCPs.
         url: https://sttp-ai.softwaremill.com
         repo: https://github.com/softwaremill/sttp-ai
       - id: scala-skill
         name: scala-skill
-        description: Guides that teach Claude Code and Codex agents to generate direct-style Scala applications.
+        description: "Claude Code & Codex Scala Skills: generate direct-style applications with use-case driven guides."
         url: https://github.com/VirtusLab/scala-skill
       - id: chimp
         name: Chimp
-        description: Library for building type-safe Model Context Protocol (MCP) servers and clients in Scala.
+        description: Build type-safe, boilerplate-less MCP servers and clients in Scala.
         url: https://chimp.softwaremill.com
         repo: https://github.com/softwaremill/chimp
       - id: orca
         name: Orca
-        description: Define software development workflows as Scala scripts, with coding agents doing the coding.
+        description: Deterministic, AI-driven development flows.
         url: https://github.com/VirtusLab/orca
       - id: cellar
         name: Cellar
-        description: Command-line tool to query a Maven JVM dependency's API (symbols, packages, dependency trees).
+        description: CLI tool for coding agents and developers to query the public API of any Maven JVM dependency.
         url: https://github.com/VirtusLab/cellar
       - id: sandcat
         name: Sandcat
-        description: Docker and dev container setup for running coding agents sandboxed behind a proxy.
+        description: A Docker & dev container setup for securely running AI agents in `--dangerous` mode.
         url: https://github.com/VirtusLab/sandcat
 
   - id: devops
@@ -104,12 +104,12 @@ sections:
     components:
       - id: besom
         name: Besom
-        description: Scala SDK for Pulumi, for defining cloud infrastructure as code.
+        description: Pulumi SDK for Scala.
         url: https://virtuslab.github.io/besom/
         repo: https://github.com/VirtusLab/besom
 
 commercial:
   id: visdom
   name: Visdom
-  description: Platform for running and managing coding agents across the development lifecycle.
+  description: "AI-native SDLC platform: the missing layer between AI coding and production"
   url: https://visdom.virtuslab.com

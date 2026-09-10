@@ -1,13 +1,14 @@
 ---
 order: 2
 title: Type safety
-tagline: "Illegal states stay unrepresentable, checked by the compiler instead of by tests."
+tagline: "Make illegal states unrepresentable, use latest Scala 3 features."
 ---
 
-Scala 3 gives you enums for closed sets of cases, opaque types for values that
-cannot be mixed up, and givens for passing context without threading it through
-every signature by hand. The compiler checks that every case is handled, so a
-class of runtime errors cannot happen.
+The simplest features are sometimes the most powerful: algebraic data types
+with pattern matching - pioneered in mainstream languages by Scala, are
+now becoming the de facto standard in any language.
 
-An opaque UserId is an ordinary Int at runtime and a separate type at compile
-time, so passing an order id where a user id belongs does not compile.
+Scala 3 enhances these features with lightweight enums & opaque types. 
+Combined with implicits, path-dependent types, lambdas, type members and
+parameters and many more, you get unprecedented type-safety - which provides
+a fast and precise feedback loop for coding agents.

@@ -1,13 +1,15 @@
 ---
 order: 5
 title: No lock-in
-tagline: "Any part of the stack can be swapped out, because none of it is a framework."
+tagline: "Any part of our stack can be used stand-alone, replaced or combined with third-party libraries."
 ---
 
-The libraries share a language, a style and a set of conventions, so they fit
-together without adapters. None of them takes over the structure of your
-program: you call them, they do not call you. Each one can be replaced with
-something else without the rest changing.
+We propose to build applications on top of a set of libraries, not a framework:
+each component can be replaced, or used in isolation.
 
-Tapir can be swapped for another HTTP layer, or Parlance for plain JDBC, and the
-code around it keeps compiling.
+While many of our libraries support direct-style, they often don't mandate it,
+and allow working with effect systems such as cats-effect or ZIO, using the same
+APIs. 
+
+You're free to choose a JSON library, a programming style, or error model that best
+suites your team and your application.

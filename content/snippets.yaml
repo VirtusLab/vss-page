@@ -3,49 +3,49 @@
 # `file` is relative to the repo root and must exist; it is compiled in CI.
 
 - id: http-server
-  label: HTTP server — Tapir
+  label: "HTTP server: Tapir"
   description: A typed endpoint with a JSON error case, served over HTTP.
   file: snippets/http-server.scala
   component: tapir
 
 - id: concurrency
-  label: Concurrency — Ox
+  label: "Concurrency: Ox"
   description: Three lookups in parallel, one retried, one with a timeout.
   file: snippets/concurrency.scala
   component: ox
 
 - id: agent
-  label: AI agent — sttp-ai
+  label: "AI agent: sttp-ai"
   description: An LLM agent with one tool, given a question to answer.
   file: snippets/agent.scala
   component: sttp-ai
 
 - id: infra
-  label: Infrastructure — Besom
+  label: "Infrastructure: Besom"
   description: An S3 bucket with versioning enabled, deployed by Pulumi.
   file: snippets/infra.scala
   component: besom
 
 - id: websocket
-  label: WebSocket — sttp
+  label: "WebSocket client: sttp"
   description: A few messages sent to a socket, and the replies read back.
   file: snippets/websocket.scala
   component: sttp
 
 - id: database
-  label: Database — Parlance
+  label: "Database: Parlance"
   description: Two rows inserted, then the warmest one found by a typed query.
   file: snippets/database.scala
   component: parlance
 
 - id: streams
-  label: Streams — Ox flows
+  label: "Async streaming: Ox flows"
   description: Two sensors merged into one pipeline, filtered down to six readings.
   file: snippets/streams.scala
   component: ox
 
 - id: dev-workflow
-  label: Dev workflow — Orca
+  label: "AI workflow: Orca"
   description: A prompt planned into tasks, each implemented and reviewed.
   file: snippets/dev-workflow.scala
   component: orca

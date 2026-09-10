@@ -1,13 +1,12 @@
 ---
 order: 4
 title: Structured concurrency
-tagline: "Concurrent work starts and ends inside a scope, like an ordinary block."
+tagline: "Making concurrency more comprehensible and harder to get wrong."
 ---
 
-Ox runs concurrent work inside a scope. The scope does not finish until every
-fork inside it finishes, and if one fork fails, the others are interrupted and
-the error reaches the caller. Threads cannot outlive the code that started them,
-so leaks and lost errors stop being a category of bug.
+With structured concurrency, the syntactical structure of the code defines the
+lifetime of threads. This allows for more local reasoning, ensuring proper
+resource cleanup, no "action-at-a-distance", or thread leaks.
 
-Fetching a user and their orders at the same time is a scope with two forks, and
-once the scope ends you hold two ordinary values.
+A solution that was born in Python, form the basis of safe coroutine usage in 
+Kotlin, is now available for Scala & Java.

@@ -1,16 +1,13 @@
 ---
 title: VirtusLab Scala Stack
 acronym: VSS
-tagline: "Direct-style Scala 3: plain control flow, no effect wrappers, code that agents can write."
+tagline: "Direct-style Scala: type-safe code that is easy to comprehend and generate."
 lede: >-
-  Direct style means ordinary code: call a function, get a value back, use if,
-  for and try, and let virtual threads handle blocking. Everything below is
-  open source, maintained by VirtusLab, and each library can be used on its
-  own.
-# Other taglines, swap one into `tagline` above if you prefer it:
-# A set of Scala 3 libraries and tools for building services in direct style.
-# Modern Scala 3 for building services, with plain functions instead of effect types.
-ctaLabel: Start a project
+  Our open-source stack that builds on solid foundations provided by Scala 3 with
+  its advanced type system, and Java's Virtual Threads, which bring the performance
+  of reactive programming while retaining a familiar programming model. Use the 
+  libraries together or each one separately, whatever is the best fit for your project.
+ctaLabel: Generate a seed project
 ctaHref: "#template"
 agentLabel: "For coding agents:"
 agentSkillLabel: scala-skill
