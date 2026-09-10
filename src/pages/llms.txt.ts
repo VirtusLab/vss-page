@@ -3,7 +3,7 @@ import { pageUrl } from '../lib/base';
 import { loadSite } from '../lib/content';
 import { snippetFile } from '../lib/snippets';
 
-/** Markdown link to its text: the intros are markdown, this file is plain text. */
+/** Markdown link to its text: the benefit bodies are markdown, this file is plain text. */
 const plainLinks = (text: string) => text.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
 
 /**
@@ -42,8 +42,6 @@ export const GET: APIRoute = async ({ site }) => {
 
 	for (const section of sections) {
 		blocks.push(`## ${section.title}`);
-		const intro = section.intro.body?.trim();
-		if (intro) blocks.push(plainLinks(intro));
 		blocks.push(...section.components.map(entry));
 	}
 

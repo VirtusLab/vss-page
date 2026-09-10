@@ -6,7 +6,6 @@ import { parse as parseYaml } from 'yaml';
 const repoRoot = new URL('../', import.meta.url);
 const componentsFile = 'content/components.yaml';
 const snippetsFile = 'content/snippets.yaml';
-const sectionIntrosDir = 'content/sections/';
 const benefitsDir = 'content/benefits/';
 
 const read = (path: string) => readFileSync(new URL(path, repoRoot), 'utf-8');
@@ -32,8 +31,8 @@ const failOnDuplicates = (what: string, ids: string[]) => {
 	return seen;
 };
 
-// Snippets, section intros and hero anchors all refer to components.yaml by id, so their schemas
-// need the ids up front. The file() loader swallows exceptions thrown by a parser, so anything that
+// Snippets and hero anchors refer to components.yaml by id, so their schemas need the ids up
+// front. The file() loader swallows exceptions thrown by a parser, so anything that
 // must fail the build is read and checked here instead.
 const componentsYaml = readComponentsFile(read(componentsFile));
 if (!Array.isArray(componentsYaml?.sections) || !componentsYaml.commercial) {
@@ -62,18 +61,6 @@ const componentIds = failOnDuplicates('component', [
 const snippetsYaml = parseYaml(read(snippetsFile));
 if (!Array.isArray(snippetsYaml) || snippetsYaml.length === 0) {
 	throw new Error(`${snippetsFile} must be a non-empty list of snippets`);
-}
-
-const introIds = new Set(
-	readdirSync(new URL(sectionIntrosDir, repoRoot))
-		.filter((f) => f.endsWith('.md'))
-		.map((f) => f.replace(/\.md$/, '')),
-);
-for (const id of sectionIds) {
-	if (!introIds.has(id)) throw new Error(`Missing intro file ${sectionIntrosDir}${id}.md`);
-}
-for (const id of introIds) {
-	if (!sectionIds.has(id)) throw new Error(`${sectionIntrosDir}${id}.md is not a section id`);
 }
 
 // A benefit's `order` is what puts it in place on the page, so two benefits sharing one is a silent
@@ -117,7 +104,7 @@ const component = z
 	})
 	.strict();
 
-/** Section titles and their components; the intro paragraphs live in `sectionIntros`. */
+/** Section titles and the components they hold. */
 const sections = defineCollection({
 	loader: file(componentsFile, { parser: (text) => withOrder(readComponentsFile(text).sections) }),
 	schema: z
@@ -161,7 +148,7 @@ const hero = defineCollection({
 	schema: z
 		.object({
 			title: z.string(),
-			// Shown as a badge after the title, and in the `<title>` as "<title> (<acronym>)".
+			// Rendered in the `<h1>` and in the `<title>` as "<title> (<acronym>)".
 			acronym: z.string(),
 			tagline: z.string(),
 			lede: z.string(),
@@ -232,9 +219,8 @@ const labels = defineCollection({
 			snippetsLegend: z.string(),
 			// Heading above the tab strip.
 			snippetsHeading: z.string(),
-			// Sentence under the heading, and the command inside it.
+			// Sentence under the heading.
 			snippetsNote: z.string(),
-			snippetsCommand: z.string(),
 			// Eyebrows over the page's three chapter headings; the components one sits above the nav.
 			chapterSnippets: z.string(),
 			chapterBenefits: z.string(),
@@ -244,19 +230,7 @@ const labels = defineCollection({
 			// `og:image:alt` for `public/og.png`.
 			shareImageAlt: z.string(),
 		})
-		.strict()
-		// The switcher splits the sentence on the command to wrap it in a `<code>`, so a note that
-		// does not carry the command verbatim would render without it.
-		.refine(
-			(l) => l.snippetsNote.includes(l.snippetsCommand),
-			'snippetsNote must contain snippetsCommand verbatim',
-		),
-});
-
-/** One intro paragraph per section, keyed by the file name, which is the section id. */
-const sectionIntros = defineCollection({
-	loader: glob({ base: sectionIntrosDir, pattern: '*.md' }),
-	schema: z.object({}).strict(),
+		.strict(),
 });
 
 /** Heading and intro of the benefits chapter; the benefits themselves are their own collection. */
@@ -290,7 +264,6 @@ export const collections = {
 	visdom,
 	footer,
 	labels,
-	sectionIntros,
 	benefitsSection,
 	benefits,
 };

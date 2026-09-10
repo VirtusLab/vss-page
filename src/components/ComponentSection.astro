@@ -1,19 +1,17 @@
 ---
-import { render } from 'astro:content';
 import { formatStars, type Site } from '../lib/content';
 import DocsIcon from './graphics/DocsIcon.astro';
 import GithubMark from './graphics/GithubMark.astro';
 import SectionIcon from './graphics/SectionIcon.astro';
 import StarIcon from './graphics/StarIcon.astro';
 
-/** One stack section: a frog icon and title, an intro paragraph, and a card per component. */
+/** One stack section: a frog icon and title, then a card per component. */
 interface Props {
 	section: Site['sections'][number];
 	labels: Site['labels'];
 }
 
 const { section, labels } = Astro.props;
-const { Content } = await render(section.intro);
 ---
 
 <section id={section.id}>
@@ -21,12 +19,11 @@ const { Content } = await render(section.intro);
 		<SectionIcon name={section.id} />
 		<span>{section.title}</span>
 	</h2>
-	<div class="intro"><Content /></div>
 	{/* `list-style: none` drops list semantics in Safari/VoiceOver; the role puts them back. */}
 	<ul class="components" role="list">
 		{
 			section.components.map((component) => (
-				<li class="panel">
+				<li class:list={['panel', !component.github && 'bandless']}>
 					<div class="body">
 						<h3 id={component.id}>
 							{/* GitHub is the default destination; only a component without a repository sends
@@ -83,40 +80,12 @@ const { Content } = await render(section.intro);
 		padding-top: var(--space-5);
 	}
 
-	/* Only the icon row; the size and the margin come from the global `.chapter-heading`. */
+	/* Only the icon row; the size comes from the global `.chapter-heading`. The gap to the cards is
+	   the grid's own margin, so the heading drops its bottom one. */
 	h2 {
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
-	}
-
-	/* The whole intro block starts where the heading text does, past the icon column, so the rule
-	   sits on the text edge instead of floating an icon's width away from it. */
-	.intro {
-		position: relative;
-		color: var(--muted);
-		margin-left: calc(var(--icon) + var(--space-3));
-		padding-left: var(--space-3);
-	}
-
-	/* The bright-green rule, drawn as a rounded bar rather than a border: a pill radius on a
-	   left border alone bows the edge into a crescent. */
-	.intro::before {
-		content: '';
-		position: absolute;
-		inset: 0 auto 0 0;
-		width: var(--rule);
-		border-radius: var(--radius-pill);
-		background: var(--accent-bright);
-	}
-
-	/* An intro of two paragraphs keeps the same rhythm as a one-paragraph one. `:global`, because
-	   the paragraphs come from <Content /> and carry no scope attribute. */
-	.intro :global(p) {
-		margin: 0 0 var(--space-2);
-	}
-
-	.intro :global(p:last-child) {
 		margin-bottom: 0;
 	}
 
@@ -145,6 +114,12 @@ const { Content } = await render(section.intro);
 	.body {
 		flex: 1;
 		padding: var(--space-3) var(--space-4);
+	}
+
+	/* A card with no link band has nothing to align to its row-mate's band, so stretching it would
+	   only leave blank space under the description. It takes its own height instead. */
+	.bandless {
+		align-self: start;
 	}
 
 	.components li:hover {

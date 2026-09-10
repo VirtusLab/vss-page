@@ -23,8 +23,8 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 ### Hero + tagline + CTAs
 
 - One column, full width, capped at ~65 characters of measure. Same on both widths.
-- `<h1>`: what the stack is, one line, followed by the acronym "VSS" as a filled pill on the same
-  line, wrapping whole when there is no room. Below it, one-sentence tagline (`<p>`).
+- `<h1>`: what the stack is, one line, with the acronym in brackets after it — "VirtusLab Scala
+  Stack (VSS)", plain text, no badge. Below it, one-sentence tagline (`<p>`).
 - One CTA only: "Start a project" → `#template`. No second CTA — no single install command.
 - Under the CTA, one small line for the other audience: "For coding agents: `llms.txt` ·
   scala-skill". The first links to `/llms.txt`; the second is an in-page link to `#scala-skill`,
@@ -39,7 +39,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   benefits band follows, and the nav follows that, so the order is hero → divider → switcher →
   benefits → divider → nav → sections.
 - Above the tab strip: an `<h2>` ("VSS in action:") and one muted sentence saying the snippets are
-  excerpts of scala-cli scripts that run with `scala-cli run <file>`. The hidden `<legend>` stays.
+  excerpts of scala-cli scripts that compile as-is. The hidden `<legend>` stays.
 - Form: CSS-only radio tabs. Eight `<input type="radio" name="snippet">` (first `checked`),
   eight `<label>`s forming the visible strip, eight panels shown via `:checked ~ .panels > #id`.
   No `role="tab"`/`aria-controls` — those imply JS-managed focus.
@@ -59,8 +59,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   using-directives and imports stay outside the markers; `@main` is inside only when the run
   call is the payoff (http-server, infra, websocket, dev-workflow).
 - Under each panel, two text links: the component's anchor on this page (`#tapir`, `#ox`,
-  `#sttp-ai`, `#besom`), and "full example" → the whole `.scala` file in the repo. The
-  `#sttp-ai` link is what stops a reader hunting for it in the AI section.
+  `#sttp-ai`, `#besom`), and "full example" → the whole `.scala` file in the repo.
 - Strip layout: a fixed two columns below 720px and a fixed four above, so eight tabs are always
   four rows of two or two rows of four, never a horizontal scroller and never a short last row.
   `auto-fit` is not used: it packs in as many tabs as fit, which orphans the leftovers. Verify at
@@ -85,9 +84,9 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 Each section: `<section id="...">` → `<h2>` (YAML `title`) → one `<ul>` of components. Same
 treatment for every section, including the one-component ones. Sizes: Language 1, Tooling 2,
-Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
+Backend 6, AI tooling 6, DevOps 1, Template 2 = 18.
 
-- Between the `<h2>` and the `<ul>`: the section intro paragraph from `content/sections/<id>.md`.
+- Nothing between the `<h2>` and the `<ul>`: the sections carry no intro paragraphs.
 - Grid: 2 columns above 720px, 1 below, row-wise DOM order.
 - Card contents, in order:
   1. Component name as an `<a>`, inside `<h3 id="{id}">` using the YAML `id` verbatim. It links
@@ -96,13 +95,14 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
   2. Description as plain text, verbatim from the YAML. No truncation, no `line-clamp`.
   3. A link band on the card's bottom edge, ruled off from the body and tinted: equal cells,
      each an icon plus its label. In order: the GitHub mark on every component that has a
-     repository, the docs book on the 11 whose two links differ, and the star count (star icon +
+     repository, the docs book on the 10 whose two links differ, and the star count (star icon +
      number), linking to the repo page, where the star button is. Icons 20px, muted. The count is
-     baked in at build time when a `GITHUB_TOKEN` is set, and refreshed in the browser.
+     baked in at build time when a `GITHUB_TOKEN` is set, and refreshed in the browser. A card with
+     no GitHub link at all — Adopt Tapir, whose sole link is its own page — gets no band.
 - No other icons. No "Learn more". Cards in a row share a height, so the bands line up.
 - Every component link is styled identically so the eye can scan names.
-- The AI section's YAML `title` is changed to "AI tooling", which separates it from the sttp-ai
-  snippet (a Backend component). Its `id` stays `ai`, so `#ai` keeps working.
+- The AI section's YAML `title` is "AI tooling"; its `id` stays `ai`, so `#ai` keeps working.
+  sttp-ai is its first component.
 
 ### Visdom insert
 
@@ -116,8 +116,8 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 
 ### Footer
 
-- A follow block first: heading, one line, and a pill per network linking the stack's Scala Space
-  account (X, Mastodon, Bluesky, LinkedIn). The Mastodon link carries `rel="me noopener"`, which is
+- A follow block first, centred at every width: heading, one line, and a pill per network linking
+  the stack's Scala Space account (X, Mastodon, Bluesky, LinkedIn). The Mastodon link carries `rel="me noopener"`, which is
   how the account verifies the link back; the other three carry `rel="noopener"`. Icons only here;
   the cards keep theirs. Each pill's accessible name is the visually hidden `followLinkPrefix` from
   `content/footer.md` plus the network label, so "X" is never announced as a bare letter.

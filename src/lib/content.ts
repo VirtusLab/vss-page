@@ -76,18 +76,14 @@ const withLinks = <T extends { url: string; repo?: string }>(component: T) => {
 
 /**
  * Everything the page and `llms.txt` render, in content-file order and with the references between
- * collections already resolved: each section carries its intro entry, each snippet its component. A
- * section without an intro file, or a snippet naming an unknown component, fails the build here —
- * once, for both outputs.
+ * collections already resolved: each snippet carries its component. A snippet naming an unknown
+ * component fails the build here — once, for both outputs.
  */
 export const loadSite = async () => {
-	const intros = await getCollection('sectionIntros');
-
-	const linked = byOrder(await getCollection('sections')).map((section) => {
-		const intro = intros.find((entry) => entry.id === section.data.id);
-		if (!intro) throw new Error(`No intro file for section ${section.data.id}`);
-		return { ...section.data, intro, components: section.data.components.map(withLinks) };
-	});
+	const linked = byOrder(await getCollection('sections')).map((section) => ({
+		...section.data,
+		components: section.data.components.map(withLinks),
+	}));
 
 	const repos = linked.flatMap((section) =>
 		section.components.map((c) => c.githubRepo).filter((repo) => repo !== undefined),

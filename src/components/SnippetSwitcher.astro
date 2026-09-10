@@ -21,16 +21,11 @@ interface Props {
 	/** Eyebrow over the heading, naming the page chapter this block opens. */
 	chapter: string;
 	heading: string;
-	/** One sentence containing `command` verbatim, which is rendered as inline code. */
+	/** One muted sentence under the heading. */
 	note: string;
-	command: string;
 }
 
-const { tabs, fullExampleLabel, legend, chapter, heading, note, command } = Astro.props;
-
-// Splitting keeps the whole sentence in the content file while the command still gets its own
-// element. The labels schema guarantees the command is in there.
-const [noteBefore, noteAfter] = note.split(command);
+const { tabs, fullExampleLabel, legend, chapter, heading, note } = Astro.props;
 
 const radioId = (id: string) => `snippet-${id}`;
 const panelId = (id: string) => `panel-${id}`;
@@ -60,8 +55,7 @@ const tabRules = tabs
 <div class="switcher">
 	<ChapterLabel text={chapter} />
 	<h2 class="chapter-heading">{heading}</h2>
-	{/* Kept on one line: the build drops a whitespace-only text node between two tags. */}
-	<p class="note">{noteBefore}<code>{command}</code>{noteAfter}</p>
+	<p class="note">{note}</p>
 	<fieldset>
 		<legend>{legend}</legend>
 		{
@@ -120,10 +114,6 @@ const tabRules = tabs
 		margin: 0 0 var(--space-3);
 		font-size: var(--text-sm);
 		color: var(--muted);
-	}
-
-	.note code {
-		font-size: var(--text-code);
 	}
 
 	/* Groups the radios for screen readers; every default box of a fieldset is unwanted here. */

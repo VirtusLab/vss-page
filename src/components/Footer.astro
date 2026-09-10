@@ -63,6 +63,12 @@ const { maintainers } = footer;
 		padding-bottom: var(--space-6);
 	}
 
+	/* Centred at every width: the block is an invitation to one account, not part of the
+	   maintainer row below it. */
+	.follow {
+		text-align: center;
+	}
+
 	/* No padding above: the divider's own margin is the whole gap. */
 	.follow h2 {
 		margin: 0 0 var(--space-1);
@@ -70,6 +76,8 @@ const { maintainers } = footer;
 	}
 
 	.follow p {
+		/* `p` is capped at `--measure`, so a narrower line needs the auto margins to sit centred. */
+		margin-inline: auto;
 		font-size: var(--text-sm);
 		color: var(--muted);
 	}
@@ -77,6 +85,7 @@ const { maintainers } = footer;
 	.follow ul {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
 		gap: var(--space-2);
 		margin: var(--space-3) 0 0;
 		padding: 0;

@@ -11,7 +11,6 @@ sections:
         name: Adopt Tapir
         description: Generator for a starter Tapir project, configurable via a web UI.
         url: https://adopt-tapir.softwaremill.com
-        repo: https://github.com/softwaremill/adopt-tapir
 
   - id: language
     title: Language
@@ -54,11 +53,6 @@ sections:
         description: Direct-style streaming, concurrency, and resiliency library for Scala on the JVM.
         url: https://ox.softwaremill.com
         repo: https://github.com/softwaremill/ox
-      - id: sttp-ai
-        name: sttp-ai
-        description: Scala toolkit for calling third-party LLM APIs (OpenAI, Claude, and compatible providers).
-        url: https://sttp-ai.softwaremill.com
-        repo: https://github.com/softwaremill/sttp-ai
       - id: parlance
         name: Parlance
         description: SQL database access for Scala, modeled on the Active Record pattern.
@@ -75,6 +69,11 @@ sections:
   - id: ai
     title: AI tooling
     components:
+      - id: sttp-ai
+        name: sttp-ai
+        description: Scala toolkit for calling third-party LLM APIs (OpenAI, Claude, and compatible providers).
+        url: https://sttp-ai.softwaremill.com
+        repo: https://github.com/softwaremill/sttp-ai
       - id: scala-skill
         name: scala-skill
         description: Guides that teach Claude Code and Codex agents to generate direct-style Scala applications.

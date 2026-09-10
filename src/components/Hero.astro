@@ -15,9 +15,7 @@ const { hero, labels } = Astro.props;
 <header class="hero">
 	<div class="cols">
 		<div class="text">
-			{/* Written without a gap: the badge carries its own left margin, and a line break here
-			    would add a second, breakable space in front of it. */}
-			<h1>{hero.title}<span class="acronym">{hero.acronym}</span></h1>
+			<h1>{hero.title} ({hero.acronym})</h1>
 			<p class="tagline">{hero.tagline}</p>
 			<p class="lede">{hero.lede}</p>
 			<p class="cta-row"><a class="cta" href={hero.ctaHref}>{hero.ctaLabel}</a></p>
@@ -40,7 +38,7 @@ const { hero, labels } = Astro.props;
 		gap: var(--space-4);
 	}
 
-	/* The bright-green mark that opens the page; the same rule runs down every section intro. */
+	/* The bright-green mark that opens the page. */
 	.text::before {
 		content: '';
 		display: block;
@@ -55,21 +53,6 @@ const { hero, labels } = Astro.props;
 		max-width: var(--measure);
 		margin: 0 0 var(--space-3);
 		font-size: var(--text-2xl);
-	}
-
-	/* Inline-block, so it rides the last line of the title when there is room and drops whole to the
-	   next line when there is not. Sized off the heading, so it scales with it. */
-	.acronym {
-		display: inline-block;
-		margin-left: 0.3em;
-		padding: 0.05em 0.45em;
-		border-radius: var(--radius-pill);
-		background: var(--accent);
-		color: var(--on-accent);
-		font-size: 0.45em;
-		font-weight: 700;
-		letter-spacing: 0.06em;
-		vertical-align: 0.35em;
 	}
 
 	.tagline {

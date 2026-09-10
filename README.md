@@ -19,15 +19,13 @@ npm run check-links  # check links in the built site (run after npm run build)
 - **A snippet**: add a `.scala` file to `snippets/` with `// snippet:start` and
   `// snippet:end` around the lines to show, then an entry in
   `content/snippets.yaml` pointing at it.
-- **A section**: add an entry under `sections:` in `content/components.yaml`
-  and a matching `content/sections/<id>.md` with its intro paragraph.
+- **A section**: add an entry under `sections:` in `content/components.yaml`.
 
 ## Content files
 
 - `content/components.yaml` — every section and component (name, description,
   URL, repo), plus the one commercial entry. See `docs/layout-decision.md`.
 - `content/snippets.yaml` — the snippet tabs, in order.
-- `content/sections/<id>.md` — one intro paragraph per section.
 - `content/hero.md` — title, tagline, lede, the CTA and the agent line.
 - `content/labels.md` — link texts used in more than one place.
 - `content/visdom.md` — the label and note in the commercial block.
@@ -42,8 +40,9 @@ only the browser fills them in, against GitHub's 60-requests-per-hour limit for 
 To bake them locally: `export GITHUB_TOKEN=$(gh auth token)` before `npm run build`. A missing or
 failed count is never an error: the card keeps its link to the repository.
 
-`snippets/` holds the Scala files the page shows. Each one compiles in CI; only
-the lines between `// snippet:start` and `// snippet:end` are shown.
+`snippets/` holds the Scala files the page shows. CI compiles each one — they are
+not run — and only the lines between `// snippet:start` and `// snippet:end` are
+shown on the page.
 
 ## Deployment
 
