@@ -2,17 +2,17 @@
 import { withBase } from '../../lib/base';
 
 /**
- * The hero illustration: `public/art/hero.png`, a 160×120 pixel-art pond scene exported at ×4. It
- * paints its own background inside a dark frame, so it needs no token fills and reads on both
- * grounds. Decorative, hence `aria-hidden`. Eager, because it is above the fold.
+ * The hero illustration: `public/art/hero.png`, a 160×160 pixel-art sprite of the frog exported at
+ * ×2. It is transparent, so it carries the same light rim as the icons and reads on both grounds.
+ * Decorative, hence `aria-hidden`. Eager, because it is above the fold.
  */
 ---
 
 <img
 	class="hero-art pixel"
 	src={withBase('/art/hero.png')}
-	width="640"
-	height="480"
+	width="320"
+	height="320"
 	alt=""
 	aria-hidden="true"
 	decoding="async"
@@ -20,8 +20,7 @@ import { withBase } from '../../lib/base';
 />
 
 <style>
-	/* Fills the column and scales with it; the cap is on the wrapper in `Hero.astro`. Square corners:
-	   a radius would cut the frame's own pixels. */
+	/* Fills the column and scales with it; the cap is on the wrapper in `Hero.astro`. */
 	.hero-art {
 		display: block;
 		width: 100%;
