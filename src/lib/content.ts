@@ -1,7 +1,8 @@
 import { getCollection, getEntry } from 'astro:content';
 
 // Astro's data-store writer persists entries sorted by id, so `getCollection` hands them back in id
-// order. `order`, attached by the loaders, restores the order the YAML files are written in.
+// order. `order` restores the authored one: the loaders attach it to sections and snippets from the
+// position in the YAML, and each benefit file carries its own in frontmatter.
 const byOrder = <T extends { data: { order: number } }>(entries: T[]): T[] =>
 	[...entries].sort((a, b) => a.data.order - b.data.order);
 
@@ -114,8 +115,20 @@ export const loadSite = async () => {
 		return { ...snippet.data, component };
 	});
 
+	const benefits = {
+		...(await getEntry('benefitsSection', 'benefits-section'))!.data,
+		// The file name is the anchor id, and each entry keeps its own file so the page can
+		// `render()` the body paragraphs.
+		items: byOrder(await getCollection('benefits')).map((entry) => ({
+			...entry.data,
+			id: entry.id,
+			entry,
+		})),
+	};
+
 	return {
 		hero: (await getEntry('hero', 'hero'))!.data,
+		benefits,
 		sections,
 		// The collection has exactly one entry, so the code never names the commercial id.
 		commercial: (await getCollection('commercial'))[0]!.data,

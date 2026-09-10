@@ -22,9 +22,19 @@ const entry = (c: { id: string; name: string; description: string; url: string; 
  * which the hidden switcher panels do not give a rendered-text extractor.
  */
 export const GET: APIRoute = async ({ site }) => {
-	const { hero, sections, commercial, visdom, footer, snippets } = await loadSite();
+	const { hero, sections, commercial, visdom, footer, snippets, benefits } = await loadSite();
 
 	const blocks: string[] = [`# ${hero.title} (${hero.acronym})`, pageUrl(site), hero.tagline, hero.lede];
+
+	// The case for the stack, ahead of the inventory: an agent reading only the top of the file gets
+	// the argument for choosing any of it, not just the list.
+	blocks.push(`## ${benefits.heading}`, benefits.intro);
+	for (const benefit of benefits.items) {
+		const body = benefit.entry.body?.trim();
+		blocks.push(
+			[`### ${benefit.title}`, benefit.tagline, ...(body ? ['', plainLinks(body)] : [])].join('\n'),
+		);
+	}
 
 	for (const section of sections) {
 		blocks.push(`## ${section.title}`);
@@ -50,6 +60,13 @@ export const GET: APIRoute = async ({ site }) => {
 			].join('\n'),
 		);
 	}
+
+	// Last, where the page puts it: the file has no maintainer line to sit under.
+	blocks.push(
+		['## Follow', footer.followText, ...footer.follow.map((a) => `${a.network}: ${a.url}`)].join(
+			'\n',
+		),
+	);
 
 	return new Response(`${blocks.join('\n\n')}\n`, {
 		headers: { 'content-type': 'text/plain; charset=utf-8' },

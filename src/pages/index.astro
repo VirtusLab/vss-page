@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import BenefitsSection from '../components/BenefitsSection.astro';
+import ChapterLabel from '../components/ChapterLabel.astro';
 import Commercial from '../components/Commercial.astro';
 import ComponentSection from '../components/ComponentSection.astro';
 import Footer from '../components/Footer.astro';
@@ -10,7 +12,7 @@ import Divider from '../components/graphics/Divider.astro';
 import { loadSite } from '../lib/content';
 import { snippetRegion } from '../lib/snippets';
 
-const { hero, sections, commercial, visdom, footer, labels, snippets } = await loadSite();
+const { hero, sections, commercial, visdom, footer, labels, snippets, benefits } = await loadSite();
 
 const tabs = snippets.map((snippet) => ({
 	id: snippet.id,
@@ -23,24 +25,40 @@ const tabs = snippets.map((snippet) => ({
 ---
 
 <Base title={`${hero.title} (${hero.acronym})`} description={hero.tagline}>
-	<div class="page">
-		<main>
-			{/* Hero and code first, chrome after: the nav is the lead-in to the sections it links to,
-			    and the divider closes the opening block. */}
+	{/* Three chapters, each opened by its own eyebrow: the snippets show the code, the benefits make
+	    the argument, and the nav leads into the sections it links to. A sprig closes the hero and
+	    another closes the benefits; the snippets need none, because the band's top edge is already a
+	    line across the page. The band paints its own ground, which is why it sits outside `.page` —
+	    the only block that runs to the window's edges. */}
+	<main>
+		<div class="page">
 			<Hero hero={hero} labels={labels} />
+			<Divider />
 			<SnippetSwitcher
 				tabs={tabs}
 				fullExampleLabel={labels.fullExample}
 				legend={labels.snippetsLegend}
+				chapter={labels.chapterSnippets}
 				heading={labels.snippetsHeading}
 				note={labels.snippetsNote}
 				command={labels.snippetsCommand}
 			/>
+		</div>
+		<BenefitsSection benefits={benefits} chapter={labels.chapterBenefits} />
+		<div class="page">
 			<Divider />
-			<Nav sections={sections} repoLabel={footer.repoLabel} repoUrl={footer.repoUrl} />
+			<ChapterLabel text={labels.chapterComponents} />
+			<Nav
+				sections={sections}
+				benefitsLabel={benefits.heading}
+				repoLabel={footer.repoLabel}
+				repoUrl={footer.repoUrl}
+			/>
 			{sections.map((section) => <ComponentSection section={section} labels={labels} />)}
 			<Commercial commercial={commercial} visdom={visdom} />
-		</main>
+		</div>
+	</main>
+	<div class="page">
 		<Footer footer={footer} labels={labels} />
 	</div>
 	{/*

@@ -79,9 +79,15 @@ const canonical = pageUrl(Astro.site);
 		--art-disc: #e5f7de;
 		--art-disc-core: #f4fcee;
 		--art-disc-edge: #b4f5b5;
+		/* The plug-in tiles, which sit on the benefits band rather than inside a disc, so unlike the
+		   rest of the ramp they are held to 3:1 against it. */
+		--art-tile: #b4f5b5;
 		--art-eye: #f0a828;
 		--art-eye-dark: #b06f0c;
 		--art-shine: #ffffff;
+		/* The one neutral in the ramp: the discarded alternatives in the benefit scenes. Never text,
+		   but held to 3:1 on both grounds, because it carries shapes a reader has to make out. */
+		--art-grey: #6b7a70;
 
 		/* Background of the code panel: a hair greener and darker than the page, so the panel reads
 		   as a surface without an outline doing the work. */
@@ -177,9 +183,11 @@ const canonical = pageUrl(Astro.site);
 			--art-disc: #0d2a1b;
 			--art-disc-core: #123723;
 			--art-disc-edge: #1d4a30;
+			--art-tile: #47855f;
 			--art-eye: #f7c15c;
 			--art-eye-dark: #c07d16;
 			--art-shine: #f9f6f5;
+			--art-grey: #8fa596;
 
 			/* github-dark-high-contrast on a forest black of our own, so the panel joins the palette. */
 			--code-bg: #041009;
@@ -253,6 +261,13 @@ const canonical = pageUrl(Astro.site);
 	h3 {
 		font-weight: 600;
 		letter-spacing: -0.005em;
+	}
+
+	/* The heading that opens a chapter: the snippets, the benefits, and each component section. One
+	   rule, so all three start at the same size and on the same rhythm. */
+	.chapter-heading {
+		margin: 0 0 var(--space-3);
+		font-size: var(--text-xl);
 	}
 
 	p {

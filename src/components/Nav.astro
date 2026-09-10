@@ -1,20 +1,25 @@
 ---
 /**
- * The one navigation row, placed after the snippets, so it leads into the sections it links to.
+ * The one navigation row, opening the components chapter, so it leads into the sections it links to.
  * Section labels are the section titles verbatim, so nav and headings cannot diverge. Sticky above
  * the 720px breakpoint only.
  */
 interface Props {
 	sections: { id: string; title: string }[];
+	/** The benefits heading, so the first link and the block's own `<h2>` cannot diverge either. */
+	benefitsLabel: string;
 	repoLabel: string;
 	repoUrl: string;
 }
 
-const { sections, repoLabel, repoUrl } = Astro.props;
+const { sections, benefitsLabel, repoLabel, repoUrl } = Astro.props;
 ---
 
 <nav class="nav">
 	<ul>
+		{/* The benefits sit above the nav, not below it, but the row is the page's index: leaving
+		    them out would be the one block a reader cannot jump back to. */}
+		<li><a href="#benefits">{benefitsLabel}</a></li>
 		{
 			sections.map((section) => (
 				<li>

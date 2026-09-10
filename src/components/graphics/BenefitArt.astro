@@ -1,0 +1,380 @@
+---
+/**
+ * One illustration per benefit, keyed by the benefit id. All five are landscape 240×180 scenes drawn
+ * in the hero's shape language — layered ellipses and rounded slabs, no outlines — and every fill is
+ * a token, so the set recolours between light and dark. The frog is drawn once per scene into `defs`
+ * and placed with `use`, which is what keeps a scene down to a handful of shapes. Decorative, hence
+ * `aria-hidden`.
+ */
+interface Props {
+	/** A benefit id. An id with no illustration fails the build. */
+	name: string;
+}
+
+const { name } = Astro.props;
+const drawn = ['direct-style', 'type-safety', 'mature-platform', 'structured-concurrency', 'no-lock-in'];
+if (!drawn.includes(name)) throw new Error(`No benefit illustration drawn for "${name}"`);
+
+// Ids are scoped by scene name because all five scenes render on one page.
+const frog = `${name}-frog`;
+const eyes = [-8.5, 9.5];
+
+// direct-style: the four pads of the clean route, evenly spaced along one line.
+const pads = [34, 92, 150, 208];
+// structured-concurrency: the three forks, offset from the parent scope's centre.
+const forks = [-36, 0, 36];
+// mature-platform: the two plug-in tiles, each at its connector's x.
+const tiles = [48, 146];
+// no-lock-in: the three slots in the row; the middle one is the empty one.
+const slots = [48, 94, 140];
+---
+
+<svg class="benefit-art" viewBox="0 0 240 180" aria-hidden="true" focusable="false">
+	<defs>
+		{/* The section-icon frog, drawn about its own body centre so a scene can place it by `use`. */}
+		<g id={frog}>
+			<ellipse rx="16.5" ry="12" fill="var(--art-frog)"></ellipse>
+			<ellipse cy="-3.5" rx="10" ry="5.5" fill="var(--art-frog-light)" opacity="0.5"></ellipse>
+			<circle cx="-12" cy="8" r="3.2" fill="var(--art-frog-light)"></circle>
+			<circle cx="12" cy="8" r="3.2" fill="var(--art-frog-light)"></circle>
+			{eyes.map((cx) => <circle cx={cx} cy="-9" r="8.4" fill="var(--art-frog-light)" />)}
+			{eyes.map((cx) => <circle cx={cx} cy="-9" r="6.1" fill="var(--art-eye-dark)" />)}
+			{eyes.map((cx) => <circle cx={cx} cy="-9" r="4.9" fill="var(--art-eye)" />)}
+			{eyes.map((cx) => <ellipse cx={cx + 0.6} cy="-9.6" rx="2.05" ry="3.2" fill="var(--art-ink)" />)}
+			{eyes.map((cx) => <circle cx={cx - 2} cy="-12" r="1.55" fill="var(--art-shine)" />)}
+			<path
+				d="M -9 4.5 Q 0 10 9 4.5"
+				fill="none"
+				stroke="var(--art-frog-dark)"
+				stroke-width="2.2"
+				stroke-linecap="round"></path>
+		</g>
+
+		{
+			name === 'direct-style' && (
+				/* The tangled route is drawn with this, so it loses itself rather than ending somewhere. */
+				<linearGradient id={`${name}-fade`} x1="0" y1="0" x2="1" y2="0">
+					<stop offset="0" stop-color="var(--art-grey)" stop-opacity="0.55" />
+					<stop offset="1" stop-color="var(--art-grey)" stop-opacity="0" />
+				</linearGradient>
+			)
+		}
+		{
+			name === 'no-lock-in' && (
+				/* One interchangeable block: a notch on the left, the same-sized tab on the right. Every
+				   block in the row is this shape, which is the whole point of the scene. */
+				<path
+					id={`${name}-block`}
+					d="M 8 0 H 38 A 8 8 0 0 1 46 8 V 14 A 6 6 0 0 0 46 26 V 32 A 8 8 0 0 1 38 40 H 8 A 8 8 0 0 1 0 32 V 26 A 6 6 0 0 1 0 14 V 8 A 8 8 0 0 1 8 0 Z"
+				/>
+			)
+		}
+	</defs>
+
+	{
+		/* Direct style: one clean line of lily pads the frog hops along, with the tangled alternative
+		   knotting itself above and fading out. */
+		name === 'direct-style' && (
+			<g>
+				<path
+					d="M 34 132 C 10 116 6 70 34 60 C 58 51 64 88 40 84 C 16 80 40 30 74 40 C 108 50 86 84 106 84 C 126 84 122 52 142 50 C 162 48 172 64 166 78"
+					fill="none"
+					stroke={`url(#${name}-fade)`}
+					stroke-width="4"
+					stroke-linecap="round"
+				/>
+				<path
+					d="M 34 132 Q 63 96 92 132 Q 121 96 150 132 Q 179 96 208 132"
+					fill="none"
+					stroke="var(--art-leaf-light)"
+					stroke-width="3.5"
+					stroke-linecap="round"
+					stroke-dasharray="7 9"
+				/>
+				{pads.map((cx) => (
+					<ellipse cx={cx} cy="144" rx="26" ry="8.5" fill="var(--art-leaf)" />
+				))}
+				{pads.map((cx) => (
+					<ellipse cx={cx} cy="141" rx="22" ry="6" fill="var(--art-leaf-light)" />
+				))}
+				<circle cx="208" cy="138" r="5" fill="var(--art-eye)" />
+				<g class="hop">
+					<use href={`#${frog}`} transform="translate(92 128) scale(0.92)" />
+				</g>
+			</g>
+		)
+	}
+
+	{
+		/* Types that rule out bugs: shaped slots take only their own tile, and the round one bouncing
+		   over the square hole never gets in. */
+		name === 'type-safety' && (
+			<g>
+				<rect
+					x="22"
+					y="58"
+					width="196"
+					height="84"
+					rx="14"
+					fill="var(--art-disc-core)"
+					stroke="var(--art-disc-edge)"
+					stroke-width="2"
+				/>
+				<g fill="var(--art-disc-edge)">
+					<circle cx="64" cy="100" r="18" />
+					<rect x="94" y="82" width="36" height="36" rx="8" />
+					<path
+						d="M 162 80 L 181 117 L 143 117 Z"
+						stroke="var(--art-disc-edge)"
+						stroke-width="7"
+						stroke-linejoin="round"
+					/>
+				</g>
+				<g fill="var(--art-frog)">
+					<circle cx="64" cy="100" r="13.5" />
+					<path
+						d="M 162 88 L 176 114 L 148 114 Z"
+						stroke="var(--art-frog)"
+						stroke-width="6"
+						stroke-linejoin="round"
+					/>
+				</g>
+				<path
+					d="M 112 52 L 112 76"
+					fill="none"
+					stroke="var(--art-grey)"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-dasharray="2 6"
+					opacity="0.5"
+				/>
+				<g class="reject">
+					<circle
+						cx="112"
+						cy="28"
+						r="17"
+						fill="var(--art-leaf-light)"
+						fill-opacity="0.35"
+						stroke="var(--art-grey)"
+						stroke-width="2"
+						stroke-dasharray="6 6"
+						opacity="0.9"
+					/>
+					<g fill="none" stroke="var(--accent-2-text)" stroke-width="3" stroke-linecap="round">
+						<path d="M 106 22 L 118 34" />
+						<path d="M 118 22 L 106 34" />
+					</g>
+				</g>
+				<use href={`#${frog}`} transform="translate(56 50) scale(0.72)" />
+			</g>
+		)
+	}
+
+	{
+		/* A mature platform: the frog sits on one broad slab, and Java and Scala hang off it through
+		   the very same connector. */
+		name === 'mature-platform' && (
+			<g>
+				<rect x="30" y="112" width="180" height="14" rx="7" fill="var(--art-frog-dark)" />
+				<rect x="16" y="76" width="208" height="40" rx="20" fill="var(--art-leaf)" />
+				<rect x="16" y="76" width="208" height="16" rx="8" fill="var(--art-leaf-light)" opacity="0.45" />
+				{/* The same two-prong plug under both tiles: one interface, two languages. */}
+				{tiles.map((x) => (
+					<g fill="var(--art-frog-dark)">
+						<rect x={x + 13} y="114" width="6" height="22" rx="3" />
+						<rect x={x + 27} y="114" width="6" height="22" rx="3" />
+					</g>
+				))}
+				{tiles.map((x) => (
+					<rect
+						x={x}
+						y="134"
+						width="46"
+						height="42"
+						rx="10"
+						fill="var(--art-tile)"
+						stroke="var(--art-disc-edge)"
+						stroke-width="2"
+					/>
+				))}
+				<g>
+					<rect x="58" y="152" width="24" height="20" rx="5" fill="var(--art-leaf)" />
+					<rect x="58" y="152" width="24" height="6" rx="3" fill="var(--art-leaf-light)" />
+					<path
+						d="M 84 157 A 6 6 0 0 1 84 169"
+						fill="none"
+						stroke="var(--art-leaf)"
+						stroke-width="3.2"
+						stroke-linecap="round"
+					/>
+					<g class="steam" fill="none" stroke="var(--art-grey)" stroke-width="2.4" stroke-linecap="round" opacity="0.5">
+						<path d="M 65 148 Q 60 142 65 136" />
+						<path d="M 76 148 Q 71 142 76 136" />
+					</g>
+				</g>
+				<g fill="var(--art-leaf)">
+					<path d="M 154 145 L 184 140 L 184 148 L 154 153 Z" />
+					<path d="M 154 156 L 184 151 L 184 159 L 154 164 Z" opacity="0.72" />
+					<path d="M 154 167 L 184 162 L 184 170 L 154 175 Z" opacity="0.44" />
+				</g>
+				<use href={`#${frog}`} transform="translate(120 65) scale(1.02)" />
+			</g>
+		)
+	}
+
+	{
+		/* Structured concurrency: three forks on one inner pad, inside the parent scope's rings, with
+		   the parent frog on the rim — nothing escapes the ring it was started in. */
+		name === 'structured-concurrency' && (
+			<g>
+				<ellipse cx="120" cy="110" rx="100" ry="54" fill="var(--art-leaf)" />
+				<ellipse cx="120" cy="108" rx="86" ry="44" fill="var(--art-leaf-light)" />
+				<ellipse cx="120" cy="108" rx="72" ry="35" fill="var(--art-disc-edge)" />
+				<ellipse
+					cx="120"
+					cy="108"
+					rx="72"
+					ry="35"
+					fill="none"
+					stroke="var(--art-disc-edge)"
+					stroke-width="2"
+				/>
+				<g class="sync">
+					{forks.map((dx) => (
+						<use href={`#${frog}`} transform={`translate(${120 + dx} 110) scale(0.62)`} />
+					))}
+				</g>
+				<use href={`#${frog}`} transform="translate(120 45) scale(0.85)" />
+			</g>
+		)
+	}
+
+	{
+		/* Libraries, not a framework: every block carries the same connector, so the one in the air
+		   drops back into any slot — and the lock in the corner is already broken. */
+		name === 'no-lock-in' && (
+			<g>
+				<g opacity="0.45" stroke="var(--art-grey)" stroke-linecap="round">
+					<rect x="26" y="56" width="24" height="18" rx="4" fill="var(--art-grey)" stroke="none" />
+					<g fill="none" stroke-width="3">
+						<path d="M 32 56 V 50 A 6 6 0 0 1 38 44" />
+						<path d="M 44 56 V 50 A 6 6 0 0 0 40 44.5" transform="rotate(40 44 56)" />
+					</g>
+				</g>
+				<use href={`#${name}-block`} x={slots[0]} y="112" fill="var(--art-leaf)" />
+				<use href={`#${name}-block`} x={slots[2]} y="112" fill="var(--art-frog)" />
+				<use
+					href={`#${name}-block`}
+					x={slots[1]}
+					y="112"
+					fill="none"
+					stroke="var(--art-grey)"
+					stroke-width="2"
+					stroke-dasharray="6 6"
+					opacity="0.55"
+				/>
+				<g class="lift">
+					<use href={`#${name}-block`} x={slots[1]} y="44" fill="var(--art-leaf-light)" />
+					<use href={`#${frog}`} transform="translate(117 37) scale(0.6)" />
+				</g>
+			</g>
+		)
+	}
+</svg>
+
+<style>
+	/* The wrapper owns the width; the illustration fills it and keeps its landscape ratio. */
+	.benefit-art {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	/* One moving element per scene. The transform lives on an inner element in every case, so the
+	   animated group's CSS transform composes with it instead of replacing it. */
+	.hop {
+		animation: hop 3.4s ease-in-out infinite;
+	}
+
+	.reject {
+		animation: reject 3s ease-in-out infinite;
+	}
+
+	.steam {
+		animation: steam 4s ease-in-out infinite;
+	}
+
+	.sync {
+		animation: sync 3.6s ease-in-out infinite;
+	}
+
+	.lift {
+		animation: lift 4.2s ease-in-out infinite;
+	}
+
+	@keyframes hop {
+		0%,
+		60%,
+		100% {
+			transform: translateY(0);
+		}
+		30% {
+			transform: translateY(-12px);
+		}
+	}
+
+	/* Down onto the square hole, and straight back up: a round tile never seats. */
+	@keyframes reject {
+		0%,
+		55%,
+		100% {
+			transform: translateY(0);
+		}
+		35% {
+			transform: translateY(8px);
+		}
+	}
+
+	@keyframes steam {
+		0%,
+		100% {
+			opacity: 0.15;
+			transform: translateY(2px);
+		}
+		50% {
+			opacity: 0.6;
+			transform: translateY(-3px);
+		}
+	}
+
+	/* All three forks on one timeline: they start and finish together. */
+	@keyframes sync {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-5px);
+		}
+	}
+
+	@keyframes lift {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-6px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hop,
+		.reject,
+		.steam,
+		.sync,
+		.lift {
+			animation: none;
+		}
+	}
+</style>

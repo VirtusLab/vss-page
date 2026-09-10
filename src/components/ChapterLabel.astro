@@ -1,0 +1,39 @@
+---
+/**
+ * The eyebrow over a chapter heading. The page has exactly three — the snippets, the benefits and
+ * the component sections — and the label is what names the chapter the reader has just entered.
+ * Text comes from `labels.md`.
+ */
+interface Props {
+	text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="chapter">{text}</p>
+
+<style>
+	/* A short green dash in front, the same mark that opens the hero and rules the section intros,
+	   at the eyebrow's own scale. */
+	.chapter {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		margin: 0 0 var(--space-2);
+		color: var(--muted);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.chapter::before {
+		content: '';
+		width: var(--space-4);
+		height: var(--rule);
+		border-radius: var(--radius-pill);
+		background: var(--accent-bright);
+	}
+</style>

@@ -12,10 +12,11 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 ### Nav
 
-- No top masthead. The nav is a single `<nav>` row placed after the switcher, so the first screen
-  is hero + code, not chrome, and the row leads straight into the sections it links to.
-- Six plain text links in YAML order. Nav label and section `<h2>` both render the YAML `title`
-  verbatim, so they cannot diverge. Plus a link to the source repo; Visdom is not in the nav.
+- No top masthead. The nav is a single `<nav>` row placed after the benefits block, so the first
+  screen is hero + code, not chrome, and the row leads straight into the sections it links to.
+- Seven plain text links: `#benefits` first, labelled with the benefits heading, then the six
+  sections in YAML order. Nav label and section `<h2>` both render the YAML `title` verbatim, so they
+  cannot diverge. Plus a link to the source repo; Visdom is not in the nav.
 - Desktop (>720px): `position: sticky; top: 0`, one row, sticks on scroll.
 - Mobile: static (not sticky), labels wrap to two rows. No hamburger, no `<select>`, no JS.
 
@@ -34,8 +35,9 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 ### Snippet switcher
 
-- Directly under the hero, still within the first scroll on desktop. The divider closes the block
-  and the nav follows it, so the order is hero → switcher → divider → nav → sections.
+- Under the hero and the divider that closes it, still within the first scroll on desktop. The
+  benefits band follows, and the nav follows that, so the order is hero → divider → switcher →
+  benefits → divider → nav → sections.
 - Above the tab strip: an `<h2>` ("VSS in action:") and one muted sentence saying the snippets are
   excerpts of scala-cli scripts that run with `scala-cli run <file>`. The hidden `<legend>` stays.
 - Form: CSS-only radio tabs. Eight `<input type="radio" name="snippet">` (first `checked`),
@@ -64,6 +66,20 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   `auto-fit` is not used: it packs in as many tabs as fit, which orphans the leftovers. Verify at
   360px and just above the breakpoint.
 - No copy button. There is no install line to copy and a snippet is read, not pasted.
+
+### Benefits
+
+- Between the switcher and the nav, on a full-bleed `--surface` band — the one block rendered
+  outside the page container, so the tint runs to the window's edges and the page reads as three
+  chapters. Each chapter opens with a small uppercase eyebrow from `content/labels.md`.
+- `<section id="benefits">` → `<h2>` and an intro paragraph from `content/benefits-section.md` →
+  an `<ol>` of five `<article>`s, one per file in `content/benefits/`.
+- Each item: a 240×180 illustration (`BenefitArt`, keyed by the benefit id), an `<h3
+  id="benefit-{id}">`, the tagline as a lead line, and the body paragraphs. Above 720px the
+  illustration is a 320px column that changes sides down the list; below it, it stacks above the
+  text at up to 320px. The item numbers are a CSS counter, not content.
+- The file name is the id — the anchor and the illustration key — and a frontmatter `order` number
+  is the place on the page. The build fails if two files share an `order` or one is missing it.
 
 ### Component sections (six, YAML order)
 
@@ -100,9 +116,11 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 
 ### Footer
 
-- One row on desktop, stacked on mobile. Who maintains the page (VirtusLab), link
-  to the page's own repo, link to `llms.txt`, license line. No newsletter, no sponsor strip,
-  no social icons.
+- A follow block first: heading, one line, and a pill per network linking the stack's Scala Space
+  account (X, Mastodon, Bluesky, LinkedIn). The Mastodon link carries `rel="me"`, which is how the
+  account verifies the link back. Icons only here; the cards keep theirs.
+- Under it, one row on desktop, stacked on mobile. Who maintains the page (VirtusLab), link
+  to the page's own repo, link to `llms.txt`, license line. No newsletter, no sponsor strip.
 
 ## 2. Decisions
 
@@ -115,11 +133,11 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
    unambiguous `<a>` for agents.
 4. **Grid** — 2 columns above 720px, 1 below, uniform across sections. 3 columns would wrap
    16-word descriptions to 3 lines and leave orphans in most sections.
-5. **Section order** — unchanged YAML order (Language, Tooling, Backend, AI, DevOps, Template).
+5. **Section order** — unchanged YAML order (Template, Language, Tooling, Backend, AI, DevOps).
    Page and source file agree, so humans and agents see the same stack.
 6. **Anchors** — an explicit `id` field on every section and every component in the YAML, used
    verbatim. Six section ids alone do not satisfy "quick navigation to any component".
-7. **Navigation** — six links under the snippets, sticky above 720px only, no JS, no Visdom link.
+7. **Navigation** — seven links after the benefits band, sticky above 720px only, no JS, no Visdom.
    A sticky bar costs more phone height than two wrapped rows of plain links.
 8. **Commercial insert** — after section six, before the footer; bordered block with Visdom's
    logo, not the card format. Visible but never mistaken for part of the open-source stack.
@@ -130,6 +148,9 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 11. **Theme** — `prefers-color-scheme` only, no toggle. Build-time dual-theme highlighting.
 12. **Tech choice** — Astro (section 4). Chosen on build-time Shiki and typed content
     collections; "supports tabs" is deliberately not a criterion.
+13. **Benefits block** — five benefits on a tinted full-bleed band between the snippets and the
+    nav, and in the nav as its first link. The band is what divides the page into three chapters;
+    the nav stays directly above the sections it links to.
 
 ## 3. Agent readability
 
@@ -138,13 +159,15 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
   No text hidden in attributes, alt text or images.
 - All eight snippets are always in the HTML, highlighted at build time, inside `<pre><code>`.
 - Anchor ids: `#language`, `#tooling`, `#backend`, `#ai`, `#devops`, `#template`, `#commercial`,
-  plus one per component (`#scala-3`, `#tapir`, `#ox`, `#sttp-ai`, `#besom`, ...). Each id is an
-  explicit kebab-case field in the YAML, not slugged from the name, and is a stable URL contract.
+  `#benefits`, plus one per component (`#scala-3`, `#tapir`, `#ox`, ...) and one per benefit
+  (`#benefit-direct-style`, ...). Each id is an explicit kebab-case field in the YAML — or, for a
+  benefit, its file name — not slugged from a title, and is a stable URL contract.
 - Raw HTML always carries everything — all eight snippets, all 18 components. Rendered-text
   extractors may drop the seven `visibility: hidden` panels, which are also out of the
   accessibility tree; that gap is exactly what `llms.txt` covers.
 - `/llms.txt` is a plain-text mirror generated from the same YAML and the same `.scala` files —
-  never hand-written, so it cannot drift — carrying every component and every snippet in full.
+  never hand-written, so it cannot drift — carrying every component and every snippet in full, and a
+  `## Why this stack` block with every benefit ahead of the inventory.
   It ships regardless of verification 1: same sources, near-zero cost.
 - Star counts are baked into the HTML by a build that has a `GITHUB_TOKEN` (CI does), and the
   browser refreshes them; a build without one ships empty spans that only a browser fills. Either

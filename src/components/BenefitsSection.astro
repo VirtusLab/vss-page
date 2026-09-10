@@ -1,0 +1,186 @@
+---
+import { render } from 'astro:content';
+import type { Site } from '../lib/content';
+import BenefitArt from './graphics/BenefitArt.astro';
+import ChapterLabel from './ChapterLabel.astro';
+
+/**
+ * The argument for the stack, between the snippets and the components. Sits on a full-bleed
+ * `--surface` band, which is what separates the page's three chapters; the band is why this is the
+ * one block rendered outside the page container.
+ */
+interface Props {
+	benefits: Site['benefits'];
+	chapter: string;
+}
+
+const { benefits, chapter } = Astro.props;
+
+// `render` is async and cannot be awaited inside the template, so the bodies are rendered up front.
+const items = await Promise.all(
+	benefits.items.map(async (item) => ({ ...item, Content: (await render(item.entry)).Content })),
+);
+---
+
+<div class="band">
+	<section id="benefits">
+		<ChapterLabel text={chapter} />
+		<h2 class="chapter-heading">{benefits.heading}</h2>
+		<p class="intro">{benefits.intro}</p>
+		{/* An ordered list: the five make an argument in order, and the numerals are the CSS counter
+		    on it, so the sequence is never text anyone has to keep in step. */}
+		<ol class="items" role="list">
+			{
+				items.map(({ id, title, tagline, Content }) => (
+					<li>
+						<article>
+							<div class="art">
+								<BenefitArt name={id} />
+							</div>
+							<div class="text">
+								<h3 id={`benefit-${id}`}>{title}</h3>
+								<p class="tagline">{tagline}</p>
+								<div class="body">
+									<Content />
+								</div>
+							</div>
+						</article>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+</div>
+
+<style>
+	/* Edge to edge, and the one block that paints its own ground: the tint is what tells the reader
+	   a new chapter started. */
+	.band {
+		background: var(--surface);
+		border-block: var(--border) solid var(--line);
+		padding: var(--space-5) 0;
+	}
+
+	/* Rendered outside `.page`, so this is what puts the chapter back in the page's column — the cap
+	   and the gutters both, or the text would start a gutter's width left of every other block. */
+	section {
+		max-width: var(--page-width);
+		margin: 0 auto;
+		padding: 0 var(--space-3);
+	}
+
+	.intro {
+		margin: 0;
+		color: var(--muted);
+	}
+
+	.items {
+		counter-reset: benefit;
+		display: grid;
+		gap: var(--space-5);
+		margin: var(--space-5) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.items li {
+		counter-increment: benefit;
+	}
+
+	article {
+		display: grid;
+		gap: var(--space-3);
+	}
+
+	/* The illustrations are drawn on nothing, so each gets an outlined frame of its own: five
+	   identical frames down the band are what make the five read as one sequence. No fill — on this
+	   band there is no second ground that would be worth the extra colour. */
+	.art {
+		width: 100%;
+		max-width: 320px;
+		padding: var(--space-3);
+		border: var(--border) solid var(--line-strong);
+		border-radius: var(--radius);
+	}
+
+	.text {
+		min-width: 0;
+		max-width: var(--measure);
+	}
+
+	/* The item's number, drawn from the list counter rather than written into the content. */
+	.text::before {
+		content: counter(benefit, decimal-leading-zero);
+		display: block;
+		margin-bottom: var(--space-1);
+		color: var(--accent);
+		font-family: var(--font-display);
+		font-size: var(--text-sm);
+		font-weight: 700;
+		letter-spacing: 0.12em;
+	}
+
+	h3 {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-lg);
+	}
+
+	.tagline {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-base);
+		font-weight: 600;
+	}
+
+	.body {
+		color: var(--muted);
+	}
+
+	/* `:global`, because the paragraphs come from <Content /> and carry no scope attribute. */
+	.body :global(p) {
+		margin: 0 0 var(--space-2);
+	}
+
+	.body :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	@media (min-width: 720px) {
+		.band {
+			padding: var(--space-6) 0;
+		}
+
+		.items {
+			gap: var(--space-6);
+		}
+
+		/* Text then illustration, in fixed columns rather than as a flex row: the text column is the
+		   measure and the illustration 320px, so every row has the same gutter between the two and the
+		   text starts on the heading's edge. The spare width goes between the columns, never inside
+		   one, which is what would have made the gutter differ from row to row. */
+		article {
+			grid-template-columns: minmax(0, var(--measure)) 320px;
+			justify-content: space-between;
+			align-items: center;
+			gap: var(--space-5);
+		}
+
+		/* The illustration is second in the DOM, where a phone wants it above the text, and second in
+		   the grid too. */
+		.art {
+			order: 2;
+			width: 320px;
+		}
+
+		/* The illustration changes sides down the column, so the five read as a sequence and not as
+		   five copies of one row. The whole row is mirrored, columns and gutter alike; the children
+		   are put back to `ltr`, which is only the mirroring undone. */
+		.items li:nth-child(even) article {
+			direction: rtl;
+		}
+
+		.items li:nth-child(even) article > * {
+			direction: ltr;
+		}
+
+	}
+</style>

@@ -12,4 +12,7 @@ snippetsNote: >-
   Each tab is an excerpt of a complete scala-cli script. Open the full example
   and run it with scala-cli run <file>.
 snippetsCommand: scala-cli run <file>
+chapterSnippets: In action
+chapterBenefits: Benefits
+chapterComponents: The stack
 ---

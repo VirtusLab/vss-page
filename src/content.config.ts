@@ -7,6 +7,7 @@ const repoRoot = new URL('../', import.meta.url);
 const componentsFile = 'content/components.yaml';
 const snippetsFile = 'content/snippets.yaml';
 const sectionIntrosDir = 'content/sections/';
+const benefitsDir = 'content/benefits/';
 
 const read = (path: string) => readFileSync(new URL(path, repoRoot), 'utf-8');
 
@@ -73,6 +74,18 @@ for (const id of sectionIds) {
 }
 for (const id of introIds) {
 	if (!sectionIds.has(id)) throw new Error(`${sectionIntrosDir}${id}.md is not a section id`);
+}
+
+// A benefit's `order` is what puts it in place on the page, so two benefits sharing one is a silent
+// reordering rather than an error. The schema cannot see the other files, so the check is here; the
+// frontmatter is read with a regex because the config is loaded before the collection exists.
+const benefitOrders = new Map<number, string>();
+for (const fileName of readdirSync(new URL(benefitsDir, repoRoot)).filter((f) => f.endsWith('.md'))) {
+	const order = read(`${benefitsDir}${fileName}`).match(/^order:\s*(\d+)\s*$/m)?.[1];
+	if (order === undefined) throw new Error(`${benefitsDir}${fileName}: needs an \`order\` number`);
+	const taken = benefitOrders.get(Number(order));
+	if (taken) throw new Error(`${benefitsDir}: ${fileName} and ${taken} share order ${order}`);
+	benefitOrders.set(Number(order), fileName);
 }
 
 const kebabCase = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -177,6 +190,23 @@ const footer = defineCollection({
 			repoUrl: httpUrl,
 			// Empty hides the license line.
 			license: z.string(),
+			followHeading: z.string(),
+			followText: z.string().max(100),
+			// Hidden, read before each link's label.
+			followLinkPrefix: z.string(),
+			// One account on four networks; `network` is what picks the icon, so this enum and
+			// `SocialIcon.astro` list the same four.
+			follow: z
+				.array(
+					z
+						.object({
+							network: z.enum(['x', 'mastodon', 'bluesky', 'linkedin']),
+							label: z.string(),
+							url: httpUrl,
+						})
+						.strict(),
+				)
+				.nonempty(),
 		})
 		.strict(),
 });
@@ -203,6 +233,10 @@ const labels = defineCollection({
 			// Sentence under the heading, and the command inside it.
 			snippetsNote: z.string(),
 			snippetsCommand: z.string(),
+			// Eyebrows over the page's three chapter headings; the components one sits above the nav.
+			chapterSnippets: z.string(),
+			chapterBenefits: z.string(),
+			chapterComponents: z.string(),
 		})
 		.strict()
 		// The switcher splits the sentence on the command to wrap it in a `<code>`, so a note that
@@ -219,6 +253,29 @@ const sectionIntros = defineCollection({
 	schema: z.object({}).strict(),
 });
 
+/** Heading and intro of the benefits chapter; the benefits themselves are their own collection. */
+const benefitsSection = defineCollection({
+	loader: glob({ base: 'content', pattern: 'benefits-section.md' }),
+	schema: z.object({ heading: z.string(), intro: z.string() }).strict(),
+});
+
+/**
+ * One benefit per file: a frontmatter headline and a body of one or two paragraphs. The file name is
+ * the id — the anchor (`#benefit-<id>`) and the `BenefitArt` scene name — so it is stable once
+ * published; `order` is the place on the page, and the loop above holds those unique.
+ */
+const benefits = defineCollection({
+	loader: glob({ base: benefitsDir, pattern: '*.md' }),
+	schema: z
+		.object({
+			order: z.number().int().positive(),
+			title: z.string(),
+			// The lead line under the title; the body says the same thing at length.
+			tagline: z.string(),
+		})
+		.strict(),
+});
+
 export const collections = {
 	sections,
 	commercial,
@@ -228,4 +285,6 @@ export const collections = {
 	footer,
 	labels,
 	sectionIntros,
+	benefitsSection,
+	benefits,
 };

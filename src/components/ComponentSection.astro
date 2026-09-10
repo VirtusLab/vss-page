@@ -17,7 +17,7 @@ const { Content } = await render(section.intro);
 ---
 
 <section id={section.id}>
-	<h2>
+	<h2 class="chapter-heading">
 		<SectionIcon name={section.id} />
 		<span>{section.title}</span>
 	</h2>
@@ -79,12 +79,11 @@ const { Content } = await render(section.intro);
 		padding-top: var(--space-5);
 	}
 
+	/* Only the icon row; the size and the margin come from the global `.chapter-heading`. */
 	h2 {
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
-		margin: 0 0 var(--space-3);
-		font-size: var(--text-xl);
 	}
 
 	/* The whole intro block starts where the heading text does, past the icon column, so the rule
