@@ -37,7 +37,7 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonical} />
 		<meta property="og:site_name" content={siteName} />
-		{/* Hand-drawn once and committed, from `public/og.svg`: the title and the tagline never change. */}
+		{/* Generated once and committed, per docs/pixel-art-direction.md: the title never changes. */}
 		<meta property="og:image" content={shareImage} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
@@ -100,37 +100,8 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		--line: #dbe3d3;
 		--line-strong: #bed0b2;
 
-		/* Fill-only colours for the frog artwork; never used for text. The frog ramp is the VL green
-		   scale, so the illustration and the interface are the same palette. */
-		--art-ink: #10241a;
-		--art-frog-dark: #00693a;
-		/* The shadow side of every green form, and the contact shadow every object drops on what it
-		   rests on. One light, upper left, so the shade always sits lower-right. */
-		--art-shade: #04512c;
-		--art-frog: #00a74e;
-		--art-frog-light: #67e387;
-		--art-belly: #d5f3c2;
-		--art-leaf: #007c3e;
-		--art-leaf-light: #00c859;
-		/* Water, and anything seen through or below the surface: the only cool colour in the ramp,
-		   which is what makes a submerged mass read as submerged. */
-		--art-water: #4f9683;
-		--art-disc: #e5f7de;
-		--art-disc-core: #f4fcee;
-		--art-disc-edge: #b4f5b5;
-		/* The plug-in tiles, which sit on the benefits band rather than inside a disc, so unlike the
-		   rest of the ramp they are held to 3:1 against it. */
-		--art-tile: #b4f5b5;
-		--art-eye: #f0a828;
-		--art-eye-dark: #b06f0c;
-		--art-shine: #ffffff;
-		/* The one warm accent a scene is allowed, over at most 8% of it and never on skin. A low-sun
-		   amber, not a brown: it has to read as emitted light. 3.59:1 on --bg, 3.42 on --surface,
-		   3.43 on --art-disc. */
-		--art-warm: #c26c0d;
-		/* The one neutral in the ramp: the discarded alternatives in the benefit scenes. Never text,
-		   but held to 3:1 on both grounds, because it carries shapes a reader has to make out. */
-		--art-grey: #6b7a70;
+		/* The artwork carries no tokens: it is raster pixel art with its own 24-colour palette baked
+		   in, in `public/art/`. See docs/pixel-art-direction.md. */
 
 		/* Background of the code panel: a hair greener and darker than the page, so the panel reads
 		   as a surface without an outline doing the work. */
@@ -156,8 +127,10 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		--page-width: 62rem;
 		/* Height of the floating chapter picker; anchors scroll clear of it. */
 		--float-nav-height: 3.25rem;
-		/* Section-icon tile, the card's link icons, and the frog mark in the code panel's title bar. */
-		--icon: 48px;
+		/* Section-icon tile, the card's link icons, and the frog mark in the code panel's title bar.
+		   The icons are 32 native pixels, so the tile must stay an integer multiple of 32: at 48px
+		   `image-rendering: pixelated` mixes 1px and 2px blocks and the grid falls apart. */
+		--icon: 64px;
 		--icon-sm: 20px;
 		--mark: 22px;
 
@@ -215,25 +188,6 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 			--on-accent-2: #07160f;
 			--line: #22402e;
 			--line-strong: #2f5a40;
-
-			--art-ink: #04100b;
-			--art-frog-dark: #007c3e;
-			--art-shade: #0a8f4a;
-			--art-frog: #00c859;
-			--art-frog-light: #b4f5b5;
-			--art-belly: #d5f3c2;
-			--art-leaf: #00a74e;
-			--art-leaf-light: #67e387;
-			--art-water: #2a6f62;
-			--art-disc: #0d2a1b;
-			--art-disc-core: #123723;
-			--art-disc-edge: #1d4a30;
-			--art-tile: #47855f;
-			--art-eye: #f7c15c;
-			--art-eye-dark: #c07d16;
-			--art-shine: #f9f6f5;
-			--art-warm: #ffd08a;
-			--art-grey: #8fa596;
 
 			/* github-dark-high-contrast on a forest black of our own, so the panel joins the palette. */
 			--code-bg: #041009;
@@ -309,6 +263,13 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 
 	.skip:focus-visible {
 		top: var(--space-3);
+	}
+
+	/* Every artwork image. The PNGs are drawn on a small logical grid and shown at an integer
+	   multiple of it, so the browser must scale them by repeating pixels, not by smoothing. */
+	.pixel {
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
 	}
 
 	/* Every surface on the page: a hairline, a soft shadow and the shared radius. Components override

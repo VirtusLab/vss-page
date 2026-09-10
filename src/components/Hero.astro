@@ -109,9 +109,11 @@ const { hero, labels } = Astro.props;
 		color: var(--muted);
 	}
 
+	/* 320px is twice the scene's 160px native grid, so every logical pixel is exactly two device
+	   ones. The same cap at both widths; on a 360px phone the column is 328px and still holds it. */
 	.art {
 		width: 100%;
-		max-width: 11rem;
+		max-width: 320px;
 		justify-self: center;
 	}
 
@@ -120,18 +122,16 @@ const { hero, labels } = Astro.props;
 			padding-top: var(--space-6);
 		}
 
-		/* Text first, art beside it. The text takes the wider column: at this size the frog is a
-		   companion to the headline, not the headline itself. */
+		/* Text first, art beside it. The art track is a fixed 320px — twice the scene's 160px native
+		   grid, so the pixels stay square — and the text takes whatever is left. */
 		.cols {
-			grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+			grid-template-columns: minmax(0, 1fr) 320px;
 			align-items: center;
 			gap: var(--space-4);
 		}
 
-		/* No bleed into the page gutter: at this size the disc reads as a cropped mistake rather
-		   than a deliberate run-off, so the art stops on the column line. */
+		/* No bleed into the page gutter: the art stops on the column line. */
 		.art {
-			max-width: 16rem;
 			justify-self: end;
 		}
 	}

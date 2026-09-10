@@ -6,14 +6,15 @@ and no hex appears outside that file.
 ## Direction
 
 Warm green, VirtusLab's. Clean geometry and a lot of empty space on a warm off-white ground, deep
-forest green in dark mode, bright VL green as the signature accent, amber used sparingly. Artwork is
-smooth layered vector — never outlined, never pixel. One soft shadow, one green rule.
+forest green in dark mode, bright VL green as the signature accent, amber used sparingly. The
+interface is clean and modern; the artwork is mid-90s adventure-game pixel art, and the contrast
+between the two is deliberate. One soft shadow, one green rule.
 
 ## Chapters
 
 Three — snippets, benefits, components — each opened by a `.chapter-heading` alone; nothing sits
-over it, so the air above the heading is what marks the break. A sprig closes the hero and another
-the benefits; the snippets need none, the band's top border being a line across the page already.
+over it, so the air above the heading is what marks the break. A divider strip closes the hero and
+another the benefits; the snippets need none, the band's top border being a line across the page already.
 The band is `--surface` run to the window's edges — the one block outside `.page`, and the only one
 painting its own ground — and its inner section restores the page's cap and gutters, so all three
 chapters start on one edge. Rows are text plus a 320px illustration, mirrored every second row so
@@ -23,9 +24,9 @@ the gutter never changes; below 720px the illustration stacks above.
 
 Green body, amber eyes: the animal is already the palette. It reads at 48px from silhouette alone — a
 wide body and two domed eyes — which a chameleon and a gecko do not. Direct style is a jump, not a
-pipeline, so it fits the argument too. It is the hero (off-centre on a lily pad in a lit disc, gaze
-turned back to the headline), the six section icons (one prop each, pupils on the prop), the code
-panel's mark and the favicon — not the Visdom block, which is no part of the free stack.
+pipeline, so it fits the argument too. It is the hero (on a lily pad beside a terminal, looking
+across the pond at the headline), the six section icons, the five benefit scenes, the code panel's
+mark and the favicon — not the Visdom block, which is no part of the free stack.
 
 ## Palette
 
@@ -45,11 +46,8 @@ Grounds: `--bg` `#f9f6f5` / `#07160f`, `--surface` `#eef3e7` / `#0f2418`, light 
 The card's link band is `--surface-2` `#e6eddd` / `#14301f` and its hovered cell `--surface-2-hover`
 `#dce7d0` / `#1b3f29`; on the worse of the two, `--muted` is 5.64 / 6.08 and `--accent` 5.17 / 7.22.
 
-Artwork uses a fill-only ramp from the VL green scale (`--art-ink`, `--art-frog-dark/-frog/-frog-light`,
-`--art-belly`, `--art-leaf/-leaf-light`, `--art-disc/-disc-core/-disc-edge`, `--art-eye/-eye-dark`,
-`--art-shine`), so it carries more colour than a text pair may. `--art-tile` `#b4f5b5` / `#47855f`
-and `--art-grey` `#6b7a70` / `#8fa596` sit on the band, not inside a disc, so both clear 3:1 there.
-Text on the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#d9f0e1`).
+The artwork has no tokens: it carries its own 24-colour palette and nothing recolours it. Text on
+the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#d9f0e1`).
 
 ## Type
 
@@ -66,7 +64,8 @@ Text on the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#
 - Spacing `4 / 8 / 16 / 28 / 48 / 72`px. Borders `--border` 1px, `--border-thick` 2px (also the focus
   ring), `--rule` 3px for the green mark. Page container 62rem. Sizes are tokens too.
 - Radius `--radius-sm` 8, `--radius` 14, `--radius-pill`, and `--radius-lg` 26 on the code panel
-  alone. Nothing has a square corner. Illustration sizes: `--icon` 48, `--mark` 22.
+  alone. Nothing in the interface has a square corner; the artwork does, because a radius would cut
+  into the frame drawn in the image. Illustration sizes: `--icon` 48, `--mark` 22.
 - `.panel` is the one surface rule — hairline, radius, `--shadow-soft` — and the only use of that
   name: a scoped `.panel` elsewhere still matches it and doubles the hairline, which is why the
   snippet panels are `.snippet-panel`. `--shadow-lift` is it raised: the code panel at rest, cards
@@ -76,15 +75,18 @@ Text on the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#
 
 ## Motifs
 
-All hand-drawn inline SVG in `src/components/graphics/`, `aria-hidden`, filled from `--art-*`.
-- `HeroArt.astro` — 320×280, three planes: a lit disc cropped by the top edge alone, the water clipped inside it with the pad's mass hanging below the surface, and one leaf cropped by the left and bottom edges. The three greens form a value ladder — bright pad, mid foreground leaf, dark shade copies — so depth reads without any outline. The frog is low and right on the pad's near rim at about 60% of the disc's height in frame, twisted back at the headline: shoulders away, head over the near shoulder, the torso one back-to-hip silhouette with one shade copy — not a chain of ellipses — and the dorsal stripe running along that silhouette's top edge and splitting at the hips, which is what makes the mass read as rotating, and both pupil bars half the amber's width and tilted a quarter of the eye's radius towards the title — that offset is the gaze. Forms are a base shape with a shade copy offset down-right; contact shadows are `--art-shade` ellipses at 0.35, the one opacity in the file. Surface catchlights are `--art-disc-edge`, never `--art-shine`, so they cannot outshine the frog in dark mode. Strokes 3 / 5 / 8. Nothing overflows: the frame is what does the cropping. `public/og.svg` is the same drawing at 1200×630, scaled, subject on the right third, every token written out as its light-mode literal and the blink lids left out — a share image inherits no CSS; exported once to `public/og.png`; redraw both together.
-- `SectionIcon.astro` — six 48×48 tiles, one pose each and no pose repeated: stepping out of a leaf frame, perched on a lambda, hauling a gear, standing on three slabs, reaching to a spark, mid-leap over chevrons. Each prop covers over 40% of the tile and runs off an edge, so the six read apart from silhouette alone at 48px. Head 1.15× the body's width and 0.8× its height, as the sheet says, and a pupil bar half the amber's width. Strokes 1.6 / 2.4 / 3.6. No `defs`, because the component renders six times on one page.
-- `Divider.astro` — a 48px three-leaf sprig a third of the way across, with one green rule running behind it and fading to both edges; two water rings spread from the stem's base and the outer one crosses the rule, so the sprig sits in the page rather than on it. Carries its own vertical margin, closes a chapter and opens the footer.
-- `BenefitArt.astro` — five 240×180 scenes, one per benefit id: a background wash, the frog in a pose no other scene uses, and a near form cropped by the frame, all clipped to the tile. Limbs are masses, not lines; the only strokes are things that are lines, at 2 / 3.2 / 5. The eye, the hand and the block are drawn once into `defs` per scene and placed with `use`, and every id carries the scene name. An id with no scene fails the build.
-- `VisdomLogo.astro` — Visdom's crest, 48px, beside the name; `currentColor`, so it takes the amber.
-- `CodeBar.astro` — a three-quarter head cropped by the bar's lower edge, looking over it into the panel, then three window lights; the turrets overlap each other and sit half-buried in the skull, which is what keeps it one head rather than two. Strokes 1 / 1.6 / 2.4. `public/favicon.svg` is the same head with one shade shape taking the far third and no mouth, so the two turrets survive at 16px and the mark still reads three-quarter; `favicon-32.png` and `apple-touch-icon.png` are rasterised from it.
-- `SocialIcon.astro` — the four network marks in the footer, from simple-icons (CC0), `--icon-sm`.
-- `GithubMark.astro`, `DocsIcon.astro`, `StarIcon.astro` — the three card-band icons, `--icon-sm`.
+Art is generated pixel-art PNGs in `public/art/`, drawn through the shared `.pixel` class at an
+integer multiple of each native grid; see `docs/pixel-art-direction.md`. All are decorative.
+
+- `HeroArt.astro` — `art/hero.png`, 160×120 native at ×4, shown at 320 at both widths.
+- `SectionIcon.astro` — `art/icon-<section>.png`, 32×32 at ×4, shown at `--icon`; `BenefitArt.astro`
+  — `art/benefit-<id>.png`, 160×120 at ×4, shown at 320. An id with no image fails the build.
+- `Divider.astro` — `art/divider.png`, 160×24 at ×4, shown at 320×48 centred with its own vertical
+  margin; `CodeBar.astro` — `art/codebar.png`, 33×11 at ×8, shown at 66×22 in the panel's title bar.
+- `public/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `public/og.png` (1200×630) — same
+  direction, generated and committed.
+- Interface, not art, so still inline SVG: `VisdomLogo.astro` (Visdom's crest, 48px,
+  `currentColor`), `SocialIcon.astro` (simple-icons, CC0) and `GithubMark`/`DocsIcon`/`StarIcon`.
 
 ## Code themes
 
@@ -93,6 +95,5 @@ Shiki `github-light-high-contrast` and `github-dark-high-contrast`, on our own p
 
 ## Motion
 
-CSS only, all eased, all off under `prefers-reduced-motion: reduce`: the frog blinks every seven
-seconds, the leaves sway 1.4°, the amber points pulse, cards and the CTA lift on hover, and each
-benefit scene has exactly one moving part — `hop`, `reject`, `steam`, `sync`, `lift`.
+CSS only, all eased, all off under `prefers-reduced-motion: reduce`: cards and the CTA lift on
+hover, the floating picker fades in, the skip link slides down. The artwork is raster and still.

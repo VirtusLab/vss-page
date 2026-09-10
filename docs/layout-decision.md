@@ -88,12 +88,12 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 - Between the switcher and the nav, on a full-bleed `--surface` band — the one block rendered
   outside the page container, so the tint runs to the window's edges and the page reads as three
-  chapters. No chapter carries an eyebrow over its heading: the band, the sprigs and the air above
-  each heading already mark the breaks. The chapter names in `content/labels.md` stay — they are
+  chapters. No chapter carries an eyebrow over its heading: the band, the divider strips and the air
+  above each heading already mark the breaks. The chapter names in `content/labels.md` stay — they are
   what the picker's first two entries read.
 - `<section id="benefits">` → `<h2>` and an intro paragraph from `content/benefits-section.md` →
   an `<ol>` of five `<article>`s, one per file in `content/benefits/`.
-- Each item: a 240×180 illustration (`BenefitArt`, keyed by the benefit id), an `<h3
+- Each item: a pixel-art scene (`BenefitArt`, keyed by the benefit id, `public/art/`), an `<h3
   id="benefit-{id}">`, the tagline as a lead line, and the body paragraphs. Above 720px the
   illustration is a 320px column that changes sides down the list; below it, it stacks above the
   text at up to 320px. The item numbers are a CSS counter, not content.

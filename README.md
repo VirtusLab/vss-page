@@ -68,12 +68,14 @@ file ships anyway, so the rules travel with the site if it ever moves to a
 custom domain, and so `llms.txt` and the sitemap have a machine-readable
 pointer.
 
-## Static assets
+## Artwork
 
-`public/og.svg` is the source of `public/og.png` (1200×630), the Open Graph
-share image, and `public/favicon.svg` the source of `public/favicon-32.png` and
-`public/apple-touch-icon.png` (180×180, opaque). All three PNGs are committed
-exports; re-export them by hand after editing an SVG.
+Every illustration is a pixel-art PNG in `public/art/`, shown at an integer
+multiple of its native grid — the exception is the section icons, drawn on a
+32px grid and shown at 48px, which is 1.5× and kept for the page's rhythm.
+`public/og.png` (1200×630), `public/favicon.svg`, `public/favicon-32.png` and
+`public/apple-touch-icon.png` (180×180, opaque) are the same set. All are
+generated and committed; regenerate them per `docs/pixel-art-direction.md`.
 
 ## One-time GitHub setup
 

@@ -91,15 +91,11 @@ const items = await Promise.all(
 		gap: var(--space-3);
 	}
 
-	/* The illustrations are drawn on nothing, so each gets an outlined frame of its own: five
-	   identical frames down the band are what make the five read as one sequence. No fill — on this
-	   band there is no second ground that would be worth the extra colour. */
+	/* Each scene paints its own ground inside a dark frame drawn in the image, so the wrapper adds
+	   no border, no padding and no radius — a radius here would clip the frame's own pixels. */
 	.art {
 		width: 100%;
 		max-width: 320px;
-		padding: var(--space-3);
-		border: var(--border) solid var(--line-strong);
-		border-radius: var(--radius);
 	}
 
 	.text {
