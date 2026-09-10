@@ -2,8 +2,12 @@
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../lib/base';
 import Divider from './graphics/Divider.astro';
+import SocialIcon from './graphics/SocialIcon.astro';
 
-/** Who maintains the page, where its source is, the agent mirror, and the license when there is one. */
+/**
+ * The follow block for the stack's social account, then who maintains the page, where its source is,
+ * the agent mirror, and the license when there is one.
+ */
 interface Props {
 	footer: CollectionEntry<'footer'>['data'];
 	labels: CollectionEntry<'labels'>['data'];
@@ -15,6 +19,27 @@ const { maintainers } = footer;
 
 <footer>
 	<Divider />
+	<section id="follow" class="follow" aria-labelledby="follow-heading">
+		<h2 id="follow-heading">{footer.followHeading}</h2>
+		<p>{footer.followText}</p>
+		<ul>
+			{
+				footer.follow.map((account) => (
+					<li>
+						{/* rel=me on Mastodon is what lets the account verify the link back to this page. */}
+						<a
+							href={account.url}
+							rel={account.network === 'mastodon' ? 'me noopener' : 'noopener'}
+						>
+							<SocialIcon network={account.network} />
+							<span class="label">{`${footer.followLinkPrefix} `}</span>
+							<span>{account.label}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
 	<div class="rows">
 		<p>
 			Maintained by
@@ -35,6 +60,61 @@ const { maintainers } = footer;
 <style>
 	footer {
 		padding-bottom: var(--space-6);
+	}
+
+	/* No padding above: the divider's own margin is the whole gap. */
+	.follow h2 {
+		margin: 0 0 var(--space-1);
+		font-size: var(--text-lg);
+	}
+
+	.follow p {
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	.follow ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: var(--space-3) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	/* The same tinted-cell shape as a card's link band, cut loose from the card: one pill per
+	   network, wrapping to as many rows as the width allows. */
+	.follow a {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-2) var(--space-3);
+		border: var(--border) solid var(--line);
+		border-radius: var(--radius-pill);
+		background: var(--surface);
+		color: var(--muted);
+		font-family: var(--font-display);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.follow a:hover,
+	.follow a:focus-visible {
+		border-color: var(--line-strong);
+		background: var(--surface-2-hover);
+		color: var(--accent);
+	}
+
+	/* Read by screen readers, never shown: it names the account the link goes to, so "X" is not
+	   announced as a bare letter out of the footer's context. */
+	.label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
 	.rows {
