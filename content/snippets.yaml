@@ -25,3 +25,27 @@
   description: An S3 bucket with versioning enabled, deployed by Pulumi.
   file: snippets/infra.scala
   component: besom
+
+- id: websocket
+  label: WebSocket — sttp
+  description: A few messages sent to a socket, and the replies read back.
+  file: snippets/websocket.scala
+  component: sttp
+
+- id: database
+  label: Database — Parlance
+  description: Two rows inserted, then the warmest one found by a typed query.
+  file: snippets/database.scala
+  component: parlance
+
+- id: streams
+  label: Streams — Ox flows
+  description: Two sensors merged into one pipeline, filtered down to six readings.
+  file: snippets/streams.scala
+  component: ox
+
+- id: dev-workflow
+  label: Dev workflow — Orca
+  description: A prompt planned into tasks, each implemented and reviewed.
+  file: snippets/dev-workflow.scala
+  component: orca

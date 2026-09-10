@@ -1,4 +1,5 @@
 //> using scala 3.3.8
+//> using jvm 21
 //> using plugin org.virtuslab::besom-compiler-plugin:0.5.1
 //> using dep org.virtuslab::besom-core:0.5.1
 //> using dep org.virtuslab::besom-aws:7.7.0-core.0.5

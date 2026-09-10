@@ -1,4 +1,5 @@
 //> using scala 3.3.8
+//> using jvm 21
 //> using dep com.softwaremill.sttp.tapir::tapir-netty-server-sync:1.13.31
 //> using dep com.softwaremill.sttp.tapir::tapir-jsoniter-scala:1.13.31
 //> using dep com.github.plokhotnyuk.jsoniter-scala::jsoniter-scala-macros:2.40.1

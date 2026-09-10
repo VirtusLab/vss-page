@@ -161,10 +161,12 @@ const tabRules = tabs
 		white-space: nowrap;
 	}
 
-	/* Tracks fit themselves to the width: two rows of two on a phone, one row of four on a desktop. */
+	/* Two per row on a phone, four per row on a desktop (the count is set in the media query at the
+	   bottom). Fixed counts, not `auto-fit`: that packs in as many as fit at the current width, which
+	   with eight tabs left a short last row. */
 	.tabs {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+		grid-template-columns: repeat(2, 1fr);
 		gap: var(--space-2);
 		margin-bottom: var(--space-3);
 	}
@@ -279,6 +281,10 @@ const tabRules = tabs
 	}
 
 	@media (min-width: 720px) {
+		.tabs {
+			grid-template-columns: repeat(4, 1fr);
+		}
+
 		.code::after {
 			display: none;
 		}

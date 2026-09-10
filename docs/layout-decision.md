@@ -38,27 +38,31 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   and the nav follows it, so the order is hero → switcher → divider → nav → sections.
 - Above the tab strip: an `<h2>` ("VSS in action:") and one muted sentence saying the snippets are
   excerpts of scala-cli scripts that run with `scala-cli run <file>`. The hidden `<legend>` stays.
-- Form: CSS-only radio tabs. Four `<input type="radio" name="snippet">` (first `checked`),
-  four `<label>`s forming the visible strip, four panels shown via `:checked ~ .panels > #id`.
+- Form: CSS-only radio tabs. Eight `<input type="radio" name="snippet">` (first `checked`),
+  eight `<label>`s forming the visible strip, eight panels shown via `:checked ~ .panels > #id`.
   No `role="tab"`/`aria-controls` — those imply JS-managed focus.
 - The radios are visually hidden but focusable (1px clip rect, never `display: none`), so native
   arrow-key switching works. The matching `<label>` carries the `:focus-visible` outline.
 - Labels name task and library: `HTTP server — Tapir`, `Concurrency — Ox`, `AI agent — sttp-ai`,
-  `Infrastructure — Besom`.
-- Behavior without JS: identical — the radios are the whole mechanism. All four panels are
+  `Infrastructure — Besom`, `WebSocket — sttp`, `Database — Parlance`, `Streams — Ox flows`,
+  `Dev workflow — Orca`.
+- Behavior without JS: identical — the radios are the whole mechanism. All eight panels are
   always in the DOM, never lazy-rendered.
-- The four panels stack in one CSS grid cell (`grid-area: 1 / 1`), so the container is always as
+- The eight panels stack in one CSS grid cell (`grid-area: 1 / 1`), so the container is always as
   tall as the tallest panel and switching never shifts the page. Inactive panels get
   `visibility: hidden`, the checked one `visibility: visible`. Never `display: none` — it would
   collapse the stack and lose the fixed height.
 - Panel: 12-15 lines of highlighted Scala, no inner scrollbar. Each `.scala` file compiles in
   full, but the panel renders only the lines between `// snippet:start` and `// snippet:end`;
   using-directives and imports stay outside the markers; `@main` is inside only when the run
-  call is the payoff (http-server, infra).
+  call is the payoff (http-server, infra, websocket, dev-workflow).
 - Under each panel, two text links: the component's anchor on this page (`#tapir`, `#ox`,
   `#sttp-ai`, `#besom`), and "full example" → the whole `.scala` file in the repo. The
   `#sttp-ai` link is what stops a reader hunting for it in the AI section.
-- Mobile: labels wrap into two rows of two, never a horizontal scroller. Verify at 360px.
+- Strip layout: a fixed two columns below 720px and a fixed four above, so eight tabs are always
+  four rows of two or two rows of four, never a horizontal scroller and never a short last row.
+  `auto-fit` is not used: it packs in as many tabs as fit, which orphans the leftovers. Verify at
+  360px and just above the breakpoint.
 - No copy button. There is no install line to copy and a snippet is read, not pasted.
 
 ### Component sections (six, YAML order)
@@ -121,7 +125,7 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
    logo, not the card format. Visible but never mistaken for part of the open-source stack.
 9. **Hero** — title + one-sentence tagline + one CTA (`#template`) + one agent line. A second
    CTA would have to be invented; there is no install command.
-10. **Agent supplement** — ship `/llms.txt` with all four snippets in full and all 18 components
+10. **Agent supplement** — ship `/llms.txt` with all eight snippets in full and all 18 components
     (id, name, description, url, repo). Covers what hidden tab panels lose in renderers.
 11. **Theme** — `prefers-color-scheme` only, no toggle. Build-time dual-theme highlighting.
 12. **Tech choice** — Astro (section 4). Chosen on build-time Shiki and typed content
@@ -132,12 +136,12 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 - Semantic HTML: `<nav>`, `<h1>`, `<section id>` + `<h2>` per section, `<ul>`/`<li>` per
   component, `<h3 id>` holding the linked name, description as an adjacent plain-text `<p>`.
   No text hidden in attributes, alt text or images.
-- All four snippets are always in the HTML, highlighted at build time, inside `<pre><code>`.
+- All eight snippets are always in the HTML, highlighted at build time, inside `<pre><code>`.
 - Anchor ids: `#language`, `#tooling`, `#backend`, `#ai`, `#devops`, `#template`, `#commercial`,
   plus one per component (`#scala-3`, `#tapir`, `#ox`, `#sttp-ai`, `#besom`, ...). Each id is an
   explicit kebab-case field in the YAML, not slugged from the name, and is a stable URL contract.
-- Raw HTML always carries everything — all four snippets, all 18 components. Rendered-text
-  extractors may drop the three `visibility: hidden` panels, which are also out of the
+- Raw HTML always carries everything — all eight snippets, all 18 components. Rendered-text
+  extractors may drop the seven `visibility: hidden` panels, which are also out of the
   accessibility tree; that gap is exactly what `llms.txt` covers.
 - `/llms.txt` is a plain-text mirror generated from the same YAML and the same `.scala` files —
   never hand-written, so it cannot drift — carrying every component and every snippet in full.
@@ -166,7 +170,7 @@ Features and packages that will be used (nothing installed yet):
   with a Zod schema: `sections[]` of `{ id, title, components[] }`, component
   `{ id, name, description, url, repo? }`, where every `id` is kebab-case and unique across the
   whole file. A typo or a duplicate id breaks the build, not the page.
-- `<Code />` from `astro:components` for the four snippets — Shiki at build time, `lang="scala"`,
+- `<Code />` from `astro:components` for the eight snippets — Shiki at build time, `lang="scala"`,
   `themes: { light, dark }` with `defaultColor: false`, so the two themes ship as CSS variables
   switched by a `prefers-color-scheme` block. Concrete theme names are the later design task's.
 - `import.meta.glob('../snippets/*.scala', { query: '?raw', eager: true })` to read the snippet
@@ -182,10 +186,11 @@ Features and packages that will be used (nothing installed yet):
 Claims still inferred; check during implementation.
 
 1. **What agents extract from the `visibility: hidden` panels.** Dump the built page with a
-   text-mode browser and with a headless `innerText`; confirm whether all four snippets appear.
+   text-mode browser and with a headless `innerText`; confirm whether all eight snippets appear.
    `llms.txt` ships either way; this only tells us how much the HTML alone gives an agent.
-2. **Tab labels wrap to two rows at 360px.** Inferred from bun's class names. The labels are
-   longer now that they carry library names ("Infrastructure — Besom"); measure the real strip.
+2. **Tab labels wrap to four rows of two at 360px.** Inferred from bun's class names. The labels
+   are longer now that they carry library names ("Infrastructure — Besom"); measure the real
+   strip.
 3. **End-to-end agent read.** Give the deployed URL to a coding agent and ask it to list all 18
    components and their purpose. This is the only real test of section 3.
 4. **Panel height.** The grid stack makes the tallest snippet set the height; check the shortest

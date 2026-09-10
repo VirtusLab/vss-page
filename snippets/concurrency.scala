@@ -1,4 +1,5 @@
 //> using scala 3.3.8
+//> using jvm 21
 //> using dep com.softwaremill.ox::core:1.0.6
 
 import ox.*
