@@ -128,7 +128,7 @@ const { hero, labels } = Astro.props;
 
 	.art {
 		width: 100%;
-		max-width: 16rem;
+		max-width: 11rem;
 		justify-self: center;
 	}
 
@@ -140,7 +140,7 @@ const { hero, labels } = Astro.props;
 		/* Text first, art beside it. The text takes the wider column: at this size the frog is a
 		   companion to the headline, not the headline itself. */
 		.cols {
-			grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+			grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
 			align-items: center;
 			gap: var(--space-4);
 		}
@@ -148,7 +148,7 @@ const { hero, labels } = Astro.props;
 		/* No bleed into the page gutter: at this size the disc reads as a cropped mistake rather
 		   than a deliberate run-off, so the art stops on the column line. */
 		.art {
-			max-width: 22rem;
+			max-width: 16rem;
 			justify-self: end;
 		}
 	}

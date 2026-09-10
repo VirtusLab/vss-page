@@ -74,11 +74,12 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
      to GitHub — `repo`, or `url` when that is already a GitHub page — and only to the component's
      own site when it has no repository at all. The name is the only primary link.
   2. Description as plain text, verbatim from the YAML. No truncation, no `line-clamp`.
-  3. An icon row: a GitHub mark and a docs book, 20px, muted, only on the 11 components whose two
-     links differ; plus the star count (star icon + number) on every component with a GitHub
-     repository, linking to the repo page, where the star button is. Baked in at build time when a
-     `GITHUB_TOKEN` is set, and refreshed in the browser.
-- No other icons. No "Learn more". Unequal card heights are accepted.
+  3. A link band on the card's bottom edge, ruled off from the body and tinted: equal cells,
+     each an icon plus its label. In order: the GitHub mark on every component that has a
+     repository, the docs book on the 11 whose two links differ, and the star count (star icon +
+     number), linking to the repo page, where the star button is. Icons 20px, muted. The count is
+     baked in at build time when a `GITHUB_TOKEN` is set, and refreshed in the browser.
+- No other icons. No "Learn more". Cards in a row share a height, so the bands line up.
 - Every component link is styled identically so the eye can scan names.
 - The AI section's YAML `title` is changed to "AI tooling", which separates it from the sttp-ai
   snippet (a Backend component). Its `id` stays `ai`, so `#ai` keeps working.

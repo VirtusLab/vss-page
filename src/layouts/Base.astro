@@ -47,6 +47,10 @@ const canonical = pageUrl(Astro.site);
 		   links, the bright one is a fill only, and one amber marks the eyes and the paid block. */
 		--bg: #f9f6f5;
 		--surface: #eef3e7;
+		/* One step down from --surface: the card's footer band, and the same band under a pointer.
+		   Both carry --muted and --accent text, so neither may go darker than this. */
+		--surface-2: #e6eddd;
+		--surface-2-hover: #dce7d0;
 		--fg: #16211a;
 		--muted: #4a5b50;
 		--accent: #046b39;
@@ -147,6 +151,10 @@ const canonical = pageUrl(Astro.site);
 			   so the accent that was fill-only in light mode becomes the one that carries text. */
 			--bg: #07160f;
 			--surface: #0f2418;
+			/* Lighter than --surface here: on the forest ground a band reads as a surface by rising
+			   out of the card, not by sinking into it. */
+			--surface-2: #14301f;
+			--surface-2-hover: #1b3f29;
 			--fg: #eaf4ea;
 			--muted: #a7c1ae;
 			--accent: #67e387;

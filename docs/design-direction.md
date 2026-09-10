@@ -22,6 +22,8 @@ the Visdom block: that carries Visdom's own logo, being no part of the free stac
 
 Light: warm paper, green-black ink. Text greens are the saturated VL greens; the bright `#00c859` is
 a fill only. Not text: `--line` `#dbe3d3`, `--line-strong` `#bed0b2`, `--accent-bright` `#00c859`.
+`--surface-2` `#e6eddd` is the card's link band and `--surface-2-hover` `#dce7d0` one of its cells
+under a pointer; `--muted` on the darker of the two is 5.64, `--accent` 5.17.
 
 | token | hex | on `--bg` `#f9f6f5` | on `--surface` `#eef3e7` |
 | --- | --- | ---: | ---: |
@@ -34,6 +36,8 @@ a fill only. Not text: `--line` `#dbe3d3`, `--line-strong` `#bed0b2`, `--accent-
 
 Dark: not an inversion — the ground becomes forest green-black and the greens brighten, so the green
 that was fill-only in light mode carries text. Not text: `--line` `#22402e`, `--line-strong` `#2f5a40`.
+The band rises out of the card instead of sinking into it: `--surface-2` `#14301f`,
+`--surface-2-hover` `#1b3f29`; `--muted` on the lighter of the two is 6.08, `--accent` 7.22.
 
 | token | hex | on `--bg` `#07160f` | on `--surface` `#0f2418` |
 | --- | --- | ---: | ---: |
@@ -79,8 +83,8 @@ All hand-drawn inline SVG in `src/components/graphics/`, `aria-hidden`, filled f
   pad, and the frog 18 units right of the disc centre with its head 8 units left of its body, so it
   looks back at the headline. Every toe overlaps the foot bar, so nothing floats. One eye is drawn
   once and placed twice with `use`; only the blink clip-paths are per-eye. `overflow: visible`, as
-  the leaf tips reach past the viewBox on purpose. Capped at 22rem on desktop (16rem on mobile), in
-  the narrower column (0.8fr to the text's 1.2fr); not bled into the gutter, where at that size a
+  the leaf tips reach past the viewBox on purpose. Capped at 16rem on desktop (11rem on mobile), in
+  the narrower column (0.6fr to the text's 1.4fr); not bled into the gutter, where at that size a
   cropped disc reads as a mistake.
 - `SectionIcon.astro` — six 48×48 tiles, the same frog with one prop over its right shoulder: a page,
   a lambda, a gear, a rack, a spark, two chevrons; head and toe pads clear the rounded corners.

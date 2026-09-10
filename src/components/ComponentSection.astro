@@ -26,30 +26,31 @@ const { Content } = await render(section.intro);
 		{
 			section.components.map((component) => (
 				<li class="panel">
-					<h3 id={component.id}>
-						{/* GitHub is the default destination; only a component without a repository sends
-						    the name to its own site. */}
-						<a href={component.github ?? component.url}>{component.name}</a>
-					</h3>
-					<p>{component.description}</p>
+					<div class="body">
+						<h3 id={component.id}>
+							{/* GitHub is the default destination; only a component without a repository sends
+							    the name to its own site. */}
+							<a href={component.github ?? component.url}>{component.name}</a>
+						</h3>
+						<p>{component.description}</p>
+					</div>
 					{component.github && (
-						<p class="links">
-							{/* Two icons only where the name link alone cannot reach both destinations. */}
+						<div class="links">
+							{/* The band always opens with GitHub, so the cell is in the same place on every
+							    card; the docs cell appears only where the component has a site of its own. */}
+							<a href={component.github}>
+								<GithubMark />
+								{/* The component name is hidden and the label shown, so every cell in the row
+								    reads the same width while each link still names its own project. */}
+								<span class="label">{`${component.name}: `}</span>
+								<span>{labels.githubLabel}</span>
+							</a>
 							{component.docs && (
-								<>
-									<a href={component.github}>
-										<GithubMark />
-										<span class="label">
-											{component.name}: {labels.githubLabel}
-										</span>
-									</a>
-									<a href={component.docs}>
-										<DocsIcon />
-										<span class="label">
-											{component.name}: {labels.docsLabel}
-										</span>
-									</a>
-								</>
+								<a href={component.docs}>
+									<DocsIcon />
+									<span class="label">{`${component.name}: `}</span>
+									<span>{labels.docsLabel}</span>
+								</a>
 							)}
 							{component.githubRepo && (
 								<a class="stars" href={component.github} title={labels.starsTitle}>
@@ -65,7 +66,7 @@ const { Content } = await render(section.intro);
 									</span>
 								</a>
 							)}
-						</p>
+						</div>
 					)}
 				</li>
 			))
@@ -118,19 +119,29 @@ const { Content } = await render(section.intro);
 
 	.components {
 		display: grid;
+		align-items: stretch;
 		gap: var(--space-3);
 		margin: var(--space-4) 0 0;
 		padding: 0;
 		list-style: none;
 	}
 
+	/* A column, so the cards in a row are as tall as the tallest and the link band still sits on
+	   each one's bottom edge. `overflow: hidden` is what the band's corners are clipped by. */
 	.components li {
-		padding: var(--space-3) var(--space-4);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 		background: var(--surface);
 		transition:
 			transform 0.18s ease,
 			box-shadow 0.18s ease,
 			border-color 0.18s ease;
+	}
+
+	.body {
+		flex: 1;
+		padding: var(--space-3) var(--space-4);
 	}
 
 	.components li:hover {
@@ -150,34 +161,57 @@ const { Content } = await render(section.intro);
 		color: var(--muted);
 	}
 
-	/* The icon row: one line whatever it holds, so a card with three links and one with only a star
-	   count line up across the grid. The count takes the description's size and colour from the
-	   `.components p` rule above. */
+	/* The band across the card's bottom edge: a tinted strip ruled off from the body, holding the
+	   links as equal cells. A card with three links and one with only a star count get the same
+	   band, so the strips line up across a row. */
 	.links {
 		display: flex;
-		align-items: center;
-		gap: var(--space-3);
-		margin-top: var(--space-2);
+		border-top: var(--border) solid var(--line);
+		background: var(--surface-2);
+		font-size: var(--text-sm);
 	}
 
+	/* Equal cells: `flex: 1` off a zero basis, so the widths follow the cell count, not the label
+	   lengths. `min-width: 0` lets a cell shrink below its label rather than overflow the card. */
 	.links a {
-		display: inline-flex;
+		display: flex;
+		flex: 1 1 0;
+		min-width: 0;
 		align-items: center;
-		gap: var(--space-1);
-		/* Lifts the 20px icons to a 24px target without moving anything around them. */
-		padding: 2px 0;
-		/* The icons sit at the weight of the description they follow; the name stays the one green
-		   target on the card until a pointer or focus reaches an icon. */
+		justify-content: center;
+		gap: var(--space-2);
+		padding: var(--space-2) var(--space-2);
+		/* The band sits at the weight of the description above it; the name stays the one green
+		   target on the card until a pointer or focus reaches a cell. */
 		color: var(--muted);
 		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.links a + a {
+		border-left: var(--border) solid var(--line);
 	}
 
 	.links a:hover,
 	.links a:focus-visible {
+		background: var(--surface-2-hover);
 		color: var(--accent);
 	}
 
-	/* Read by screen readers, never shown: the icons alone name these links on screen. */
+	/* The card clips to its radius, so the global ring — drawn --border-thick outside the element —
+	   would be cut off along the card's edges. The same ring, drawn inside instead. */
+	.links a:focus-visible {
+		outline-offset: calc(var(--border-thick) * -1);
+	}
+
+	/* Before the build's star counts arrive — or without a `GITHUB_TOKEN` at all — the count span is
+	   empty, and its gap would push the star off the cell's centre. The script fills it and it shows. */
+	[data-stars]:empty {
+		display: none;
+	}
+
+	/* Read by screen readers, never shown: it prefixes each cell's visible label with the component
+	   name, so the links are told apart out of the card's context. */
 	.label {
 		position: absolute;
 		width: 1px;
