@@ -144,8 +144,8 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		/* Cap for running text; the page container is wider to hold the two-column grid. */
 		--measure: 65ch;
 		--page-width: 62rem;
-		/* Height of the sticky nav row; anchors scroll clear of it. */
-		--nav-height: 3.75rem;
+		/* Height of the floating chapter picker; anchors scroll clear of it. */
+		--float-nav-height: 3.25rem;
 		/* Section-icon tile, the card's link icons, and the frog mark in the code panel's title bar. */
 		--icon: 48px;
 		--icon-sm: 20px;
@@ -242,6 +242,11 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		box-sizing: border-box;
 	}
 
+	/* The floating picker covers the top edge at every width, so no anchor may land underneath it. */
+	html {
+		scroll-padding-top: calc(var(--float-nav-height) + var(--space-3));
+	}
+
 	body {
 		margin: 0;
 		background-color: var(--bg);
@@ -272,7 +277,7 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 
 	/* The first focusable on the page, parked above the top edge until it takes focus. Fixed, not
 	   absolute, so it is on screen wherever the reader has scrolled to; `z-index: 2` clears the
-	   sticky nav, which is 1. */
+	   floating nav, which is 1. */
 	.skip {
 		position: fixed;
 		left: var(--space-3);
@@ -338,11 +343,6 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		:root {
 			/* One step further up the scale: the hero only has room to be larger on the wide layout. */
 			--text-2xl: 2.441rem;
-		}
-
-		/* The nav is sticky at this width, so an anchor must not land underneath it. */
-		html {
-			scroll-padding-top: calc(var(--nav-height) + var(--space-3));
 		}
 	}
 

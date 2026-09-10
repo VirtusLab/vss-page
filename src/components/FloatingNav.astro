@@ -1,0 +1,139 @@
+---
+/**
+ * The chapter picker that floats over the page once the hero has scrolled away. Hidden until the
+ * inline script in `index.astro` sets `data-visible` on it, so without JavaScript it never shows and
+ * the in-flow `Nav` row stays the only index. Labels come from the same content the chapters render,
+ * so picker and headings cannot diverge.
+ */
+interface Props {
+	sections: { id: string; title: string }[];
+	/** Eyebrow of the snippets chapter, which the first entry jumps to. */
+	snippetsLabel: string;
+	/** Eyebrow of the benefits chapter. Not the benefits heading: the strip needs the short word. */
+	benefitsLabel: string;
+	/** Accessible name of the bar; the page carries a second `<nav>`. Not shown. */
+	label: string;
+}
+
+const { sections, snippetsLabel, benefitsLabel, label } = Astro.props;
+
+const entries = [
+	{ href: '#snippets', label: snippetsLabel },
+	{ href: '#benefits', label: benefitsLabel },
+	...sections.map((section) => ({ href: `#${section.id}`, label: section.title })),
+];
+---
+
+<nav class="float" data-float-nav aria-label={label}>
+	{/* `list-style: none` drops list semantics in Safari/VoiceOver; the role puts them back. */}
+	<ul role="list">
+		{
+			entries.map((entry) => (
+				<li>
+					<a href={entry.href}>{entry.label}</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<style>
+	/* Hidden until the script says otherwise, and gone entirely without it: `display: none` also
+	   keeps the links out of the tab order while the hero is on screen. */
+	.float {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 1;
+		display: none;
+		min-height: var(--float-nav-height);
+		align-items: center;
+		border-bottom: var(--border) solid var(--line);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
+		font-weight: 600;
+		/* Opaque first, for browsers without color-mix: the bar must never let text read through. */
+		background: var(--bg);
+		background: color-mix(in srgb, var(--bg) 88%, transparent);
+		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(10px);
+		/* The bar has no box while hidden, so the fade needs `allow-discrete` to hold `display` open
+		   across it. Browsers without it drop the whole transition and the bar appears at once —
+		   the same as under reduced motion, which is the point: neither is a broken state. */
+		opacity: 0;
+		translate: 0 -100%;
+		transition:
+			opacity 0.18s ease,
+			translate 0.18s ease,
+			display 0.18s allow-discrete;
+	}
+
+	.float[data-visible] {
+		display: flex;
+		opacity: 1;
+		translate: 0 0;
+	}
+
+	@starting-style {
+		.float[data-visible] {
+			opacity: 0;
+			translate: 0 -100%;
+		}
+	}
+
+	/* One row at every width: below the breakpoint it scrolls sideways rather than wrapping, so the
+	   bar is one line tall wherever the reader is. The scrollbar is hidden — the strip runs off the
+	   right edge, which is the affordance. The vertical padding is not decoration: it is what keeps
+	   a focused pill's ring inside the scroll container, which clips anything past its padding box. */
+	ul {
+		display: flex;
+		align-items: center;
+		gap: var(--space-1);
+		width: 100%;
+		max-width: var(--page-width);
+		margin: 0 auto;
+		padding: var(--space-1) var(--space-3);
+		list-style: none;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scrollbar-width: none;
+	}
+
+	ul::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* The strip only ever runs off the edge on a narrow window, and a mask cannot ask whether it
+	   does, so the width is the condition: above this the eight pills always fit. */
+	@media (max-width: 1000px) {
+		ul {
+			mask-image: linear-gradient(
+				to right,
+				black calc(100% - var(--space-4)),
+				transparent
+			);
+		}
+	}
+
+	/* The same quiet pill as the in-flow nav, one step tighter: chrome over the page, not in it. */
+	.float a {
+		display: block;
+		padding: var(--space-2) var(--space-3);
+		border-radius: var(--radius-pill);
+		color: var(--fg);
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.float a:hover {
+		background: var(--accent);
+		color: var(--on-accent);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.float {
+			transition: none;
+		}
+	}
+</style>

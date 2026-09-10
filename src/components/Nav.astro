@@ -1,8 +1,8 @@
 ---
 /**
- * The one navigation row, opening the components chapter, so it leads into the sections it links to.
- * Section labels are the section titles verbatim, so nav and headings cannot diverge. Sticky above
- * the 720px breakpoint only.
+ * The in-flow index of the components chapter, so it leads into the sections it links to. Section
+ * labels are the section titles verbatim, so nav and headings cannot diverge. It does not follow the
+ * reader: `FloatingNav` is what stays on screen once the hero is gone.
  */
 interface Props {
 	sections: { id: string; title: string }[];
@@ -10,12 +10,14 @@ interface Props {
 	benefitsLabel: string;
 	repoLabel: string;
 	repoUrl: string;
+	/** Accessible name of the row; the page carries a second `<nav>`. Not shown. */
+	label: string;
 }
 
-const { sections, benefitsLabel, repoLabel, repoUrl } = Astro.props;
+const { sections, benefitsLabel, repoLabel, repoUrl, label } = Astro.props;
 ---
 
-<nav class="nav">
+<nav class="nav" aria-label={label}>
 	{/* `list-style: none` drops list semantics in Safari/VoiceOver; the role puts them back. */}
 	<ul role="list">
 		{/* The benefits sit above the nav, not below it, but the row is the page's index: leaving
@@ -33,8 +35,8 @@ const { sections, benefitsLabel, repoLabel, repoUrl } = Astro.props;
 </nav>
 
 <style>
-	/* The bar is opaque and bled into the container's gutters, so the sticky row hides whatever
-	   scrolls under it edge to edge. */
+	/* Bled into the container's gutters, so the row's ground and its bottom hairline run the full
+	   width of the column rather than stopping short of it. */
 	.nav {
 		background: var(--bg);
 		margin: 0 calc(var(--space-3) * -1);
@@ -72,21 +74,7 @@ const { sections, benefitsLabel, repoLabel, repoUrl } = Astro.props;
 	}
 
 	@media (min-width: 720px) {
-		.nav {
-			position: sticky;
-			top: 0;
-			z-index: 1;
-			min-height: var(--nav-height);
-			display: flex;
-			align-items: center;
-			/* Opaque enough to hide the page under it while the warm ground still shows through. */
-			background: color-mix(in srgb, var(--bg) 88%, transparent);
-			-webkit-backdrop-filter: blur(10px);
-			backdrop-filter: blur(10px);
-		}
-
 		ul {
-			flex: 1;
 			align-items: center;
 			gap: var(--space-1) var(--space-2);
 		}

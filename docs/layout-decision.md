@@ -3,8 +3,8 @@
 Merges `task-2-research.md` and `task-2-critique.md`. Where they conflict, the critique wins.
 Colors, fonts and spacing scale are decided in a later task; this document fixes structure only.
 
-Global rules: one breakpoint at 720px. No client-side JavaScript except the star-count
-enhancement; the page must be complete without it. Every section and every
+Global rules: one breakpoint at 720px. No client-side JavaScript except the star-count refresh and
+the floating picker's visibility; the page must be complete without either. Every section and every
 component carries an explicit `id` in the YAML, used verbatim as its anchor. Content comes from
 `content/components.yaml`; snippets from `.scala` files compiled in CI.
 
@@ -12,13 +12,21 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 ### Nav
 
-- No top masthead. The nav is a single `<nav>` row placed after the benefits block, so the first
-  screen is hero + code, not chrome, and the row leads straight into the sections it links to.
-- Seven plain text links: `#benefits` first, labelled with the benefits heading, then the six
-  sections in YAML order. Nav label and section `<h2>` both render the YAML `title` verbatim, so they
-  cannot diverge. Plus a link to the source repo; Visdom is not in the nav.
-- Desktop (>720px): `position: sticky; top: 0`, one row, sticks on scroll.
-- Mobile: static (not sticky), labels wrap to two rows. No hamburger, no `<select>`, no JS.
+- No top masthead. The first screen is hero + code, not chrome.
+- The in-flow nav is a single `<nav>` row placed after the benefits block, so it leads straight into
+  the sections it links to. Seven plain text links: `#benefits` first, labelled with the benefits
+  heading, then the six sections in YAML order. Nav label and section `<h2>` both render the YAML
+  `title` verbatim, so they cannot diverge. Plus a link to the source repo; Visdom is not in the nav.
+  It is static at every width — never sticky — and its labels wrap to two rows on a phone.
+- Over it floats the chapter picker (`FloatingNav`), fixed to the top edge and shown only once the
+  hero is off screen: "In action" → `#snippets`, "Benefits" → `#benefits`, then the six section
+  titles. Eight pills, no repo link, no current-chapter highlight. The labels are the two chapter
+  eyebrows from `content/labels.md` and the YAML section titles, so again nothing is written twice.
+- The picker is `display: none` until the inline script sets `data-visible` on it, so without
+  JavaScript it never appears and the in-flow row is the page's only index. An `IntersectionObserver`
+  on `#hero` is the whole mechanism; the fade is off under `prefers-reduced-motion`.
+- Mobile: the picker is one row that scrolls sideways, never wrapping, with the scrollbar hidden.
+  No hamburger, no `<select>`.
 
 ### Hero + tagline + CTAs
 
@@ -35,7 +43,8 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 ### Snippet switcher
 
-- Under the hero and the divider that closes it, still within the first scroll on desktop. The
+- Under the hero and the divider that closes it, still within the first scroll on desktop. The block
+  carries `id="snippets"`, which is what the picker's first entry jumps to. The
   benefits band follows, and the nav follows that, so the order is hero → divider → switcher →
   benefits → divider → nav → sections.
 - Above the tab strip: an `<h2>` ("VSS in action:") and one muted sentence saying the snippets are
@@ -84,7 +93,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 Each section: `<section id="...">` → `<h2>` (YAML `title`) → one `<ul>` of components. Same
 treatment for every section, including the one-component ones. Sizes: Language 1, Tooling 2,
-Backend 6, AI tooling 6, DevOps 1, Template 2 = 18.
+Backend 6, AI tooling 6, DevOps 1, Templates 2 = 18.
 
 - Nothing between the `<h2>` and the `<ul>`: the sections carry no intro paragraphs.
 - Grid: 2 columns above 720px, 1 below, row-wise DOM order.
@@ -135,12 +144,15 @@ Backend 6, AI tooling 6, DevOps 1, Template 2 = 18.
    unambiguous `<a>` for agents.
 4. **Grid** — 2 columns above 720px, 1 below, uniform across sections. 3 columns would wrap
    16-word descriptions to 3 lines and leave orphans in most sections.
-5. **Section order** — unchanged YAML order (Template, Language, Tooling, Backend, AI, DevOps).
+5. **Section order** — unchanged YAML order (Templates, Language, Tooling, Backend, AI, DevOps).
    Page and source file agree, so humans and agents see the same stack.
 6. **Anchors** — an explicit `id` field on every section and every component in the YAML, used
    verbatim. Six section ids alone do not satisfy "quick navigation to any component".
-7. **Navigation** — seven links after the benefits band, sticky above 720px only, no JS, no Visdom.
-   A sticky bar costs more phone height than two wrapped rows of plain links.
+7. **Navigation** — two rows, neither of them a masthead. The in-flow row of seven links sits after
+   the benefits band and never sticks; the eight-entry picker floats over the page once the hero has
+   scrolled away, at every width. The picker is what makes a long page navigable from anywhere,
+   and keeping it out of the flow is what keeps the first screen free of chrome. It needs the one
+   IntersectionObserver the page already ships a pattern for, and degrades to nothing without it.
 8. **Commercial insert** — after section six, before the footer; bordered block with Visdom's
    logo, not the card format. Visible but never mistaken for part of the open-source stack.
 9. **Hero** — title + one-sentence tagline + one CTA (`#template`) + one agent line. A second
@@ -161,7 +173,7 @@ Backend 6, AI tooling 6, DevOps 1, Template 2 = 18.
   No text hidden in attributes, alt text or images.
 - All eight snippets are always in the HTML, highlighted at build time, inside `<pre><code>`.
 - Anchor ids: `#language`, `#tooling`, `#backend`, `#ai`, `#devops`, `#template`, `#commercial`,
-  `#benefits`, plus one per component (`#scala-3`, `#tapir`, `#ox`, ...) and one per benefit
+  `#benefits`, `#snippets`, plus one per component (`#scala-3`, `#tapir`, `#ox`, ...) and one per benefit
   (`#benefit-direct-style`, ...). Each id is an explicit kebab-case field in the YAML — or, for a
   benefit, its file name — not slugged from a title, and is a stable URL contract.
 - Raw HTML always carries everything — all eight snippets, all 18 components. Rendered-text

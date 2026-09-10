@@ -12,6 +12,7 @@ snippetsNote: Each tab is an excerpt of a complete scala-cli script that compile
 chapterSnippets: In action
 chapterBenefits: Benefits
 chapterComponents: The stack
+chapterPicker: Chapters
 skipLink: Skip to content
 shareImageAlt: VirtusLab Scala Stack — direct-style Scala 3
 ---

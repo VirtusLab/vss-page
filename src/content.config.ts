@@ -225,6 +225,8 @@ const labels = defineCollection({
 			chapterSnippets: z.string(),
 			chapterBenefits: z.string(),
 			chapterComponents: z.string(),
+			// Accessible name of the floating chapter picker, so the page's two navs differ.
+			chapterPicker: z.string(),
 			// First focusable in the body; jumps to `#content`.
 			skipLink: z.string(),
 			// `og:image:alt` for `public/og.png`.

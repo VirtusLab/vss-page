@@ -4,6 +4,7 @@ import BenefitsSection from '../components/BenefitsSection.astro';
 import ChapterLabel from '../components/ChapterLabel.astro';
 import Commercial from '../components/Commercial.astro';
 import ComponentSection from '../components/ComponentSection.astro';
+import FloatingNav from '../components/FloatingNav.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 import Nav from '../components/Nav.astro';
@@ -62,6 +63,15 @@ const jsonLd = {
 	skipLabel={labels.skipLink}
 	jsonLd={jsonLd}
 >
+	{/* First in the body after the skip link, so a reader tabbing forward reaches the picker before
+	    the content it jumps into — and only while it is on screen, since it is display: none until
+	    the script shows it. */}
+	<FloatingNav
+		sections={sections}
+		snippetsLabel={labels.chapterSnippets}
+		benefitsLabel={labels.chapterBenefits}
+		label={labels.chapterPicker}
+	/>
 	{/* Three chapters, each opened by its own eyebrow: the snippets show the code, the benefits make
 	    the argument, and the nav leads into the sections it links to. A sprig closes the hero and
 	    another closes the benefits; the snippets need none, because the band's top edge is already a
@@ -89,6 +99,7 @@ const jsonLd = {
 				benefitsLabel={benefits.heading}
 				repoLabel={footer.repoLabel}
 				repoUrl={footer.repoUrl}
+				label={labels.chapterComponents}
 			/>
 			{sections.map((section) => <ComponentSection section={section} labels={labels} />)}
 			<Commercial commercial={commercial} visdom={visdom} />
@@ -98,10 +109,11 @@ const jsonLd = {
 		<Footer footer={footer} labels={labels} />
 	</div>
 	{/*
-		The page's only JavaScript: star counts, refreshed when a card scrolls into view and cached for
-		an hour. Everything else works without it, and so does this — a build with a GITHUB_TOKEN bakes
-		the counts into the HTML, and a card with no count at all still links to the repository, where
-		the star button is.
+		The page's only JavaScript, in two parts. First, star counts, refreshed when a card scrolls into
+		view and cached for an hour. Everything else works without it, and so does this — a build with a
+		GITHUB_TOKEN bakes the counts into the HTML, and a card with no count at all still links to the
+		repository, where the star button is. Second, the floating chapter picker, shown while the hero
+		is off screen; without the script it never appears and the in-flow nav is the page's index.
 	*/}
 	<script is:inline>
 		(() => {
@@ -147,6 +159,16 @@ const jsonLd = {
 				}
 			});
 			document.querySelectorAll('a.stars').forEach((link) => observer.observe(link));
+		})();
+
+		(() => {
+			const bar = document.querySelector('[data-float-nav]');
+			const hero = document.getElementById('hero');
+			if (!bar || !hero || !('IntersectionObserver' in window)) return;
+			// The whole hero, not a sentinel line: the bar appears once none of it is left on screen.
+			new IntersectionObserver(([entry]) => {
+				bar.toggleAttribute('data-visible', !entry.isIntersecting);
+			}).observe(hero);
 		})();
 	</script>
 </Base>

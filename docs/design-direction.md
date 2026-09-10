@@ -61,6 +61,8 @@ Text on the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#
 
 ## Space, radius, depth
 
+- The floating chapter picker is `--float-nav-height` 3.25rem tall — a pill strip on a `color-mix`
+  band over `--bg` with a bottom hairline — and the page's `scroll-padding-top` is that plus a gutter.
 - Spacing `4 / 8 / 16 / 28 / 48 / 72`px. Borders `--border` 1px, `--border-thick` 2px (also the focus
   ring), `--rule` 3px for the green mark. Page container 62rem. Sizes are tokens too.
 - Radius `--radius-sm` 8, `--radius` 14, `--radius-pill`, and `--radius-lg` 26 on the code panel

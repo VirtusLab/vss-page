@@ -1,6 +1,6 @@
 sections:
   - id: template
-    title: Template
+    title: Templates
     components:
       - id: bootzooka
         name: Bootzooka
