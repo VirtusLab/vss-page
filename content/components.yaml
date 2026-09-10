@@ -11,6 +11,9 @@ sections:
         name: Adopt Tapir
         description: Generator for a starter Tapir project, configurable via a web UI.
         url: https://adopt-tapir.softwaremill.com
+        action:
+          label: Wizard
+          url: https://adopt-tapir.softwaremill.com
 
   - id: language
     title: Language

@@ -101,8 +101,25 @@ const component = z
 		// The card's GitHub icon and its star count are both built from this, and only github.com
 		// answers for stars, so a repository anywhere else would render a card with a dead count.
 		repo: httpUrl.refine((url) => githubUrl.test(url), 'must be a github.com URL').optional(),
+		// The one link in the card's bottom band, for a component that has no repository to fill it
+		// with. The label is a cell in a row of equal cells, so it has to stay a word or two.
+		action: z
+			.object({ label: z.string().min(1).max(40), url: httpUrl })
+			.strict()
+			.optional(),
 	})
-	.strict();
+	.strict()
+	// A card with a GitHub link fills its band from `repo`/`url` and never renders `action`, so an
+	// `action` written next to one is a link nobody would ever see rather than a card with two bands.
+	.superRefine((component, ctx) => {
+		if (component.action && (component.repo || githubUrl.test(component.url))) {
+			ctx.addIssue({
+				code: 'custom',
+				path: ['action'],
+				message: 'only a component with no GitHub link may set `action`; this one has one already',
+			});
+		}
+	});
 
 /** Section titles and the components they hold. */
 const sections = defineCollection({
@@ -221,7 +238,8 @@ const labels = defineCollection({
 			snippetsHeading: z.string(),
 			// Sentence under the heading.
 			snippetsNote: z.string(),
-			// Eyebrows over the page's three chapter headings; the components one sits above the nav.
+			// The first two name the floating picker's chapter entries; the third is the in-flow nav's
+			// accessible name and the JSON-LD list's.
 			chapterSnippets: z.string(),
 			chapterBenefits: z.string(),
 			chapterComponents: z.string(),

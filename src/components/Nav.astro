@@ -39,7 +39,8 @@ const { sections, benefitsLabel, repoLabel, repoUrl, label } = Astro.props;
 	   width of the column rather than stopping short of it. */
 	.nav {
 		background: var(--bg);
-		margin: 0 calc(var(--space-3) * -1);
+		/* The top margin is what keeps the row off the divider that closes the chapter above it. */
+		margin: var(--space-5) calc(var(--space-3) * -1) 0;
 		padding: var(--space-2) var(--space-3);
 		border-bottom: var(--border) solid var(--line);
 		font-family: var(--font-display);

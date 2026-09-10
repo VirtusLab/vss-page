@@ -75,9 +75,9 @@ const withLinks = <T extends { url: string; repo?: string }>(component: T) => {
 };
 
 /**
- * Everything the page and `llms.txt` render, in content-file order and with the references between
- * collections already resolved: each snippet carries its component. A snippet naming an unknown
- * component fails the build here — once, for both outputs.
+ * Everything the page and `llms.txt` render, in content-file order and with the star counts already
+ * fetched. Also where the references between collections are checked: a snippet naming a component
+ * no section holds fails the build here, once, for both outputs.
  */
 export const loadSite = async () => {
 	const linked = byOrder(await getCollection('sections')).map((section) => ({
@@ -99,16 +99,15 @@ export const loadSite = async () => {
 		})),
 	}));
 
-	const componentsById = new Map(
-		sections.flatMap((section) => section.components.map((c) => [c.id, c] as const)),
-	);
+	const componentIds = new Set(sections.flatMap((section) => section.components.map((c) => c.id)));
 
+	// Nothing rendered reads a snippet's `component`, but naming one is what ties a snippet to a
+	// library in the content, so an id no card answers to is still a mistake and fails the build.
 	const snippets = byOrder(await getCollection('snippets')).map((snippet) => {
-		const component = componentsById.get(snippet.data.component);
-		if (!component) {
+		if (!componentIds.has(snippet.data.component)) {
 			throw new Error(`Snippet ${snippet.data.id} names unknown component ${snippet.data.component}`);
 		}
-		return { ...snippet.data, component };
+		return snippet.data;
 	});
 
 	const benefits = {

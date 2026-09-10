@@ -20,11 +20,18 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   It is static at every width — never sticky — and its labels wrap to two rows on a phone.
 - Over it floats the chapter picker (`FloatingNav`), fixed to the top edge and shown only once the
   hero is off screen: "In action" → `#snippets`, "Benefits" → `#benefits`, then the six section
-  titles. Eight pills, no repo link, no current-chapter highlight. The labels are the two chapter
-  eyebrows from `content/labels.md` and the YAML section titles, so again nothing is written twice.
+  titles. Eight pills, no repo link. The labels are the two chapter names from `content/labels.md`
+  and the YAML section titles, so again nothing is written twice.
+- The pill for the chapter the reader is in carries `aria-current="location"` and is filled with the
+  accent, the same as a checked snippet tab. Current is the last of the eight targets starting above
+  a line 40% down the viewport, remeasured on scroll and resize (one read per frame). Geometry rather
+  than an `IntersectionObserver`: a jump between two positions that both leave the line bare — an
+  anchor, or the page's end, where the last section no longer reaches it — crosses nothing an
+  observer could report, and the end of the page has to keep the last section current.
 - The picker is `display: none` until the inline script sets `data-visible` on it, so without
-  JavaScript it never appears and the in-flow row is the page's only index. An `IntersectionObserver`
-  on `#hero` is the whole mechanism; the fade is off under `prefers-reduced-motion`.
+  JavaScript it never appears, no pill is ever current, and the in-flow row is the page's only index.
+  An `IntersectionObserver` on `#hero` is the whole of the visibility mechanism; the bar's fade and
+  the pill's colour transition are both off under `prefers-reduced-motion`.
 - Mobile: the picker is one row that scrolls sideways, never wrapping, with the scrollbar hidden.
   No hamburger, no `<select>`.
 
@@ -48,7 +55,8 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   benefits band follows, and the nav follows that, so the order is hero → divider → switcher →
   benefits → divider → nav → sections.
 - Above the tab strip: an `<h2>` ("VSS in action:") and one muted sentence saying the snippets are
-  excerpts of scala-cli scripts that compile as-is. The hidden `<legend>` stays.
+  excerpts of scala-cli scripts that compile as-is. The hidden `<legend>` stays. No eyebrow over the
+  `<h2>` — see Benefits.
 - Form: CSS-only radio tabs. Eight `<input type="radio" name="snippet">` (first `checked`),
   eight `<label>`s forming the visible strip, eight panels shown via `:checked ~ .panels > #id`.
   No `role="tab"`/`aria-controls` — those imply JS-managed focus.
@@ -67,8 +75,9 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   full, but the panel renders only the lines between `// snippet:start` and `// snippet:end`;
   using-directives and imports stay outside the markers; `@main` is inside only when the run
   call is the payoff (http-server, infra, websocket, dev-workflow).
-- Under each panel, two text links: the component's anchor on this page (`#tapir`, `#ox`,
-  `#sttp-ai`, `#besom`), and "full example" → the whole `.scala` file in the repo.
+- Under each panel, one text link: "full example" → the whole `.scala` file in the repo. The
+  component the snippet uses is named in the tab's own label, so a second link to its card only
+  doubled what the strip already said.
 - Strip layout: a fixed two columns below 720px and a fixed four above, so eight tabs are always
   four rows of two or two rows of four, never a horizontal scroller and never a short last row.
   `auto-fit` is not used: it packs in as many tabs as fit, which orphans the leftovers. Verify at
@@ -79,7 +88,9 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 - Between the switcher and the nav, on a full-bleed `--surface` band — the one block rendered
   outside the page container, so the tint runs to the window's edges and the page reads as three
-  chapters. Each chapter opens with a small uppercase eyebrow from `content/labels.md`.
+  chapters. No chapter carries an eyebrow over its heading: the band, the sprigs and the air above
+  each heading already mark the breaks. The chapter names in `content/labels.md` stay — they are
+  what the picker's first two entries read.
 - `<section id="benefits">` → `<h2>` and an intro paragraph from `content/benefits-section.md` →
   an `<ol>` of five `<article>`s, one per file in `content/benefits/`.
 - Each item: a 240×180 illustration (`BenefitArt`, keyed by the benefit id), an `<h3
@@ -106,8 +117,11 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 18.
      each an icon plus its label. In order: the GitHub mark on every component that has a
      repository, the docs book on the 10 whose two links differ, and the star count (star icon +
      number), linking to the repo page, where the star button is. Icons 20px, muted. The count is
-     baked in at build time when a `GITHUB_TOKEN` is set, and refreshed in the browser. A card with
-     no GitHub link at all — Adopt Tapir, whose sole link is its own page — gets no band.
+     baked in at build time when a `GITHUB_TOKEN` is set, and refreshed in the browser.
+  4. A card with no GitHub link may name one link of its own instead, as an `action: { label, url }`
+     in the YAML: it becomes the band's single cell, full width and styled like every other cell,
+     text only. Adopt Tapir is the one such card ("Wizard" → its generator). A card with a GitHub
+     link fills its band from the rules above and ignores `action`. A card with neither gets no band.
 - No other icons. No "Learn more". Cards in a row share a height, so the bands line up.
 - Every component link is styled identically so the eye can scan names.
 - The AI section's YAML `title` is "AI tooling"; its `id` stays `ai`, so `#ai` keeps working.
@@ -205,7 +219,7 @@ Features and packages that will be used (nothing installed yet):
 - `astro` only. No UI framework integration, no `client:*` directives anywhere.
 - `astro:content` — `defineCollection({ loader: file('content/components.yaml', { parser }), schema })`
   with a Zod schema: `sections[]` of `{ id, title, components[] }`, component
-  `{ id, name, description, url, repo? }`, where every `id` is kebab-case and unique across the
+  `{ id, name, description, url, repo?, action? }`, where every `id` is kebab-case and unique across the
   whole file. A typo or a duplicate id breaks the build, not the page.
 - `<Code />` from `astro:components` for the eight snippets — Shiki at build time, `lang="scala"`,
   `themes: { light, dark }` with `defaultColor: false`, so the two themes ship as CSS variables

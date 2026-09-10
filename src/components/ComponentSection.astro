@@ -23,7 +23,7 @@ const { section, labels } = Astro.props;
 	<ul class="components" role="list">
 		{
 			section.components.map((component) => (
-				<li class:list={['panel', !component.github && 'bandless']}>
+				<li class:list={['panel', !component.github && !component.action && 'bandless']}>
 					<div class="body">
 						<h3 id={component.id}>
 							{/* GitHub is the default destination; only a component without a repository sends
@@ -67,6 +67,16 @@ const { section, labels } = Astro.props;
 									<span class="pending" aria-hidden="true">{labels.starsPending}</span>
 								</a>
 							)}
+						</div>
+					)}
+					{/* Only where there is no GitHub band to hold: the authored link then fills the whole
+					    band on its own, so the card still ends on the same strip as its row-mate. */}
+					{!component.github && component.action && (
+						<div class="links">
+							<a href={component.action.url}>
+								<span class="label">{`${component.name}: `}</span>
+								<span>{component.action.label}</span>
+							</a>
 						</div>
 					)}
 				</li>

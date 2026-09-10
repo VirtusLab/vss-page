@@ -1,7 +1,6 @@
 ---
 import { Code } from 'astro:components';
 import CodeBar from './graphics/CodeBar.astro';
-import ChapterLabel from './ChapterLabel.astro';
 
 /**
  * CSS-only tabbed snippets: one radio per tab, all panels always in the DOM, stacked in a single
@@ -12,20 +11,16 @@ interface Props {
 		id: string;
 		label: string;
 		code: string;
-		componentId: string;
-		componentName: string;
 		fullExampleHref: string;
 	}[];
 	fullExampleLabel: string;
 	legend: string;
-	/** Eyebrow over the heading, naming the page chapter this block opens. */
-	chapter: string;
 	heading: string;
 	/** One muted sentence under the heading. */
 	note: string;
 }
 
-const { tabs, fullExampleLabel, legend, chapter, heading, note } = Astro.props;
+const { tabs, fullExampleLabel, legend, heading, note } = Astro.props;
 
 const radioId = (id: string) => `snippet-${id}`;
 const panelId = (id: string) => `panel-${id}`;
@@ -53,7 +48,6 @@ const tabRules = tabs
 ---
 
 <div class="switcher" id="snippets">
-	<ChapterLabel text={chapter} />
 	<h2 class="chapter-heading">{heading}</h2>
 	<p class="note">{note}</p>
 	<fieldset>
@@ -90,8 +84,7 @@ const tabRules = tabs
 								/>
 							</div>
 						</div>
-						<p class="panel-links">
-							<a href={`#${tab.componentId}`}>{tab.componentName}</a>
+						<p class="panel-link">
 							<a href={tab.fullExampleHref}>{fullExampleLabel}</a>
 						</p>
 					</div>
@@ -105,9 +98,11 @@ const tabRules = tabs
 <style is:inline set:html={tabRules}></style>
 
 <style>
+	/* More air above than below: the heading opens the chapter on its own, with nothing between it
+	   and the divider to hold the two apart. */
 	.switcher {
 		position: relative;
-		margin: var(--space-5) 0;
+		margin: var(--space-6) 0 var(--space-5);
 	}
 
 	.note {
@@ -236,10 +231,7 @@ const tabRules = tabs
 		pointer-events: none;
 	}
 
-	.panel-links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2) var(--space-4);
+	.panel-link {
 		margin: var(--space-3) 0 0;
 		font-family: var(--font-display);
 		font-size: var(--text-xs);

@@ -3,13 +3,14 @@
  * The chapter picker that floats over the page once the hero has scrolled away. Hidden until the
  * inline script in `index.astro` sets `data-visible` on it, so without JavaScript it never shows and
  * the in-flow `Nav` row stays the only index. Labels come from the same content the chapters render,
- * so picker and headings cannot diverge.
+ * so picker and headings cannot diverge. The same script marks the entry the reader is in with
+ * `aria-current="location"`, which is what fills its pill.
  */
 interface Props {
 	sections: { id: string; title: string }[];
-	/** Eyebrow of the snippets chapter, which the first entry jumps to. */
+	/** Names the snippets chapter, which the first entry jumps to. */
 	snippetsLabel: string;
-	/** Eyebrow of the benefits chapter. Not the benefits heading: the strip needs the short word. */
+	/** Names the benefits chapter. Not the benefits heading: the strip needs the short word. */
 	benefitsLabel: string;
 	/** Accessible name of the bar; the page carries a second `<nav>`. Not shown. */
 	label: string;
@@ -124,15 +125,21 @@ const entries = [
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
+		transition:
+			background 0.15s ease,
+			color 0.15s ease;
 	}
 
-	.float a:hover {
+	/* The chapter the reader is in, filled like the checked snippet tab; the script is what moves it. */
+	.float a:hover,
+	.float a[aria-current] {
 		background: var(--accent);
 		color: var(--on-accent);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.float {
+		.float,
+		.float a {
 			transition: none;
 		}
 	}

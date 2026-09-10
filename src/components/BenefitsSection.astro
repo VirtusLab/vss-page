@@ -2,7 +2,6 @@
 import { render } from 'astro:content';
 import type { Site } from '../lib/content';
 import BenefitArt from './graphics/BenefitArt.astro';
-import ChapterLabel from './ChapterLabel.astro';
 
 /**
  * The argument for the stack, between the snippets and the components. Sits on a full-bleed
@@ -11,10 +10,9 @@ import ChapterLabel from './ChapterLabel.astro';
  */
 interface Props {
 	benefits: Site['benefits'];
-	chapter: string;
 }
 
-const { benefits, chapter } = Astro.props;
+const { benefits } = Astro.props;
 
 // `render` is async and cannot be awaited inside the template, so the bodies are rendered up front.
 const items = await Promise.all(
@@ -24,7 +22,6 @@ const items = await Promise.all(
 
 <div class="band">
 	<section id="benefits">
-		<ChapterLabel text={chapter} />
 		<h2 class="chapter-heading">{benefits.heading}</h2>
 		<p class="intro">{benefits.intro}</p>
 		{/* An ordered list: the five make an argument in order, and the numerals are the CSS counter
@@ -55,10 +52,12 @@ const items = await Promise.all(
 <style>
 	/* Edge to edge, and the one block that paints its own ground: the tint is what tells the reader
 	   a new chapter started. */
+	/* The same air at both edges, and one step up from the blocks around it: the padding is the whole
+	   gap between the band's rule and the chapter's first line. */
 	.band {
 		background: var(--surface);
 		border-block: var(--border) solid var(--line);
-		padding: var(--space-5) 0;
+		padding: var(--space-6) 0;
 	}
 
 	/* Rendered outside `.page`, so this is what puts the chapter back in the page's column — the cap
@@ -145,10 +144,6 @@ const items = await Promise.all(
 	}
 
 	@media (min-width: 720px) {
-		.band {
-			padding: var(--space-6) 0;
-		}
-
 		.items {
 			gap: var(--space-6);
 		}

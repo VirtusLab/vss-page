@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import BenefitsSection from '../components/BenefitsSection.astro';
-import ChapterLabel from '../components/ChapterLabel.astro';
 import Commercial from '../components/Commercial.astro';
 import ComponentSection from '../components/ComponentSection.astro';
 import FloatingNav from '../components/FloatingNav.astro';
@@ -20,8 +19,6 @@ const tabs = snippets.map((snippet) => ({
 	id: snippet.id,
 	label: snippet.label,
 	code: snippetRegion(snippet.file),
-	componentId: snippet.component.id,
-	componentName: snippet.component.name,
 	fullExampleHref: `${footer.repoUrl}/blob/main/${snippet.file}`,
 }));
 
@@ -72,7 +69,7 @@ const jsonLd = {
 		benefitsLabel={labels.chapterBenefits}
 		label={labels.chapterPicker}
 	/>
-	{/* Three chapters, each opened by its own eyebrow: the snippets show the code, the benefits make
+	{/* Three chapters, each opened by its own heading: the snippets show the code, the benefits make
 	    the argument, and the nav leads into the sections it links to. A sprig closes the hero and
 	    another closes the benefits; the snippets need none, because the band's top edge is already a
 	    line across the page. The band paints its own ground, which is why it sits outside `.page` —
@@ -85,15 +82,13 @@ const jsonLd = {
 				tabs={tabs}
 				fullExampleLabel={labels.fullExample}
 				legend={labels.snippetsLegend}
-				chapter={labels.chapterSnippets}
 				heading={labels.snippetsHeading}
 				note={labels.snippetsNote}
 			/>
 		</div>
-		<BenefitsSection benefits={benefits} chapter={labels.chapterBenefits} />
+		<BenefitsSection benefits={benefits} />
 		<div class="page">
 			<Divider />
-			<ChapterLabel text={labels.chapterComponents} />
 			<Nav
 				sections={sections}
 				benefitsLabel={benefits.heading}
@@ -169,6 +164,53 @@ const jsonLd = {
 			new IntersectionObserver(([entry]) => {
 				bar.toggleAttribute('data-visible', !entry.isIntersecting);
 			}).observe(hero);
+
+			const links = [...bar.querySelectorAll('a')];
+			const targets = links.map((link) => document.getElementById(link.hash.slice(1)));
+
+			const show = (current) => {
+				for (const link of links) {
+					if (link === current) link.setAttribute('aria-current', 'location');
+					else link.removeAttribute('aria-current');
+				}
+			};
+
+			// The chapter the reader is in is the last one starting above a line 40% down the viewport:
+			// the block holding the top of the screen, and at the page's end the final section.
+			const mark = () => {
+				const line = window.innerHeight * 0.4;
+				let current;
+				targets.forEach((target, i) => {
+					if (target && target.getBoundingClientRect().top <= line) current = links[i];
+				});
+				show(current);
+			};
+
+			// A followed anchor names its own chapter, so it is marked on the spot rather than measured:
+			// on a tall viewport the block jumped to can come to rest below the line — the page having
+			// no more room to scroll — which would leave the entry above it lit. The next scroll, if
+			// there is one, measures again.
+			const fromHash = () => {
+				const entry = links.find((link) => link.hash === location.hash);
+				if (entry) show(entry);
+			};
+			addEventListener('hashchange', fromHash);
+
+			// Measured on scroll, not watched with an IntersectionObserver: a jump between two positions
+			// that both leave the line bare — an anchor, the page's end — crosses nothing to report.
+			let queued = false;
+			const schedule = () => {
+				if (queued) return;
+				queued = true;
+				requestAnimationFrame(() => {
+					queued = false;
+					mark();
+				});
+			};
+			addEventListener('scroll', schedule, { passive: true });
+			addEventListener('resize', schedule, { passive: true });
+			mark();
+			fromHash();
 		})();
 	</script>
 </Base>
