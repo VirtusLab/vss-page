@@ -1,6 +1,9 @@
 ---
 fullExample: full example (run with scala-cli)
-repo: repo
+githubLabel: GitHub
+docsLabel: Docs
+starsLabel: "stars on GitHub:"
+starsTitle: Stars on GitHub — star it there
 llmsLabel: llms.txt
 llmsHref: /llms.txt
 snippetsLegend: Code examples

@@ -1,0 +1,33 @@
+---
+/**
+ * An open book, on a card's link to a component's documentation site. Drawn in the round-capped
+ * stroke style the section icons use, so the two card icons read as one pair. Decorative: the link
+ * around it carries the accessible name.
+ */
+---
+
+<svg
+	class="icon"
+	viewBox="0 0 24 24"
+	fill="none"
+	stroke="currentColor"
+	stroke-width="1.8"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	focusable="false"
+>
+	{/* Two pages meeting at a spine, each resting on the cover below it. */}
+	<path d="M12 6.6 C 10.4 5 8 4.6 4 4.9 V 17.4 C 8 17.1 10.4 17.5 12 19"></path>
+	<path d="M12 6.6 C 13.6 5 16 4.6 20 4.9 V 17.4 C 16 17.1 13.6 17.5 12 19"></path>
+	<path d="M12 6.6 V 19"></path>
+</svg>
+
+<style>
+	.icon {
+		display: block;
+		flex: none;
+		width: var(--icon-sm);
+		height: var(--icon-sm);
+	}
+</style>

@@ -37,5 +37,8 @@ jobs:
         run: npm ci
       - name: Build site
         run: npm run build
+        # Same as the deploy build: bake the star counts in, so this checks what ships.
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Check links
         run: npm run check-links

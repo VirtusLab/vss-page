@@ -34,6 +34,10 @@ jobs:
         uses: withastro/action@v6
         with:
           node-version: 22
+        # Lets the build bake the star counts into the cards; without it they are fetched by the
+        # browser only, against a rate limit shared by everyone on the reader's IP.
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
   deploy:
     needs: build

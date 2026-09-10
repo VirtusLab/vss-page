@@ -1,15 +1,18 @@
 ---
 import { render } from 'astro:content';
-import type { Site } from '../lib/content';
+import { formatStars, type Site } from '../lib/content';
+import DocsIcon from './graphics/DocsIcon.astro';
+import GithubMark from './graphics/GithubMark.astro';
 import SectionIcon from './graphics/SectionIcon.astro';
+import StarIcon from './graphics/StarIcon.astro';
 
 /** One stack section: a frog icon and title, an intro paragraph, and a card per component. */
 interface Props {
 	section: Site['sections'][number];
-	repoLabel: string;
+	labels: Site['labels'];
 }
 
-const { section, repoLabel } = Astro.props;
+const { section, labels } = Astro.props;
 const { Content } = await render(section.intro);
 ---
 
@@ -24,12 +27,44 @@ const { Content } = await render(section.intro);
 			section.components.map((component) => (
 				<li class="panel">
 					<h3 id={component.id}>
-						<a href={component.url}>{component.name}</a>
+						{/* GitHub is the default destination; only a component without a repository sends
+						    the name to its own site. */}
+						<a href={component.github ?? component.url}>{component.name}</a>
 					</h3>
 					<p>{component.description}</p>
-					{component.repo && component.repo !== component.url && (
-						<p class="repo">
-							<a href={component.repo}>{repoLabel}</a>
+					{component.github && (
+						<p class="links">
+							{/* Two icons only where the name link alone cannot reach both destinations. */}
+							{component.docs && (
+								<>
+									<a href={component.github}>
+										<GithubMark />
+										<span class="label">
+											{component.name}: {labels.githubLabel}
+										</span>
+									</a>
+									<a href={component.docs}>
+										<DocsIcon />
+										<span class="label">
+											{component.name}: {labels.docsLabel}
+										</span>
+									</a>
+								</>
+							)}
+							{component.githubRepo && (
+								<a class="stars" href={component.github} title={labels.starsTitle}>
+									<StarIcon />
+									{/* Ahead of the number and part of the link's name, so the count is read out
+									    as "<name> stars on GitHub: 1.5k" instead of being skipped. */}
+									<span class="label">
+										{component.name} {labels.starsLabel}
+									</span>
+									{/* Baked in when the build had a token; refreshed by the script in index.astro. */}
+									<span data-stars={component.githubRepo}>
+										{component.stars !== undefined && formatStars(component.stars)}
+									</span>
+								</a>
+							)}
 						</p>
 					)}
 				</li>
@@ -115,11 +150,41 @@ const { Content } = await render(section.intro);
 		color: var(--muted);
 	}
 
-	.repo {
+	/* The icon row: one line whatever it holds, so a card with three links and one with only a star
+	   count line up across the grid. The count takes the description's size and colour from the
+	   `.components p` rule above. */
+	.links {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
 		margin-top: var(--space-2);
-		font-family: var(--font-display);
-		font-size: var(--text-xs);
-		font-weight: 600;
+	}
+
+	.links a {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-1);
+		/* Lifts the 20px icons to a 24px target without moving anything around them. */
+		padding: 2px 0;
+		/* The icons sit at the weight of the description they follow; the name stays the one green
+		   target on the card until a pointer or focus reaches an icon. */
+		color: var(--muted);
+		text-decoration: none;
+	}
+
+	.links a:hover,
+	.links a:focus-visible {
+		color: var(--accent);
+	}
+
+	/* Read by screen readers, never shown: the icons alone name these links on screen. */
+	.label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
 	@media (min-width: 720px) {

@@ -33,6 +33,15 @@ npm run check-links  # check links in the built site (run after npm run build)
 - `content/visdom.md` — the label and note in the commercial block.
 - `content/footer.md` — maintainers, page source link, license.
 
+## Star counts
+
+Each card shows its project's GitHub star count. The build bakes the numbers in when
+`GITHUB_TOKEN` is set — CI passes the Actions token — and the browser refreshes them as cards
+scroll into view, caching each for an hour. Without a token the build leaves the numbers out and
+only the browser fills them in, against GitHub's 60-requests-per-hour limit for anonymous callers.
+To bake them locally: `export GITHUB_TOKEN=$(gh auth token)` before `npm run build`. A missing or
+failed count is never an error: the card keeps its link to the repository.
+
 `snippets/` holds the Scala files the page shows. Each one compiles in CI; only
 the lines between `// snippet:start` and `// snippet:end` are shown.
 

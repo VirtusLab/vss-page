@@ -3,7 +3,8 @@
 Merges `task-2-research.md` and `task-2-critique.md`. Where they conflict, the critique wins.
 Colors, fonts and spacing scale are decided in a later task; this document fixes structure only.
 
-Global rules: one breakpoint at 720px. Zero client-side JavaScript. Every section and every
+Global rules: one breakpoint at 720px. No client-side JavaScript except the star-count
+enhancement; the page must be complete without it. Every section and every
 component carries an explicit `id` in the YAML, used verbatim as its anchor. Content comes from
 `content/components.yaml`; snippets from `.scala` files compiled in CI.
 
@@ -27,7 +28,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 - Under the CTA, one small line for the other audience: "For coding agents: `llms.txt` ·
   scala-skill". The first links to `/llms.txt`; the second is an in-page link to `#scala-skill`,
   the existing AI-tooling component. Nothing new is built for either.
-- No version numbers, star counts, event banners or countdowns.
+- No version numbers, star counts (they sit on the cards), event banners or countdowns.
 - `<title>` is hero title plus acronym, "VirtusLab Scala Stack (VSS)"; meta description is the
   tagline.
 
@@ -69,12 +70,15 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 - Between the `<h2>` and the `<ul>`: the section intro paragraph from `content/sections/<id>.md`.
 - Grid: 2 columns above 720px, 1 below, row-wise DOM order.
 - Card contents, in order:
-  1. Component name as an `<a href="{url}">`, inside `<h3 id="{id}">` using the YAML `id`
-     verbatim. The name is the only primary link.
+  1. Component name as an `<a>`, inside `<h3 id="{id}">` using the YAML `id` verbatim. It links
+     to GitHub — `repo`, or `url` when that is already a GitHub page — and only to the component's
+     own site when it has no repository at all. The name is the only primary link.
   2. Description as plain text, verbatim from the YAML. No truncation, no `line-clamp`.
-  3. A small text link "repo" — only when `repo` is present and differs from `url`.
-     11 of 18 components get one. Never a bare GitHub icon.
-- No icons anywhere. No "Learn more". Unequal card heights are accepted.
+  3. An icon row: a GitHub mark and a docs book, 20px, muted, only on the 11 components whose two
+     links differ; plus the star count (star icon + number) on every component with a GitHub
+     repository, linking to the repo page, where the star button is. Baked in at build time when a
+     `GITHUB_TOKEN` is set, and refreshed in the browser.
+- No other icons. No "Learn more". Unequal card heights are accepted.
 - Every component link is styled identically so the eye can scan names.
 - The AI section's YAML `title` is changed to "AI tooling", which separates it from the sttp-ai
   snippet (a Backend component). Its `id` stays `ai`, so `#ai` keeps working.
@@ -101,8 +105,9 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
    for the page's central widget on a static site.
 2. **Snippet placement and size** — under the hero/nav, 12-15 lines, no inner scroll, fixed
    panel height. Answers "what does the code look like" on the first screen without page jump.
-3. **Component card format** — linked name + full description + optional text "repo" link.
-   One scannable target per component for humans, one unambiguous `<a>` for agents.
+3. **Component card format** — linked name + full description + an icon row carrying the
+   second link and the star count. One scannable target per component for humans, one
+   unambiguous `<a>` for agents.
 4. **Grid** — 2 columns above 720px, 1 below, uniform across sections. 3 columns would wrap
    16-word descriptions to 3 lines and leave orphans in most sections.
 5. **Section order** — unchanged YAML order (Language, Tooling, Backend, AI, DevOps, Template).
@@ -136,6 +141,10 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 - `/llms.txt` is a plain-text mirror generated from the same YAML and the same `.scala` files —
   never hand-written, so it cannot drift — carrying every component and every snippet in full.
   It ships regardless of verification 1: same sources, near-zero cost.
+- Star counts are baked into the HTML by a build that has a `GITHUB_TOKEN` (CI does), and the
+  browser refreshes them; a build without one ships empty spans that only a browser fills. Either
+  way nothing else depends on them, and `llms.txt` carries no counts — a number that goes stale in
+  a text file is worse than no number.
 - No JSON-LD. It would duplicate `llms.txt` at higher cost.
 
 ## 4. Tech choice: Astro

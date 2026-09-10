@@ -78,6 +78,12 @@ for (const id of introIds) {
 const kebabCase = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const id = z.string().regex(kebabCase, 'must be kebab-case');
 
+// Every URL in the content is a link rendered into the page, so nothing but http(s) is a link.
+const httpUrl = z.url({ protocol: /^https?$/ });
+// Kept in step with the one in `src/lib/content.ts`, which pulls `owner/name` out of the match.
+// This file cannot import it: the config is loaded before the collections it defines exist.
+const githubUrl = /^https?:\/\/(?:www\.)?github\.com\/[^/?#]+\/[^/?#]+/;
+
 const anchor = (ids: Set<string>, what: string) =>
 	z
 		.string()
@@ -91,8 +97,10 @@ const component = z
 		id,
 		name: z.string(),
 		description: z.string().max(100),
-		url: z.url(),
-		repo: z.url().optional(),
+		url: httpUrl,
+		// The card's GitHub icon and its star count are both built from this, and only github.com
+		// answers for stars, so a repository anywhere else would render a card with a dead count.
+		repo: httpUrl.refine((url) => githubUrl.test(url), 'must be a github.com URL').optional(),
 	})
 	.strict();
 
@@ -164,9 +172,9 @@ const footer = defineCollection({
 	schema: z
 		.object({
 			// At least one: the footer names them all, joined naturally.
-			maintainers: z.array(z.object({ label: z.string(), url: z.url() }).strict()).min(1),
+			maintainers: z.array(z.object({ label: z.string(), url: httpUrl }).strict()).min(1),
 			repoLabel: z.string(),
-			repoUrl: z.url(),
+			repoUrl: httpUrl,
 			// Empty hides the license line.
 			license: z.string(),
 		})
@@ -179,7 +187,12 @@ const labels = defineCollection({
 	schema: z
 		.object({
 			fullExample: z.string(),
-			repo: z.string(),
+			// Accessible names for the icon links on a card. `starsLabel` is read just before the
+			// number, so the star link announces as "<name> stars on GitHub: 1.5k".
+			githubLabel: z.string(),
+			docsLabel: z.string(),
+			starsLabel: z.string(),
+			starsTitle: z.string(),
 			llmsLabel: z.string(),
 			// Goes through `withBase`, which only handles site-absolute paths.
 			llmsHref: z.string().refine((h) => h.startsWith('/'), 'must be a site-absolute path'),

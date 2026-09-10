@@ -38,11 +38,63 @@ const tabs = snippets.map((snippet) => ({
 			/>
 			<Divider />
 			<Nav sections={sections} repoLabel={footer.repoLabel} repoUrl={footer.repoUrl} />
-			{sections.map((section) => <ComponentSection section={section} repoLabel={labels.repo} />)}
+			{sections.map((section) => <ComponentSection section={section} labels={labels} />)}
 			<Commercial commercial={commercial} visdom={visdom} />
 		</main>
 		<Footer footer={footer} labels={labels} />
 	</div>
+	{/*
+		The page's only JavaScript: star counts, refreshed when a card scrolls into view and cached for
+		an hour. Everything else works without it, and so does this — a build with a GITHUB_TOKEN bakes
+		the counts into the HTML, and a card with no count at all still links to the repository, where
+		the star button is.
+	*/}
+	<script is:inline>
+		(() => {
+			if (!('IntersectionObserver' in window)) return;
+			const hour = 60 * 60 * 1000;
+			const key = (repo) => `stars:${repo}`;
+			// Same rule as `formatStars` in src/lib/content.ts, which bakes the initial text.
+			const format = (count) =>
+				count > 999 ? `${(count / 1000).toFixed(1).replace(/\.0$/, '')}k` : `${count}`;
+
+			const cached = (repo) => {
+				try {
+					const { count, at } = JSON.parse(localStorage.getItem(key(repo)));
+					return typeof count === 'number' && Date.now() - at < hour ? count : null;
+				} catch {
+					return null;
+				}
+			};
+
+			const show = async (span) => {
+				const repo = span.dataset.stars;
+				const known = cached(repo);
+				if (known !== null) return void (span.textContent = format(known));
+				const [owner, name] = repo.split('/').map(encodeURIComponent);
+				try {
+					const response = await fetch(`https://api.github.com/repos/${owner}/${name}`, {
+						headers: { Accept: 'application/vnd.github+json' },
+					});
+					if (!response.ok) return;
+					const { stargazers_count: count } = await response.json();
+					if (typeof count !== 'number') return;
+					span.textContent = format(count);
+					localStorage.setItem(key(repo), JSON.stringify({ count, at: Date.now() }));
+				} catch {}
+			};
+
+			// The links are observed, not the counts: an empty span has no box to intersect with.
+			const observer = new IntersectionObserver((entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					observer.unobserve(entry.target);
+					show(entry.target.querySelector('[data-stars]'));
+				}
+			});
+			document.querySelectorAll('a.stars').forEach((link) => observer.observe(link));
+		})();
+	</script>
 </Base>
 
 <style>
