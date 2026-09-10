@@ -1,58 +1,96 @@
 ---
 /**
- * The band that separates the major blocks of the page: a three-leaf sprig with a green rule fading
- * out of it to both edges — the same lens-shaped leaf the hero art is built from.
- * Decorative, hence `aria-hidden`.
+ * The band that separates the major blocks of the page: a leaf sprig standing off-centre in the
+ * water, with the green rule running behind it and fading out to both edges. Two rings spread from
+ * the point the stem meets the surface and the outer one crosses the rule, which is what puts the
+ * sprig in the page instead of on top of it. Decorative, hence `aria-hidden`.
  */
 ---
 
 <div class="divider" aria-hidden="true">
-	<span class="rule rule-left"></span>
-	<svg class="sprig" viewBox="0 0 100 40" focusable="false">
-		<g transform="rotate(-26 20 20)">
-			<path d="M 4 20 C 11 9 27 9 34 20 C 27 31 11 31 4 20 Z" fill="var(--art-leaf)"></path>
-			<path d="M 8 20 L 30 20" stroke="var(--art-disc)" stroke-width="1.8" stroke-linecap="round"></path>
+	<span class="rule"></span>
+	{/* Every leaf is drawn twice: once shifted down-right in the shade colour, once in place — the
+	    same single light as the rest of the artwork, and no shape needs an outline. */}
+	<svg class="sprig" viewBox="0 0 132 56" aria-hidden="true" focusable="false">
+		<path
+			d="M 2 29 A 50 12 0 1 0 102 29 A 50 12 0 1 0 2 29 Z M 3.4 28 A 47.8 10.2 0 1 0 99 28 A 47.8 10.2 0 1 0 3.4 28 Z"
+			fill-rule="evenodd"
+			fill="var(--art-water)"></path>
+		<path
+			d="M 25 28 A 24 7 0 1 0 73 28 A 24 7 0 1 0 25 28 Z M 26 27.1 A 22.2 5.4 0 1 0 70.4 27.1 A 22.2 5.4 0 1 0 26 27.1 Z"
+			fill-rule="evenodd"
+			fill="var(--art-water)"></path>
+		<path
+			d="M 50 34 C 51 26 56 14 64 6"
+			fill="none"
+			stroke="var(--art-shade)"
+			stroke-width="2.4"
+			stroke-linecap="round"></path>
+
+		<g transform="translate(37.5 19) rotate(-160)">
+			<path d="M -18 0 C -10 -9 9 -9 18 0 C 9 9 -10 9 -18 0 Z" fill="var(--art-shade)"></path>
 		</g>
-		<g transform="rotate(26 80 20)">
-			<path d="M 66 20 C 73 9 89 9 96 20 C 89 31 73 31 66 20 Z" fill="var(--art-leaf)"></path>
-			<path d="M 70 20 L 92 20" stroke="var(--art-disc)" stroke-width="1.8" stroke-linecap="round"></path>
+		<g transform="translate(36 17) rotate(-160)">
+			<path d="M -18 0 C -10 -9 9 -9 18 0 C 9 9 -10 9 -18 0 Z" fill="var(--art-leaf)"></path>
+			<path d="M -12 0 L 11 0" fill="none" stroke="var(--art-leaf-light)" stroke-width="1.6" stroke-linecap="round"
+			></path>
 		</g>
-		<path d="M 30 20 C 40 5 60 5 70 20 C 60 35 40 35 30 20 Z" fill="var(--accent-bright)"></path>
-		<path d="M 35 20 L 65 20" stroke="var(--art-disc)" stroke-width="2.4" stroke-linecap="round"></path>
+
+		<g transform="translate(45.5 9) rotate(-128)">
+			<path d="M -12 0 C -7 -6 6 -6 12 0 C 6 6 -7 6 -12 0 Z" fill="var(--art-shade)"></path>
+		</g>
+		<g transform="translate(44 7) rotate(-128)">
+			<path d="M -12 0 C -7 -6 6 -6 12 0 C 6 6 -7 6 -12 0 Z" fill="var(--art-leaf)"></path>
+		</g>
+
+		<g transform="translate(85.5 14) rotate(-24)">
+			<path d="M -24 0 C -15 -12 13 -12 24 0 C 13 12 -15 12 -24 0 Z" fill="var(--art-shade)"></path>
+		</g>
+		<g transform="translate(84 12) rotate(-24)">
+			<path d="M -24 0 C -15 -12 13 -12 24 0 C 13 12 -15 12 -24 0 Z" fill="var(--art-leaf)"></path>
+			<ellipse cx="-6" cy="-5" rx="9" ry="2.2" transform="rotate(-10 -6 -5)" fill="var(--art-leaf-light)"></ellipse>
+			<path d="M -17 1 L 15 1" fill="none" stroke="var(--art-leaf-light)" stroke-width="1.6" stroke-linecap="round"
+			></path>
+		</g>
 	</svg>
-	<span class="rule rule-right"></span>
 </div>
 
 <style>
 	/* Edge to edge like the nav row: the negative margin pulls the band into the page container's
 	   gutters, so the rule reads as a line crossing the page and not as a border inside the column. */
+	/* Its own air above and below: the sprig closes a chapter wherever it is placed. */
 	.divider {
+		position: relative;
 		display: flex;
 		align-items: center;
-		gap: var(--space-3);
 		width: calc(100% + var(--space-3) * 2);
-		/* Its own air above and below: the sprig closes a chapter wherever it is placed. */
 		margin: var(--space-4) calc(var(--space-3) * -1);
 	}
 
-	/* Green where it meets the sprig, gone by the time it reaches the page edge. */
+	/* One line all the way across, behind the sprig, green in the middle and gone at both edges. */
 	.rule {
-		flex: 1;
+		position: absolute;
+		inset-inline: 0;
+		top: 50%;
 		height: var(--border-thick);
+		margin-top: calc(var(--border-thick) / -2);
 		border-radius: var(--radius-pill);
+		background: linear-gradient(
+			to right,
+			transparent,
+			var(--accent-bright) 42%,
+			var(--accent-bright) 58%,
+			transparent
+		);
 	}
 
-	.rule-left {
-		background: linear-gradient(to right, transparent, var(--accent-bright));
-	}
-
-	.rule-right {
-		background: linear-gradient(to left, transparent, var(--accent-bright));
-	}
-
+	/* Off the centre of the page, and the only thing in the flow, so the rule's 50% is the water line
+	   the rings spread along. */
 	.sprig {
+		position: relative;
 		flex: none;
-		height: calc(var(--icon) - var(--space-2));
+		height: var(--icon);
 		width: auto;
+		margin-inline-start: 33%;
 	}
 </style>

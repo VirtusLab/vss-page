@@ -1,16 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>VirtusLab Scala Stack</title>
+  <!--
+    Head only, three-quarter: two eye turrets rising out of a skull whose top edge passes behind
+    them, the near one larger and lower and the far one dropped behind the shade wedge, so the mark
+    is never bilaterally symmetric. One shade shape taking the far third of the skull, no mouth, no
+    catchlight — what is left is the silhouette, which is all that survives at 16px. Pupil bars are
+    half the amber's width so the eyes read as eyes and not as sunglasses. Amber is the only
+    non-green. Literal colours: an icon inherits no CSS. Same character as
+    src/components/graphics/HeroArt.astro; redraw the two together.
+  -->
+  <!-- Skull and far turret together, so the one shade shape can cut the turret's outer edge too. -->
+  <clipPath id="skull">
+    <ellipse cx="34" cy="41" rx="25" ry="17" transform="rotate(-8 34 41)" />
+    <circle cx="43" cy="24" r="12" />
+  </clipPath>
+
   <rect width="64" height="64" rx="14" fill="#07160f" />
-  <ellipse cx="32" cy="44" rx="23" ry="17" fill="#00c859" />
-  <ellipse cx="32" cy="38" rx="14" ry="8" fill="#67e387" opacity="0.55" />
-  <circle cx="18" cy="26" r="12.5" fill="#b4f5b5" />
-  <circle cx="46" cy="26" r="12.5" fill="#b4f5b5" />
-  <circle cx="18" cy="26" r="9" fill="#b06f0c" />
-  <circle cx="46" cy="26" r="9" fill="#b06f0c" />
-  <circle cx="18" cy="26" r="7.2" fill="#f0a828" />
-  <circle cx="46" cy="26" r="7.2" fill="#f0a828" />
-  <ellipse cx="18" cy="26" rx="3" ry="5" fill="#04100b" />
-  <ellipse cx="46" cy="26" rx="3" ry="5" fill="#04100b" />
-  <circle cx="15" cy="22" r="2.3" fill="#ffffff" />
-  <circle cx="43" cy="22" r="2.3" fill="#ffffff" />
-  <path d="M 19 50 Q 32 59 45 50" fill="none" stroke="#007c3e" stroke-width="3.4" stroke-linecap="round" />
+
+  <ellipse cx="34" cy="41" rx="25" ry="17" transform="rotate(-8 34 41)" fill="#00c859" />
+  <circle cx="43" cy="24" r="12" fill="#00c859" />
+  <g clip-path="url(#skull)">
+    <path d="M 42 10 C 54 22 56 42 50 66 L 66 66 L 66 10 Z" fill="#04512c" />
+  </g>
+
+  <circle cx="21" cy="27" r="13.4" fill="#00c859" />
+  <circle cx="43" cy="24" r="8.4" fill="#f0a828" />
+  <circle cx="21" cy="27" r="9.4" fill="#f0a828" />
+  <rect x="38.6" y="21.9" width="8.8" height="4.2" rx="2.1" fill="#10241a" />
+  <rect x="16.1" y="24.6" width="9.8" height="4.8" rx="2.4" fill="#10241a" />
 </svg>

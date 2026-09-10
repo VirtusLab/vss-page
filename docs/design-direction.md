@@ -11,13 +11,13 @@ smooth layered vector — never outlined, never pixel. One soft shadow, one gree
 
 ## Chapters
 
-Three — snippets, benefits, components — each opened by a small uppercase eyebrow (`ChapterLabel`,
-from `labels.md`) over a `.chapter-heading`. A sprig closes the hero and another the benefits; the
-snippets need none, the band's top border being a line across the page already. The band is
-`--surface` run to the window's edges — the one block outside `.page`, and the only one painting its
-own ground — and its inner section restores the page's cap and gutters, so all three chapters start
-on one edge. Rows are text plus a 320px illustration, mirrored every second row so the gutter never
-changes; below 720px the illustration stacks above.
+Three — snippets, benefits, components — each opened by a `.chapter-heading` alone; nothing sits
+over it, so the air above the heading is what marks the break. A sprig closes the hero and another
+the benefits; the snippets need none, the band's top border being a line across the page already.
+The band is `--surface` run to the window's edges — the one block outside `.page`, and the only one
+painting its own ground — and its inner section restores the page's cap and gutters, so all three
+chapters start on one edge. Rows are text plus a 320px illustration, mirrored every second row so
+the gutter never changes; below 720px the illustration stacks above.
 
 ## The animal: a tree frog
 
@@ -77,12 +77,12 @@ Text on the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#
 ## Motifs
 
 All hand-drawn inline SVG in `src/components/graphics/`, `aria-hidden`, filled from `--art-*`.
-- `HeroArt.astro` — 320×300: leaves breaking the disc at the headline's corner only, a veined lily pad, and the frog 18 units right of the disc centre with its head 8 units left of its body, so it looks back at the headline. Every toe overlaps the foot bar. One eye is drawn once and placed twice with `use`; `overflow: visible`, as the leaf tips reach past the viewBox on purpose. `public/og.svg` is the same scene at 1200×630 with every token written out as its light-mode literal — a share image inherits no CSS — exported once to `public/og.png`; redraw both together.
-- `SectionIcon.astro` — six 48×48 tiles, the same frog with one prop over its right shoulder: a page, a lambda, a gear, a rack, a spark, two chevrons; head and toe pads clear the rounded corners.
-- `Divider.astro` — a 40px three-leaf sprig, a green rule fading to each edge; carries its own vertical margin, closes a chapter and opens the footer.
-- `BenefitArt.astro` — five 240×180 scenes, one per benefit id, in the hero's shape language; the frog is drawn once into `defs` and placed with `use`. An id with no scene fails the build. The one place artwork borrows a text token: the rejected tile's cross, in `--accent-2-text`.
+- `HeroArt.astro` — 320×280, three planes: a lit disc cropped by the top edge alone, the water clipped inside it with the pad's mass hanging below the surface, and one leaf cropped by the left and bottom edges. The three greens form a value ladder — bright pad, mid foreground leaf, dark shade copies — so depth reads without any outline. The frog is low and right on the pad's near rim at about 60% of the disc's height in frame, twisted back at the headline: shoulders away, head over the near shoulder, the torso one back-to-hip silhouette with one shade copy — not a chain of ellipses — and the dorsal stripe running along that silhouette's top edge and splitting at the hips, which is what makes the mass read as rotating, and both pupil bars half the amber's width and tilted a quarter of the eye's radius towards the title — that offset is the gaze. Forms are a base shape with a shade copy offset down-right; contact shadows are `--art-shade` ellipses at 0.35, the one opacity in the file. Surface catchlights are `--art-disc-edge`, never `--art-shine`, so they cannot outshine the frog in dark mode. Strokes 3 / 5 / 8. Nothing overflows: the frame is what does the cropping. `public/og.svg` is the same drawing at 1200×630, scaled, subject on the right third, every token written out as its light-mode literal and the blink lids left out — a share image inherits no CSS; exported once to `public/og.png`; redraw both together.
+- `SectionIcon.astro` — six 48×48 tiles, one pose each and no pose repeated: stepping out of a leaf frame, perched on a lambda, hauling a gear, standing on three slabs, reaching to a spark, mid-leap over chevrons. Each prop covers over 40% of the tile and runs off an edge, so the six read apart from silhouette alone at 48px. Head 1.15× the body's width and 0.8× its height, as the sheet says, and a pupil bar half the amber's width. Strokes 1.6 / 2.4 / 3.6. No `defs`, because the component renders six times on one page.
+- `Divider.astro` — a 48px three-leaf sprig a third of the way across, with one green rule running behind it and fading to both edges; two water rings spread from the stem's base and the outer one crosses the rule, so the sprig sits in the page rather than on it. Carries its own vertical margin, closes a chapter and opens the footer.
+- `BenefitArt.astro` — five 240×180 scenes, one per benefit id: a background wash, the frog in a pose no other scene uses, and a near form cropped by the frame, all clipped to the tile. Limbs are masses, not lines; the only strokes are things that are lines, at 2 / 3.2 / 5. The eye, the hand and the block are drawn once into `defs` per scene and placed with `use`, and every id carries the scene name. An id with no scene fails the build.
 - `VisdomLogo.astro` — Visdom's crest, 48px, beside the name; `currentColor`, so it takes the amber.
-- `CodeBar.astro` — a head, two eyes, three window lights; the same head in `public/favicon.svg`.
+- `CodeBar.astro` — a three-quarter head cropped by the bar's lower edge, looking over it into the panel, then three window lights; the turrets overlap each other and sit half-buried in the skull, which is what keeps it one head rather than two. Strokes 1 / 1.6 / 2.4. `public/favicon.svg` is the same head with one shade shape taking the far third and no mouth, so the two turrets survive at 16px and the mark still reads three-quarter; `favicon-32.png` and `apple-touch-icon.png` are rasterised from it.
 - `SocialIcon.astro` — the four network marks in the footer, from simple-icons (CC0), `--icon-sm`.
 - `GithubMark.astro`, `DocsIcon.astro`, `StarIcon.astro` — the three card-band icons, `--icon-sm`.
 

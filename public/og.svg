@@ -1,10 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <title>VirtusLab Scala Stack — direct-style Scala 3</title>
   <!--
-    The Open Graph share image, exported once to og.png. Same palette as the page, but every colour
-    is a literal: an image rendered outside the document inherits no CSS custom property. The frog is
-    the hero art from src/components/graphics/HeroArt.astro with the --art-* tokens resolved to their
-    light-mode values and the animated eyelids left out.
+    The Open Graph share image, exported once to og.png. The hero scene opened out wide: the frog on
+    the right third, water and empty sky on the left two thirds for the title. Every colour is a
+    literal, and every literal is the light-mode value of a token in src/layouts/Base.astro — an
+    image rendered outside the document inherits no CSS custom property. The frog is the drawing from
+    src/components/graphics/HeroArt.astro, scaled, with the animated eyelids left out; redraw the two
+    together.
   -->
   <defs>
     <!-- The two radial washes of --ground, as ellipses so the gradients follow their own boxes. -->
@@ -16,115 +18,184 @@
       <stop offset="0" stop-color="#e2a02c" stop-opacity="0.11" />
       <stop offset="0.68" stop-color="#e2a02c" stop-opacity="0" />
     </radialGradient>
-    <radialGradient id="disc-fill" cx="46%" cy="36%" r="72%">
+    <!-- The scene's one gradient: the lit disc, brightest at the light's corner. -->
+    <radialGradient id="disc-fill" cx="32%" cy="24%" r="82%">
       <stop offset="0" stop-color="#f4fcee" />
       <stop offset="1" stop-color="#e5f7de" />
     </radialGradient>
-    <g id="leaf-shape">
-      <path d="M -60 0 C -34 -33 34 -33 60 0 C 34 33 -34 33 -60 0 Z" />
-      <path d="M -48 0 L 48 0" fill="none" stroke="#f4fcee" stroke-width="5" stroke-linecap="round" />
-    </g>
-    <g id="eye">
-      <circle r="39" fill="#67e387" />
-      <circle r="29" fill="#b06f0c" />
-      <circle r="25" fill="#f0a828" />
-      <ellipse cx="-6" rx="9" ry="17" fill="#10241a" />
-      <circle cx="-14" cy="-11" r="7" fill="#ffffff" />
-      <circle cx="3" cy="11" r="3.5" fill="#ffffff" opacity="0.7" />
-    </g>
+    <!-- In the frog's own coordinates: the group's transform applies to the clip too. -->
+    <clipPath id="og-head">
+      <ellipse cx="178" cy="124" rx="45" ry="26" transform="rotate(-13 178 124)" />
+    </clipPath>
   </defs>
 
   <rect width="1200" height="630" fill="#f9f6f5" />
   <ellipse cx="168" cy="60" rx="940" ry="640" fill="url(#wash-green)" />
   <ellipse cx="1128" cy="190" rx="780" ry="540" fill="url(#wash-amber)" />
 
+  <!-- Plane 1: the lit disc, a filled body with no ring, cropped by the top and right edges. It
+       stops short of the title block rather than sweeping a stroke through it. -->
+  <circle cx="1000" cy="210" r="330" fill="url(#disc-fill)" />
+
+  <!-- Plane 2: the water, edge to edge. Its catchlights are --art-disc-edge, not --art-shine, so
+       they never become the brightest thing in the picture. -->
+  <path d="M 0 496 H 1200 V 630 H 0 Z" fill="#4f9683" />
+  <g fill="none" stroke="#b4f5b5" stroke-width="5" stroke-linecap="round">
+    <path d="M 402 534 Q 444 526 486 534" />
+    <path d="M 424 554 Q 450 549 476 554" />
+    <path d="M 560 600 Q 602 592 644 600" />
+  </g>
+
+  <!-- The frog, drawn in the hero's own coordinates. -->
+  <g transform="translate(595 94.2) scale(2.05)">
+    <ellipse cx="206" cy="212" rx="64" ry="22" fill="#04512c"></ellipse>
+    <path
+    d="M 202 212 C 204 226 206 234 210 244"
+    fill="none"
+    stroke="#04512c"
+    stroke-width="8"
+    stroke-linecap="round"></path>
+    <path
+    d="M 150 224 Q 192 234 232 222"
+    fill="none"
+    stroke="#c26c0d"
+    stroke-width="5"
+    stroke-linecap="round"></path>
+    <ellipse cx="210" cy="200" rx="82" ry="21" fill="#007c3e"></ellipse>
+    <ellipse cx="206" cy="196" rx="82" ry="21" fill="#00c859"></ellipse>
+    <g fill="none" stroke="#007c3e" stroke-width="3" stroke-linecap="round">
+    <path d="M 206 196 L 136 192"></path>
+    <path d="M 206 196 L 148 206"></path>
+    </g>
+    <g fill="#04512c" opacity="0.35">
+    <ellipse cx="238" cy="199" rx="40" ry="8.5"></ellipse>
+    <ellipse cx="146" cy="201" rx="17" ry="6"></ellipse>
+    </g>
+    <g transform="translate(-48 -26) scale(1.1)">
+    <g fill="#00693a">
+    <ellipse cx="284" cy="202" rx="14" ry="8" transform="rotate(12 284 202)"></ellipse>
+    <circle cx="296" cy="199" r="5.2"></circle>
+    <circle cx="298" cy="207" r="5.2"></circle>
+    </g>
+    <path
+    d="M 183 152 C 186 136 202 130 224 134 C 248 138 270 152 281 174
+    C 289 191 282 209 260 213 C 236 217 210 210 196 198 C 183 187 180 168 183 152 Z"
+    fill="#04512c"></path>
+    <path
+    d="M 179 148 C 182 132 198 126 220 130 C 244 134 266 148 277 170
+    C 285 187 278 205 256 209 C 232 213 206 206 192 194 C 179 183 176 164 179 148 Z"
+    fill="#00a74e"></path>
+    <path
+    d="M 194 132 C 218 126 248 140 272 164 L 265 173 C 244 152 218 138 196 143 Z"
+    fill="#04512c"></path>
+    <path d="M 268 166 C 275 174 279 182 280 190 L 271 192 C 270 184 266 177 260 171 Z" fill="#04512c"></path>
+    <path d="M 262 171 C 265 180 265 188 263 195 L 254 192 C 256 185 256 178 254 172 Z" fill="#04512c"></path>
+    <ellipse cx="256" cy="203" rx="23" ry="10" transform="rotate(6 256 203)" fill="#00693a"></ellipse>
+    <g fill="#00a74e">
+    <circle cx="237" cy="206" r="6.8"></circle>
+    <circle cx="249" cy="211" r="6.8"></circle>
+    <circle cx="261" cy="211" r="6.8"></circle>
+    </g>
+    <ellipse cx="168" cy="150" rx="20" ry="12" transform="rotate(-14 168 150)" fill="#d5f3c2"></ellipse>
+    <ellipse cx="182" cy="128" rx="45" ry="26" transform="rotate(-13 182 128)" fill="#04512c"></ellipse>
+    <ellipse cx="178" cy="124" rx="45" ry="26" transform="rotate(-13 178 124)" fill="#00a74e"></ellipse>
+    <g clip-path="url(#og-head)">
+    <path d="M 196 84 C 218 102 222 130 210 166 L 246 166 L 246 84 Z" fill="#04512c"></path>
+    <ellipse cx="152" cy="106" rx="24" ry="8" transform="rotate(-22 152 106)" fill="#67e387"></ellipse>
+    </g>
+    <path
+    d="M 167 100 C 172 108 177 116 181 123"
+    fill="none"
+    stroke="#04512c"
+    stroke-width="5"
+    stroke-linecap="round"></path>
+    <circle cx="188" cy="97" r="15.2" fill="#04512c"></circle>
+    <circle cx="186" cy="95" r="15.2" fill="#00a74e"></circle>
+    <circle cx="152" cy="105" r="16.8" fill="#04512c"></circle>
+    <circle cx="149" cy="102" r="16.8" fill="#00a74e"></circle>
+    <circle cx="186.7" cy="95.7" r="12.1" fill="#b06f0c"></circle>
+    <circle cx="185.5" cy="94.5" r="10.2" fill="#f0a828"></circle>
+    <circle cx="150.7" cy="103.7" r="13.4" fill="#b06f0c"></circle>
+    <circle cx="149.5" cy="102.5" r="11.4" fill="#f0a828"></circle>
+    <rect
+    x="177.8"
+    y="91.1"
+    width="10.2"
+    height="4.6"
+    rx="2.3"
+    transform="rotate(-12 182.9 93.4)"
+    fill="#10241a"></rect>
+    <rect
+    x="140.9"
+    y="98.8"
+    width="11.5"
+    height="5"
+    rx="2.5"
+    transform="rotate(-12 146.65 101.3)"
+    fill="#10241a"></rect>
+    <circle cx="178.6" cy="89.6" r="2.4" fill="#ffffff"></circle>
+    <circle cx="141.4" cy="97" r="2.8" fill="#ffffff"></circle>
+    <g fill="#10241a">
+    <ellipse cx="145" cy="118" rx="3.1" ry="2.3"></ellipse>
+    <ellipse cx="156" cy="114" rx="2.3" ry="1.7"></ellipse>
+    </g>
+    <path
+    d="M 140 127 C 148 137 158 141 172 140"
+    fill="none"
+    stroke="#04512c"
+    stroke-width="5"
+    stroke-linecap="round"></path>
+    <path
+    d="M 190 140 C 180 164 173 188 178 206 L 162 208 C 158 188 164 162 176 138 Z"
+    fill="#00a74e"></path>
+    <path
+    d="M 190 140 C 180 164 173 188 178 206 L 171 207 C 167 188 173 162 183 139 Z"
+    fill="#04512c"></path>
+    <ellipse cx="177" cy="206" rx="13" ry="8" transform="rotate(-8 177 206)" fill="#04512c"></ellipse>
+    <ellipse cx="174" cy="203" rx="13" ry="8" transform="rotate(-8 174 203)" fill="#00a74e"></ellipse>
+    <g fill="#67e387">
+    <circle cx="164" cy="206" r="5.6"></circle>
+    <circle cx="174" cy="211" r="5.6"></circle>
+    <circle cx="185" cy="207" r="5.6"></circle>
+    </g>
+    </g>
+  </g>
+
+  <!-- Plane 3: two leaves far larger than the frog, the near one cropped by the left and bottom
+       edges and the far one by the left edge alone, so the water under the tagline has depth. -->
+  <ellipse cx="120" cy="546" rx="196" ry="60" transform="rotate(-6 120 546)" fill="#04512c" />
+  <ellipse cx="114" cy="540" rx="196" ry="60" transform="rotate(-6 114 540)" fill="#007c3e" />
+  <ellipse cx="70" cy="624" rx="284" ry="102" transform="rotate(-8 70 624)" fill="#04512c" />
+  <ellipse cx="64" cy="618" rx="284" ry="102" transform="rotate(-8 64 618)" fill="#007c3e" />
+  <ellipse cx="-10" cy="542" rx="128" ry="26" transform="rotate(-12 -10 542)" fill="#00c859" />
+  <g fill="none" stroke="#04512c" stroke-width="5" stroke-linecap="round">
+    <path d="M -40 622 L 222 660" />
+    <path d="M -40 622 L 280 596" />
+    <path d="M -40 622 L 134 692" />
+  </g>
+
   <!-- The bright-green rule that opens the hero, at the share image's scale. -->
-  <rect x="88" y="130" width="128" height="8" rx="4" fill="#00c859" />
+  <rect x="88" y="104" width="128" height="8" rx="4" fill="#00c859" />
 
   <g font-family="Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
     <g font-size="88" font-weight="700" letter-spacing="-2.64" fill="#16211a">
-      <text x="88" y="238">VirtusLab</text>
-      <text x="88" y="338">Scala Stack</text>
+      <text x="88" y="212">VirtusLab</text>
+      <text x="88" y="312">Scala Stack</text>
     </g>
     <!-- The acronym pill, riding the last line of the title exactly as the hero sets it. -->
-    <rect x="610" y="284" width="121" height="52" rx="26" fill="#046b39" />
+    <rect x="610" y="258" width="121" height="52" rx="26" fill="#046b39" />
     <text
       x="672"
-      y="324"
+      y="298"
       font-size="40"
       font-weight="700"
       letter-spacing="2.4"
       fill="#f9f6f5"
       text-anchor="middle">VSS</text>
     <g font-size="30" font-weight="600" letter-spacing="-0.3" fill="#4a5b50">
-      <text x="88" y="410">Direct-style Scala 3: plain control</text>
-      <text x="88" y="451">flow, no effect wrappers, code that</text>
-      <text x="88" y="492">agents can write.</text>
+      <text x="88" y="384">Direct-style Scala 3: plain control</text>
+      <text x="88" y="425">flow, no effect wrappers, code that</text>
+      <text x="88" y="466">agents can write.</text>
     </g>
-  </g>
-
-  <g transform="translate(818 158) scale(1.05)">
-    <use href="#leaf-shape" transform="translate(38 54) rotate(41) scale(0.82)" fill="#007c3e" />
-    <use href="#leaf-shape" transform="translate(84 22) rotate(20) scale(0.58)" fill="#00c859" />
-
-    <circle cx="160" cy="150" r="136" fill="url(#disc-fill)" />
-    <circle cx="160" cy="150" r="135" fill="none" stroke="#b4f5b5" stroke-width="2" />
-
-    <ellipse cx="172" cy="252" rx="126" ry="28" fill="#007c3e" />
-    <ellipse cx="172" cy="247" rx="126" ry="25" fill="#00c859" />
-    <g fill="none" stroke="#007c3e" stroke-width="2" stroke-linecap="round" opacity="0.55">
-      <path d="M 172 247 L 58 238" />
-      <path d="M 172 247 L 286 238" />
-      <path d="M 172 247 L 84 264" />
-      <path d="M 172 247 L 260 264" />
-    </g>
-
-    <g fill="#00693a">
-      <ellipse cx="106" cy="200" rx="44" ry="37" transform="rotate(-16 106 200)" />
-      <ellipse cx="250" cy="200" rx="44" ry="37" transform="rotate(16 250 200)" />
-      <rect x="84" y="231" width="60" height="23" rx="11.5" />
-      <rect x="212" y="231" width="60" height="23" rx="11.5" />
-      <circle cx="90" cy="225" r="10" />
-      <circle cx="82" cy="243" r="10" />
-      <circle cx="90" cy="261" r="10" />
-      <circle cx="266" cy="225" r="10" />
-      <circle cx="274" cy="243" r="10" />
-      <circle cx="266" cy="261" r="10" />
-    </g>
-
-    <ellipse cx="178" cy="190" rx="86" ry="62" fill="#00a74e" />
-    <ellipse cx="170" cy="132" rx="80" ry="60" fill="#00a74e" />
-    <ellipse cx="166" cy="106" rx="58" ry="32" fill="#67e387" opacity="0.6" />
-    <ellipse cx="180" cy="204" rx="54" ry="46" fill="#d5f3c2" />
-
-    <g fill="#00a74e">
-      <rect x="109" y="180" width="26" height="70" rx="13" transform="rotate(7 122 215)" />
-      <rect x="225" y="180" width="26" height="70" rx="13" transform="rotate(-7 238 215)" />
-    </g>
-    <g fill="#67e387">
-      <circle cx="111" cy="245" r="8.5" />
-      <circle cx="122" cy="252" r="8.5" />
-      <circle cx="134" cy="246" r="8.5" />
-      <circle cx="227" cy="246" r="8.5" />
-      <circle cx="238" cy="252" r="8.5" />
-      <circle cx="250" cy="245" r="8.5" />
-    </g>
-
-    <use href="#eye" x="122" y="88" />
-    <use href="#eye" x="218" y="88" />
-
-    <g fill="#00693a">
-      <ellipse cx="156" cy="128" rx="4.5" ry="3.5" />
-      <ellipse cx="184" cy="128" rx="4.5" ry="3.5" />
-    </g>
-    <path d="M 130 152 Q 170 184 210 152" fill="none" stroke="#00693a" stroke-width="6" stroke-linecap="round" />
-
-    <g fill="#f0a828" opacity="0.7">
-      <circle cx="50" cy="122" r="5" />
-      <circle cx="284" cy="146" r="4" />
-      <circle cx="72" cy="76" r="3.5" />
-    </g>
-
-    <use href="#leaf-shape" transform="translate(52 250) rotate(-38) scale(0.64)" fill="#007c3e" />
   </g>
 </svg>

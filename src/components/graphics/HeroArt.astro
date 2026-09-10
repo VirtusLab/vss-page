@@ -1,176 +1,253 @@
 ---
 /**
- * The hero illustration: a tree frog sitting on a lily pad inside a lit disc, built from layered
- * ellipses and lens-shaped leaves — no outlines, no pixels. The frog sits right of the disc's centre
- * with its head and gaze turned back towards the headline, and the leaves break the disc at one
- * corner rather than four. Every fill is an `--art-*` token, so the whole scene recolours between
- * light and dark. Decorative, hence `aria-hidden`.
+ * The hero illustration. A tree frog crouched on the near rim of a lily pad, low and right in a lit
+ * disc, twisted back over its shoulder at the headline: shoulders away, head back, and a dorsal
+ * stripe running across the visible back to say which way the body is turned. Three planes — the
+ * disc wash, the water with the pad's mass hanging below it, and one leaf at 1.35× the frog cropped
+ * by the left edge. Cut-paper flat: every form is a base shape with a shade copy offset down-right
+ * under one light from the upper left, no outlines, no gradient but the wash. Every fill is an
+ * `--art-*` token, so the scene recolours between light and dark. Decorative, hence `aria-hidden`.
  */
 ---
 
-<svg class="hero-art" viewBox="0 0 320 300" aria-hidden="true" focusable="false">
+<svg class="hero-art" viewBox="0 0 320 280" aria-hidden="true" focusable="false">
 	<defs>
-		{/* One lens-shaped leaf, reused at several sizes and angles. `use` inherits the fill for the
-		    blade; the vein carries its own stroke, so every leaf is veined the same way. */}
-		<g id="leaf-shape">
-			<path d="M -60 0 C -34 -33 34 -33 60 0 C 34 33 -34 33 -60 0 Z"></path>
-			<path
-				d="M -48 0 L 48 0"
-				fill="none"
-				stroke="var(--art-disc-core)"
-				stroke-width="5"
-				stroke-linecap="round"></path>
-		</g>
-		{/* One eye, drawn about its own centre and placed twice by `use`. The pupil sits left of
-		    centre in both, which is what turns the gaze towards the headline. */}
-		<g id="eye">
-			<circle r="39" fill="var(--art-frog-light)"></circle>
-			<circle r="29" fill="var(--art-eye-dark)"></circle>
-			<circle r="25" fill="var(--art-eye)"></circle>
-			<ellipse cx="-6" rx="9" ry="17" fill="var(--art-ink)"></ellipse>
-			<circle cx="-14" cy="-11" r="7" fill="var(--art-shine)"></circle>
-			<circle cx="3" cy="11" r="3.5" fill="var(--art-shine)" opacity="0.7"></circle>
-		</g>
-		{/* The disc is lit from above rather than flat, so the frog sits in front of light and not
-		    on a plate. */}
-		<radialGradient id="disc-fill" cx="46%" cy="36%" r="72%">
+		{/* The scene's only gradient: the lit disc behind everything, brightest at the light's corner. */}
+		<radialGradient id="hero-wash" cx="32%" cy="24%" r="82%">
 			<stop offset="0" stop-color="var(--art-disc-core)"></stop>
 			<stop offset="1" stop-color="var(--art-disc)"></stop>
 		</radialGradient>
-		{/* The eyelids slide inside these, so a closing lid never spills onto the face. */}
-		<clipPath id="eye-clip-left"><circle cx="122" cy="88" r="29"></circle></clipPath>
-		<clipPath id="eye-clip-right"><circle cx="218" cy="88" r="29"></circle></clipPath>
+		{/* The far cheek is painted inside this, so the plane that turns out of the light stops at
+		    the head's own edge. */}
+		{/* Everything below the surface is painted inside this, so the scene has one silhouette: a lit
+		    disc with sky in its upper part and water in its lower. */}
+		<clipPath id="hero-disc"><circle cx="172" cy="104" r="148"></circle></clipPath>
+		<clipPath id="hero-head">
+			<ellipse cx="178" cy="124" rx="45" ry="26" transform="rotate(-13 178 124)"></ellipse>
+		</clipPath>
+		<clipPath id="hero-lid-near"><circle cx="149" cy="103" r="13.6"></circle></clipPath>
+		<clipPath id="hero-lid-far"><circle cx="186" cy="95" r="12.1"></circle></clipPath>
 	</defs>
 
-	{/* Three leaves at one corner, on the headline's side, each turned along the line from the disc
-	    centre so what the disc hides is the stem end and what shows is a whole leaf tip. */}
-	<g class="sway" style="--sway-delay: 0s">
-		<use href="#leaf-shape" transform="translate(38 54) rotate(41) scale(0.82)" fill="var(--art-leaf)"></use>
-	</g>
-	<g class="sway" style="--sway-delay: -2.6s">
-		<use href="#leaf-shape" transform="translate(84 22) rotate(20) scale(0.58)" fill="var(--art-leaf-light)"></use>
+	{/* Plane 1 — the wash, cropped by the top edge so the scene starts outside the frame. */}
+	<circle cx="172" cy="104" r="148" fill="url(#hero-wash)"></circle>
+	<circle cx="172" cy="104" r="146.5" fill="none" stroke="var(--art-disc-edge)" stroke-width="3"></circle>
+
+	{/* Plane 2 — the water, and the pad's mass hanging below the surface: the depth the pad floats on. */}
+	<g clip-path="url(#hero-disc)">
+		<path d="M 20 172 H 360 V 300 H 20 Z" fill="var(--art-water)"></path>
+		<ellipse cx="206" cy="212" rx="64" ry="22" fill="var(--art-shade)"></ellipse>
+		<path
+			d="M 202 212 C 204 226 206 234 210 244"
+			fill="none"
+			stroke="var(--art-shade)"
+			stroke-width="8"
+			stroke-linecap="round"></path>
+		{/* Catchlights on the surface, in pairs, so the water reads as a surface and not as a slab. */}
+		<g fill="none" stroke="var(--art-disc-edge)" stroke-width="3" stroke-linecap="round">
+			<path d="M 62 188 Q 80 183 98 188"></path>
+			<path d="M 72 197 Q 84 194 96 197"></path>
+			<path d="M 138 246 Q 158 241 178 246"></path>
+			<path d="M 148 256 Q 162 253 176 256"></path>
+		</g>
+		{/* The one warm accent in the scene: the light that gets past the pad and grazes the mass
+		    hanging under it. Nowhere near a tenth of the picture, and never on skin. */}
+		<path
+			d="M 150 224 Q 192 234 232 222"
+			fill="none"
+			stroke="var(--art-warm)"
+			stroke-width="5"
+			stroke-linecap="round"></path>
 	</g>
 
-	{/* The disc: the page's one big geometric shape, the thing the frog is framed by. */}
-	<circle cx="160" cy="150" r="136" fill="url(#disc-fill)"></circle>
-	<circle cx="160" cy="150" r="135" fill="none" stroke="var(--art-disc-edge)" stroke-width="2"></circle>
-
-	{/* Lily pad, with veins radiating from the point the frog is sitting on. */}
-	<ellipse cx="172" cy="252" rx="126" ry="28" fill="var(--art-leaf)"></ellipse>
-	<ellipse cx="172" cy="247" rx="126" ry="25" fill="var(--art-leaf-light)"></ellipse>
-	<g fill="none" stroke="var(--art-leaf)" stroke-width="2" stroke-linecap="round" opacity="0.55">
-		<path d="M 172 247 L 58 238"></path>
-		<path d="M 172 247 L 286 238"></path>
-		<path d="M 172 247 L 84 264"></path>
-		<path d="M 172 247 L 260 264"></path>
+	{/* The pad, cropped by the right edge. Shade copy first, base offset up-left over it, so the
+	    crescent always lands lower-right — the rule every form in the set follows. */}
+	<ellipse cx="210" cy="200" rx="82" ry="21" fill="var(--art-leaf)"></ellipse>
+	<ellipse cx="206" cy="196" rx="82" ry="21" fill="var(--art-leaf-light)"></ellipse>
+	<g fill="none" stroke="var(--art-leaf)" stroke-width="3" stroke-linecap="round">
+		<path d="M 206 196 L 136 192"></path>
+		<path d="M 206 196 L 148 206"></path>
 	</g>
 
-	{/* Back legs: folded haunches, then a webbed foot on each side. Every toe overlaps the foot bar
-	    in both axes, so the three pads read as one foot and not as loose circles on the pad. */}
-	<g fill="var(--art-frog-dark)">
-		<ellipse cx="106" cy="200" rx="44" ry="37" transform="rotate(-16 106 200)"></ellipse>
-		<ellipse cx="250" cy="200" rx="44" ry="37" transform="rotate(16 250 200)"></ellipse>
-		<rect x="84" y="231" width="60" height="23" rx="11.5"></rect>
-		<rect x="212" y="231" width="60" height="23" rx="11.5"></rect>
-		<circle cx="90" cy="225" r="10"></circle>
-		<circle cx="82" cy="243" r="10"></circle>
-		<circle cx="90" cy="261" r="10"></circle>
-		<circle cx="266" cy="225" r="10"></circle>
-		<circle cx="274" cy="243" r="10"></circle>
-		<circle cx="266" cy="261" r="10"></circle>
+	{/* Contact shadows: one light, so both are the same ellipse pushed down and right. */}
+	<g fill="var(--art-shade)" opacity="0.35">
+		<ellipse cx="238" cy="199" rx="40" ry="8.5"></ellipse>
+		<ellipse cx="146" cy="201" rx="17" ry="6"></ellipse>
 	</g>
 
-	{/* Body and head are two overlapping ellipses: a frog has no neck. The head sits eight units left
-	    of the body, which is what reads as the frog looking back over its shoulder. */}
-	<ellipse cx="178" cy="190" rx="86" ry="62" fill="var(--art-frog)"></ellipse>
-	<ellipse cx="170" cy="132" rx="80" ry="60" fill="var(--art-frog)"></ellipse>
-	<ellipse cx="166" cy="106" rx="58" ry="32" fill="var(--art-frog-light)" opacity="0.6"></ellipse>
-	<ellipse cx="180" cy="204" rx="54" ry="46" fill="var(--art-belly)"></ellipse>
+	{/* The frog, scaled about its hips so it fills about 62% of the disc's height in frame. Its own
+	    coordinates are the ones every other asset shares, so the character cannot drift. */}
+	<g transform="translate(-48 -26) scale(1.1)">
+		{/* The far leg, one step down the ramp so it reads as behind the near side. */}
+		<g fill="var(--art-frog-dark)">
+			<ellipse cx="284" cy="202" rx="14" ry="8" transform="rotate(12 284 202)"></ellipse>
+			<circle cx="296" cy="199" r="5.2"></circle>
+			<circle cx="298" cy="207" r="5.2"></circle>
+		</g>
 
-	{/* Front arms, angled out at the wrist, each ending in three toe pads. */}
-	<g fill="var(--art-frog)">
-		<rect x="109" y="180" width="26" height="70" rx="13" transform="rotate(7 122 215)"></rect>
-		<rect x="225" y="180" width="26" height="70" rx="13" transform="rotate(-7 238 215)"></rect>
-	</g>
-	<g fill="var(--art-frog-light)">
-		<circle cx="111" cy="245" r="8.5"></circle>
-		<circle cx="122" cy="252" r="8.5"></circle>
-		<circle cx="134" cy="246" r="8.5"></circle>
-		<circle cx="227" cy="246" r="8.5"></circle>
-		<circle cx="238" cy="252" r="8.5"></circle>
-		<circle cx="250" cy="245" r="8.5"></circle>
+		{/* The torso: one back-to-hip silhouette with one shade copy, not a chain of ellipses — the
+		    unbroken top edge from the near shoulder to the rump is what makes the mass read as
+		    rotating away from the head rather than as a row of humps. */}
+		<path
+			d="M 183 152 C 186 136 202 130 224 134 C 248 138 270 152 281 174
+			   C 289 191 282 209 260 213 C 236 217 210 210 196 198 C 183 187 180 168 183 152 Z"
+			fill="var(--art-shade)"></path>
+		<path
+			d="M 179 148 C 182 132 198 126 220 130 C 244 134 266 148 277 170
+			   C 285 187 278 205 256 209 C 232 213 206 206 192 194 C 179 183 176 164 179 148 Z"
+			fill="var(--art-frog)"></path>
+
+		{/* The dorsal stripe runs along the top edge of that silhouette — a spine, not a strap across
+		    the chest — and splits at the hips, which is the second thing telling the reader which way
+		    the body is turned. */}
+		<path
+			d="M 194 132 C 218 126 248 140 272 164 L 265 173 C 244 152 218 138 196 143 Z"
+			fill="var(--art-shade)"></path>
+		<path d="M 268 166 C 275 174 279 182 280 190 L 271 192 C 270 184 266 177 260 171 Z" fill="var(--art-shade)"></path>
+		<path d="M 262 171 C 265 180 265 188 263 195 L 254 192 C 256 185 256 178 254 172 Z" fill="var(--art-shade)"></path>
+
+		{/* Rear foot on the pad: a mitten mass with three sticky pads, the front one over the rim. */}
+		<ellipse cx="256" cy="203" rx="23" ry="10" transform="rotate(6 256 203)" fill="var(--art-frog-dark)"></ellipse>
+		<g fill="var(--art-frog)">
+			<circle cx="237" cy="206" r="6.8"></circle>
+			<circle cx="249" cy="211" r="6.8"></circle>
+			<circle cx="261" cy="211" r="6.8"></circle>
+		</g>
+
+		{/* Throat: the one pale form on the animal, and the reason the turned head has a near side. */}
+		<ellipse cx="168" cy="150" rx="20" ry="12" transform="rotate(-14 168 150)" fill="var(--art-belly)"></ellipse>
+
+		{/* The head: wider than the body, shorter than it, swung up and back over the near shoulder. */}
+		<ellipse cx="182" cy="128" rx="45" ry="26" transform="rotate(-13 182 128)" fill="var(--art-shade)"></ellipse>
+		<ellipse cx="178" cy="124" rx="45" ry="26" transform="rotate(-13 178 124)" fill="var(--art-frog)"></ellipse>
+		{/* The far cheek: one curved terminator down the head, with both eyes gathered onto the near side
+		    of it — that empty cheek is what turns the face three-quarter. */}
+		<g clip-path="url(#hero-head)">
+			<path d="M 196 84 C 218 102 222 130 210 166 L 246 166 L 246 84 Z" fill="var(--art-shade)"></path>
+			<ellipse cx="152" cy="106" rx="24" ry="8" transform="rotate(-22 152 106)" fill="var(--art-frog-light)"></ellipse>
+		</g>
+
+		{/* Where the stripe starts: between the eyes, on the skull itself. */}
+		<path
+			d="M 167 100 C 172 108 177 116 181 123"
+			fill="none"
+			stroke="var(--art-shade)"
+			stroke-width="5"
+			stroke-linecap="round"></path>
+
+		{/* Two turrets rising out of the skull — the skull's top edge passes behind them. The near one is
+		    8% larger and breaks the head's left edge, so the pair is never matched. */}
+		<circle cx="188" cy="97" r="15.2" fill="var(--art-shade)"></circle>
+		<circle cx="186" cy="95" r="15.2" fill="var(--art-frog)"></circle>
+		<circle cx="152" cy="105" r="16.8" fill="var(--art-shade)"></circle>
+		<circle cx="149" cy="102" r="16.8" fill="var(--art-frog)"></circle>
+
+		<circle cx="186.7" cy="95.7" r="12.1" fill="var(--art-eye-dark)"></circle>
+		<circle cx="185.5" cy="94.5" r="10.2" fill="var(--art-eye)"></circle>
+		<circle cx="150.7" cy="103.7" r="13.4" fill="var(--art-eye-dark)"></circle>
+		<circle cx="149.5" cy="102.5" r="11.4" fill="var(--art-eye)"></circle>
+
+		{/* The pupil is a horizontal bar in both eyes — never a disc, never vertical — and half the
+		    amber's width, so amber shows on all four sides. Both bars sit a quarter of the eye's radius
+		    towards the headline and tilt to it: that offset is the gaze. */}
+		<rect
+			x="177.8"
+			y="91.1"
+			width="10.2"
+			height="4.6"
+			rx="2.3"
+			transform="rotate(-12 182.9 93.4)"
+			fill="var(--art-ink)"></rect>
+		<rect
+			x="140.9"
+			y="98.8"
+			width="11.5"
+			height="5"
+			rx="2.5"
+			transform="rotate(-12 146.65 101.3)"
+			fill="var(--art-ink)"></rect>
+		<circle cx="178.6" cy="89.6" r="2.4" fill="var(--art-shine)"></circle>
+		<circle cx="141.4" cy="97" r="2.8" fill="var(--art-shine)"></circle>
+
+		{/* Lids park above the eye and drop through it on the blink cycle. */}
+		<g clip-path="url(#hero-lid-far)">
+			<circle class="lid" cx="186" cy="95" r="13" fill="var(--art-frog)"></circle>
+		</g>
+		<g clip-path="url(#hero-lid-near)">
+			<circle class="lid" cx="149" cy="102" r="14" fill="var(--art-frog)"></circle>
+		</g>
+
+		{/* Nostrils sit on the snout, the far one smaller: the head is turned, so its far side is short. */}
+		<g fill="var(--art-ink)">
+			<ellipse cx="145" cy="118" rx="3.1" ry="2.3"></ellipse>
+			<ellipse cx="156" cy="114" rx="2.3" ry="1.7"></ellipse>
+		</g>
+		{/* One short asymmetric line off the snout, higher on the near side: attentive, not a smile. */}
+		<path
+			d="M 140 127 C 148 137 158 141 172 140"
+			fill="none"
+			stroke="var(--art-shade)"
+			stroke-width="5"
+			stroke-linecap="round"></path>
+
+		{/* The near arm reaching down to the pad's front rim; the middle pad hooks over the edge, so the
+		    frog is in contact with the scene rather than floating on it. */}
+		<path
+			d="M 190 140 C 180 164 173 188 178 206 L 162 208 C 158 188 164 162 176 138 Z"
+			fill="var(--art-frog)"></path>
+		<path
+			d="M 190 140 C 180 164 173 188 178 206 L 171 207 C 167 188 173 162 183 139 Z"
+			fill="var(--art-shade)"></path>
+		<ellipse cx="177" cy="206" rx="13" ry="8" transform="rotate(-8 177 206)" fill="var(--art-shade)"></ellipse>
+		<ellipse cx="174" cy="203" rx="13" ry="8" transform="rotate(-8 174 203)" fill="var(--art-frog)"></ellipse>
+		<g fill="var(--art-frog-light)">
+			<circle cx="164" cy="206" r="5.6"></circle>
+			<circle cx="174" cy="211" r="5.6"></circle>
+			<circle cx="185" cy="207" r="5.6"></circle>
+		</g>
 	</g>
 
-	{/* Eyes: the same drawing placed twice. */}
-	<use href="#eye" x="122" y="88"></use>
-	<use href="#eye" x="218" y="88"></use>
-	{/* Lids park above the eye and drop through it on the blink cycle. */}
-	<g clip-path="url(#eye-clip-left)">
-		<circle class="lid" cx="122" cy="88" r="30" fill="var(--art-frog-light)"></circle>
-	</g>
-	<g clip-path="url(#eye-clip-right)">
-		<circle class="lid" cx="218" cy="88" r="30" fill="var(--art-frog-light)"></circle>
-	</g>
-
-	{/* Nostrils and a wide mouth: the two marks that make the blob read as a face. */}
-	<g fill="var(--art-frog-dark)">
-		<ellipse cx="156" cy="128" rx="4.5" ry="3.5"></ellipse>
-		<ellipse cx="184" cy="128" rx="4.5" ry="3.5"></ellipse>
-	</g>
-	<path
-		d="M 130 152 Q 170 184 210 152"
-		fill="none"
-		stroke="var(--art-frog-dark)"
-		stroke-width="6"
-		stroke-linecap="round"></path>
-
-	{/* Three points of amber drifting in the dark: the only motion above the frog. */}
-	<g fill="var(--art-eye)">
-		<circle class="glow" style="--glow-delay: 0s" cx="50" cy="122" r="5"></circle>
-		<circle class="glow" style="--glow-delay: -1.4s" cx="284" cy="146" r="4"></circle>
-		<circle class="glow" style="--glow-delay: -2.8s" cx="72" cy="76" r="3.5"></circle>
-	</g>
-
-	{/* One leaf in front of the pad, so the frog sits inside the scene and not on top of it. The
-	    transform lives on an inner element: `.sway` animates the outer group's CSS transform, which
-	    would otherwise replace this attribute rather than compose with it. */}
-	<g class="sway" style="--sway-delay: -0.7s">
-		<use href="#leaf-shape" transform="translate(52 250) rotate(-38) scale(0.64)" fill="var(--art-leaf)"></use>
+	{/* Plane 3 — one leaf at about 1.35× the frog, cropped by the left and bottom edges. It is the
+	    darkest mass in the scene: nearest the reader is furthest from the light. */}
+	<g class="sway">
+		<ellipse cx="18" cy="244" rx="108" ry="42" transform="rotate(-10 18 244)" fill="var(--art-shade)"></ellipse>
+		<ellipse cx="14" cy="240" rx="108" ry="42" transform="rotate(-10 14 240)" fill="var(--art-leaf)"></ellipse>
+		<ellipse cx="-14" cy="212" rx="48" ry="10" transform="rotate(-14 -14 212)" fill="var(--art-leaf-light)"></ellipse>
+		<g fill="none" stroke="var(--art-leaf)" stroke-width="3" stroke-linecap="round">
+			<path d="M -26 242 L 74 256"></path>
+			<path d="M -26 242 L 92 234"></path>
+			<path d="M -26 242 L 44 274"></path>
+		</g>
 	</g>
 </svg>
 
 <style>
-	/* The wrapper in Hero.astro owns the width; the art fills it. `overflow: visible` because the
-	   upper-left leaf tips reach past the viewBox edge into the page gutter on purpose. */
+	/* The wrapper in Hero.astro owns the width; the art fills it. Nothing overflows: the water and
+	   the foreground leaf run past the viewBox so the frame cuts them, which is the crop the scene
+	   is built on. */
 	.hero-art {
 		display: block;
 		width: 100%;
 		height: auto;
-		overflow: visible;
 	}
 
 	/* Parked above the eye for most of the cycle, so the frog is open-eyed by default. */
 	.lid {
-		transform: translateY(-62px);
+		transform: translateY(-40px);
 		animation: blink 7s ease-in-out infinite;
 	}
 
+	/* The foreground leaf pivots about its own stem, off the left edge, not about the scene centre. */
 	.sway {
-		transform-origin: 160px 180px;
+		transform-origin: -20px 240px;
 		animation: sway 9s ease-in-out infinite;
-		animation-delay: var(--sway-delay);
-	}
-
-	.glow {
-		animation: glow 4.5s ease-in-out infinite;
-		animation-delay: var(--glow-delay);
 	}
 
 	@keyframes blink {
 		0%,
 		92%,
 		100% {
-			transform: translateY(-62px);
+			transform: translateY(-40px);
 		}
 		95.5% {
 			transform: translateY(0);
@@ -179,24 +256,13 @@
 
 	@keyframes sway {
 		50% {
-			transform: rotate(1.4deg);
-		}
-	}
-
-	@keyframes glow {
-		0%,
-		100% {
-			opacity: 0.35;
-		}
-		50% {
-			opacity: 1;
+			transform: rotate(1.2deg);
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.lid,
-		.sway,
-		.glow {
+		.sway {
 			animation: none;
 		}
 	}

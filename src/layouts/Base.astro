@@ -104,11 +104,17 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		   scale, so the illustration and the interface are the same palette. */
 		--art-ink: #10241a;
 		--art-frog-dark: #00693a;
+		/* The shadow side of every green form, and the contact shadow every object drops on what it
+		   rests on. One light, upper left, so the shade always sits lower-right. */
+		--art-shade: #04512c;
 		--art-frog: #00a74e;
 		--art-frog-light: #67e387;
 		--art-belly: #d5f3c2;
 		--art-leaf: #007c3e;
 		--art-leaf-light: #00c859;
+		/* Water, and anything seen through or below the surface: the only cool colour in the ramp,
+		   which is what makes a submerged mass read as submerged. */
+		--art-water: #4f9683;
 		--art-disc: #e5f7de;
 		--art-disc-core: #f4fcee;
 		--art-disc-edge: #b4f5b5;
@@ -118,6 +124,10 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		--art-eye: #f0a828;
 		--art-eye-dark: #b06f0c;
 		--art-shine: #ffffff;
+		/* The one warm accent a scene is allowed, over at most 8% of it and never on skin. A low-sun
+		   amber, not a brown: it has to read as emitted light. 3.59:1 on --bg, 3.42 on --surface,
+		   3.43 on --art-disc. */
+		--art-warm: #c26c0d;
 		/* The one neutral in the ramp: the discarded alternatives in the benefit scenes. Never text,
 		   but held to 3:1 on both grounds, because it carries shapes a reader has to make out. */
 		--art-grey: #6b7a70;
@@ -208,11 +218,13 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 
 			--art-ink: #04100b;
 			--art-frog-dark: #007c3e;
+			--art-shade: #0a8f4a;
 			--art-frog: #00c859;
 			--art-frog-light: #b4f5b5;
 			--art-belly: #d5f3c2;
 			--art-leaf: #00a74e;
 			--art-leaf-light: #67e387;
+			--art-water: #2a6f62;
 			--art-disc: #0d2a1b;
 			--art-disc-core: #123723;
 			--art-disc-edge: #1d4a30;
@@ -220,6 +232,7 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 			--art-eye: #f7c15c;
 			--art-eye-dark: #c07d16;
 			--art-shine: #f9f6f5;
+			--art-warm: #ffd08a;
 			--art-grey: #8fa596;
 
 			/* github-dark-high-contrast on a forest black of our own, so the panel joins the palette. */
