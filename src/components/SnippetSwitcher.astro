@@ -215,6 +215,12 @@ const tabRules = tabs
 		overflow: hidden;
 	}
 
+	/* `.frame` clips to its radius, so the global ring, drawn outside the element, is cut off on three
+	   sides. The same ring, drawn inside instead. */
+	.snippet-panel :global(pre.astro-code:focus-visible) {
+		outline-offset: calc(var(--border-thick) * -1);
+	}
+
 	.bar {
 		display: flex;
 		align-items: center;

@@ -117,8 +117,10 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 ### Footer
 
 - A follow block first: heading, one line, and a pill per network linking the stack's Scala Space
-  account (X, Mastodon, Bluesky, LinkedIn). The Mastodon link carries `rel="me"`, which is how the
-  account verifies the link back. Icons only here; the cards keep theirs.
+  account (X, Mastodon, Bluesky, LinkedIn). The Mastodon link carries `rel="me noopener"`, which is
+  how the account verifies the link back; the other three carry `rel="noopener"`. Icons only here;
+  the cards keep theirs. Each pill's accessible name is the visually hidden `followLinkPrefix` from
+  `content/footer.md` plus the network label, so "X" is never announced as a bare letter.
 - Under it, one row on desktop, stacked on mobile. Who maintains the page (VirtusLab), link
   to the page's own repo, link to `llms.txt`, license line. No newsletter, no sponsor strip.
 

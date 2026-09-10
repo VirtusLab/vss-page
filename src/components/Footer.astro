@@ -22,7 +22,8 @@ const { maintainers } = footer;
 	<section id="follow" class="follow" aria-labelledby="follow-heading">
 		<h2 id="follow-heading">{footer.followHeading}</h2>
 		<p>{footer.followText}</p>
-		<ul>
+		{/* `list-style: none` drops list semantics in Safari/VoiceOver; the role puts them back. */}
+		<ul role="list">
 			{
 				footer.follow.map((account) => (
 					<li>

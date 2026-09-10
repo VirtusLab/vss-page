@@ -52,11 +52,29 @@ and deploys it to GitHub Pages. You can also trigger it manually from the
 Actions tab.
 
 `.github/workflows/links.yml` checks external links after every build on
-`main`, on pull requests, and weekly. The page's own canonical URL is skipped,
-since it only resolves once the site is deployed.
+`main`, on pull requests, and weekly. Absolute URLs on the deployed site — the
+canonical link and the Open Graph image — are skipped, since they only resolve
+once the site is deployed.
 
-If the repo is renamed or moved, `site` and `base` in `astro.config.mjs` and
-`repoUrl` in `content/footer.md` all have to change together.
+If the repo is renamed or moved, `site` and `base` in `astro.config.mjs`,
+`repoUrl` in `content/footer.md` and the absolute URLs in `public/robots.txt`
+and `public/sitemap.xml` all have to change together.
+
+## robots.txt
+
+`public/robots.txt` is served at `/vss-page/robots.txt`, which is not where a
+crawler looks: on a project site the host's file is
+`https://virtuslab.github.io/robots.txt`, and this repo cannot write it. The
+file ships anyway, so the rules travel with the site if it ever moves to a
+custom domain, and so `llms.txt` and the sitemap have a machine-readable
+pointer.
+
+## Static assets
+
+`public/og.svg` is the source of `public/og.png` (1200×630), the Open Graph
+share image, and `public/favicon.svg` the source of `public/favicon-32.png` and
+`public/apple-touch-icon.png` (180×180, opaque). All three PNGs are committed
+exports; re-export them by hand after editing an SVG.
 
 ## One-time GitHub setup
 

@@ -9,6 +9,7 @@ import Hero from '../components/Hero.astro';
 import Nav from '../components/Nav.astro';
 import SnippetSwitcher from '../components/SnippetSwitcher.astro';
 import Divider from '../components/graphics/Divider.astro';
+import { pageUrl } from '../lib/base';
 import { loadSite } from '../lib/content';
 import { snippetRegion } from '../lib/snippets';
 
@@ -22,15 +23,51 @@ const tabs = snippets.map((snippet) => ({
 	componentName: snippet.component.name,
 	fullExampleHref: `${footer.repoUrl}/blob/main/${snippet.file}`,
 }));
+
+// Structured data for crawlers, built from the collections the page itself renders: the stack as an
+// ordered list, each item pointing at the card's anchor. Nothing here is written twice.
+const canonical = pageUrl(Astro.site);
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'WebSite',
+			name: hero.title,
+			alternateName: hero.acronym,
+			url: canonical,
+			description: hero.tagline,
+			inLanguage: 'en',
+		},
+		{
+			'@type': 'ItemList',
+			name: labels.chapterComponents,
+			itemListElement: sections
+				.flatMap((section) => section.components)
+				.map((component, index) => ({
+					'@type': 'ListItem',
+					position: index + 1,
+					name: component.name,
+					url: `${canonical}#${component.id}`,
+				})),
+		},
+	],
+};
 ---
 
-<Base title={`${hero.title} (${hero.acronym})`} description={hero.tagline}>
+<Base
+	title={`${hero.title} (${hero.acronym})`}
+	description={hero.tagline}
+	siteName={hero.title}
+	imageAlt={labels.shareImageAlt}
+	skipLabel={labels.skipLink}
+	jsonLd={jsonLd}
+>
 	{/* Three chapters, each opened by its own eyebrow: the snippets show the code, the benefits make
 	    the argument, and the nav leads into the sections it links to. A sprig closes the hero and
 	    another closes the benefits; the snippets need none, because the band's top edge is already a
 	    line across the page. The band paints its own ground, which is why it sits outside `.page` —
 	    the only block that runs to the window's edges. */}
-	<main>
+	<main id="content">
 		<div class="page">
 			<Hero hero={hero} labels={labels} />
 			<Divider />

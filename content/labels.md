@@ -3,7 +3,7 @@ fullExample: full example (run with scala-cli)
 githubLabel: GitHub
 docsLabel: Docs
 starsLabel: "stars on GitHub:"
-starsTitle: Stars on GitHub — star it there
+starsPending: Star
 llmsLabel: llms.txt
 llmsHref: /llms.txt
 snippetsLegend: Code examples
@@ -15,4 +15,6 @@ snippetsCommand: scala-cli run <file>
 chapterSnippets: In action
 chapterBenefits: Benefits
 chapterComponents: The stack
+skipLink: Skip to content
+shareImageAlt: VirtusLab Scala Stack — direct-style Scala 3
 ---

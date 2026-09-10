@@ -75,17 +75,14 @@ Text on the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#
 ## Motifs
 
 All hand-drawn inline SVG in `src/components/graphics/`, `aria-hidden`, filled from `--art-*`.
-- `HeroArt.astro` — 320×300: leaves breaking the disc at the headline's corner only, a veined lily pad,
-  and the frog 18 units right of the disc centre with its head 8 units left of its body, so it looks
-  back at the headline. Every toe overlaps the foot bar. One eye is drawn once and placed twice with
-  `use`; `overflow: visible`, as the leaf tips reach past the viewBox on purpose.
+- `HeroArt.astro` — 320×300: leaves breaking the disc at the headline's corner only, a veined lily pad, and the frog 18 units right of the disc centre with its head 8 units left of its body, so it looks back at the headline. Every toe overlaps the foot bar. One eye is drawn once and placed twice with `use`; `overflow: visible`, as the leaf tips reach past the viewBox on purpose. `public/og.svg` is the same scene at 1200×630 with every token written out as its light-mode literal — a share image inherits no CSS — exported once to `public/og.png`; redraw both together.
 - `SectionIcon.astro` — six 48×48 tiles, the same frog with one prop over its right shoulder: a page, a lambda, a gear, a rack, a spark, two chevrons; head and toe pads clear the rounded corners.
 - `Divider.astro` — a 40px three-leaf sprig, a green rule fading to each edge; carries its own vertical margin, closes a chapter and opens the footer.
-- `BenefitArt.astro` — five 240×180 scenes, one per benefit id, in the hero's shape language; the
-  frog is drawn once into `defs` and placed with `use`. An id with no scene fails the build. The one
-  place artwork borrows a text token: the rejected tile's cross, in `--accent-2-text`.
+- `BenefitArt.astro` — five 240×180 scenes, one per benefit id, in the hero's shape language; the frog is drawn once into `defs` and placed with `use`. An id with no scene fails the build. The one place artwork borrows a text token: the rejected tile's cross, in `--accent-2-text`.
 - `VisdomLogo.astro` — Visdom's crest, 48px, beside the name; `currentColor`, so it takes the amber.
 - `CodeBar.astro` — a head, two eyes, three window lights; the same head in `public/favicon.svg`.
+- `SocialIcon.astro` — the four network marks in the footer, from simple-icons (CC0), `--icon-sm`.
+- `GithubMark.astro`, `DocsIcon.astro`, `StarIcon.astro` — the three card-band icons, `--icon-sm`.
 
 ## Code themes
 

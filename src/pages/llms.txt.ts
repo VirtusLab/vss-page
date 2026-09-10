@@ -6,14 +6,18 @@ import { snippetFile } from '../lib/snippets';
 /** Markdown link to its text: the intros are markdown, this file is plain text. */
 const plainLinks = (text: string) => text.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
 
-/** id, name, description, url and repo, the fields decision 2.10 lists for every component. */
-const entry = (c: { id: string; name: string; description: string; url: string; repo?: string }) =>
+/**
+ * id, name, description, url and repo, the fields decision 2.10 lists for every component. `repo`
+ * comes from the resolved `github`, not the raw field, so a component whose `url` already is its
+ * GitHub page still gets the line and every entry has the same shape.
+ */
+const entry = (c: { id: string; name: string; description: string; url: string; github?: string }) =>
 	[
 		`### ${c.name}`,
 		`id: ${c.id}`,
 		c.description,
 		`url: ${c.url}`,
-		...(c.repo ? [`repo: ${c.repo}`] : []),
+		...(c.github ? [`repo: ${c.github}`] : []),
 	].join('\n');
 
 /**

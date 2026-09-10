@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <title>VirtusLab Scala Stack — direct-style Scala 3</title>
+  <!--
+    The Open Graph share image, exported once to og.png. Same palette as the page, but every colour
+    is a literal: an image rendered outside the document inherits no CSS custom property. The frog is
+    the hero art from src/components/graphics/HeroArt.astro with the --art-* tokens resolved to their
+    light-mode values and the animated eyelids left out.
+  -->
+  <defs>
+    <!-- The two radial washes of --ground, as ellipses so the gradients follow their own boxes. -->
+    <radialGradient id="wash-green">
+      <stop offset="0" stop-color="#00c859" stop-opacity="0.13" />
+      <stop offset="0.7" stop-color="#00c859" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="wash-amber">
+      <stop offset="0" stop-color="#e2a02c" stop-opacity="0.11" />
+      <stop offset="0.68" stop-color="#e2a02c" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="disc-fill" cx="46%" cy="36%" r="72%">
+      <stop offset="0" stop-color="#f4fcee" />
+      <stop offset="1" stop-color="#e5f7de" />
+    </radialGradient>
+    <g id="leaf-shape">
+      <path d="M -60 0 C -34 -33 34 -33 60 0 C 34 33 -34 33 -60 0 Z" />
+      <path d="M -48 0 L 48 0" fill="none" stroke="#f4fcee" stroke-width="5" stroke-linecap="round" />
+    </g>
+    <g id="eye">
+      <circle r="39" fill="#67e387" />
+      <circle r="29" fill="#b06f0c" />
+      <circle r="25" fill="#f0a828" />
+      <ellipse cx="-6" rx="9" ry="17" fill="#10241a" />
+      <circle cx="-14" cy="-11" r="7" fill="#ffffff" />
+      <circle cx="3" cy="11" r="3.5" fill="#ffffff" opacity="0.7" />
+    </g>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f9f6f5" />
+  <ellipse cx="168" cy="60" rx="940" ry="640" fill="url(#wash-green)" />
+  <ellipse cx="1128" cy="190" rx="780" ry="540" fill="url(#wash-amber)" />
+
+  <!-- The bright-green rule that opens the hero, at the share image's scale. -->
+  <rect x="88" y="130" width="128" height="8" rx="4" fill="#00c859" />
+
+  <g font-family="Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <g font-size="88" font-weight="700" letter-spacing="-2.64" fill="#16211a">
+      <text x="88" y="238">VirtusLab</text>
+      <text x="88" y="338">Scala Stack</text>
+    </g>
+    <!-- The acronym pill, riding the last line of the title exactly as the hero sets it. -->
+    <rect x="610" y="284" width="121" height="52" rx="26" fill="#046b39" />
+    <text
+      x="672"
+      y="324"
+      font-size="40"
+      font-weight="700"
+      letter-spacing="2.4"
+      fill="#f9f6f5"
+      text-anchor="middle">VSS</text>
+    <g font-size="30" font-weight="600" letter-spacing="-0.3" fill="#4a5b50">
+      <text x="88" y="410">Direct-style Scala 3: plain control</text>
+      <text x="88" y="451">flow, no effect wrappers, code that</text>
+      <text x="88" y="492">agents can write.</text>
+    </g>
+  </g>
+
+  <g transform="translate(818 158) scale(1.05)">
+    <use href="#leaf-shape" transform="translate(38 54) rotate(41) scale(0.82)" fill="#007c3e" />
+    <use href="#leaf-shape" transform="translate(84 22) rotate(20) scale(0.58)" fill="#00c859" />
+
+    <circle cx="160" cy="150" r="136" fill="url(#disc-fill)" />
+    <circle cx="160" cy="150" r="135" fill="none" stroke="#b4f5b5" stroke-width="2" />
+
+    <ellipse cx="172" cy="252" rx="126" ry="28" fill="#007c3e" />
+    <ellipse cx="172" cy="247" rx="126" ry="25" fill="#00c859" />
+    <g fill="none" stroke="#007c3e" stroke-width="2" stroke-linecap="round" opacity="0.55">
+      <path d="M 172 247 L 58 238" />
+      <path d="M 172 247 L 286 238" />
+      <path d="M 172 247 L 84 264" />
+      <path d="M 172 247 L 260 264" />
+    </g>
+
+    <g fill="#00693a">
+      <ellipse cx="106" cy="200" rx="44" ry="37" transform="rotate(-16 106 200)" />
+      <ellipse cx="250" cy="200" rx="44" ry="37" transform="rotate(16 250 200)" />
+      <rect x="84" y="231" width="60" height="23" rx="11.5" />
+      <rect x="212" y="231" width="60" height="23" rx="11.5" />
+      <circle cx="90" cy="225" r="10" />
+      <circle cx="82" cy="243" r="10" />
+      <circle cx="90" cy="261" r="10" />
+      <circle cx="266" cy="225" r="10" />
+      <circle cx="274" cy="243" r="10" />
+      <circle cx="266" cy="261" r="10" />
+    </g>
+
+    <ellipse cx="178" cy="190" rx="86" ry="62" fill="#00a74e" />
+    <ellipse cx="170" cy="132" rx="80" ry="60" fill="#00a74e" />
+    <ellipse cx="166" cy="106" rx="58" ry="32" fill="#67e387" opacity="0.6" />
+    <ellipse cx="180" cy="204" rx="54" ry="46" fill="#d5f3c2" />
+
+    <g fill="#00a74e">
+      <rect x="109" y="180" width="26" height="70" rx="13" transform="rotate(7 122 215)" />
+      <rect x="225" y="180" width="26" height="70" rx="13" transform="rotate(-7 238 215)" />
+    </g>
+    <g fill="#67e387">
+      <circle cx="111" cy="245" r="8.5" />
+      <circle cx="122" cy="252" r="8.5" />
+      <circle cx="134" cy="246" r="8.5" />
+      <circle cx="227" cy="246" r="8.5" />
+      <circle cx="238" cy="252" r="8.5" />
+      <circle cx="250" cy="245" r="8.5" />
+    </g>
+
+    <use href="#eye" x="122" y="88" />
+    <use href="#eye" x="218" y="88" />
+
+    <g fill="#00693a">
+      <ellipse cx="156" cy="128" rx="4.5" ry="3.5" />
+      <ellipse cx="184" cy="128" rx="4.5" ry="3.5" />
+    </g>
+    <path d="M 130 152 Q 170 184 210 152" fill="none" stroke="#00693a" stroke-width="6" stroke-linecap="round" />
+
+    <g fill="#f0a828" opacity="0.7">
+      <circle cx="50" cy="122" r="5" />
+      <circle cx="284" cy="146" r="4" />
+      <circle cx="72" cy="76" r="3.5" />
+    </g>
+
+    <use href="#leaf-shape" transform="translate(52 250) rotate(-38) scale(0.64)" fill="#007c3e" />
+  </g>
+</svg>

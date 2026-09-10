@@ -22,7 +22,8 @@ const { Content } = await render(section.intro);
 		<span>{section.title}</span>
 	</h2>
 	<div class="intro"><Content /></div>
-	<ul class="components">
+	{/* `list-style: none` drops list semantics in Safari/VoiceOver; the role puts them back. */}
+	<ul class="components" role="list">
 		{
 			section.components.map((component) => (
 				<li class="panel">
@@ -53,7 +54,7 @@ const { Content } = await render(section.intro);
 								</a>
 							)}
 							{component.githubRepo && (
-								<a class="stars" href={component.github} title={labels.starsTitle}>
+								<a class="stars" href={component.github}>
 									<StarIcon />
 									{/* Ahead of the number and part of the link's name, so the count is read out
 									    as "<name> stars on GitHub: 1.5k" instead of being skipped. */}
@@ -64,6 +65,9 @@ const { Content } = await render(section.intro);
 									<span data-stars={component.githubRepo}>
 										{component.stars !== undefined && formatStars(component.stars)}
 									</span>
+									{/* Shown only while the count is empty, so the cell never reads as a
+									    lone star icon that does nothing. */}
+									<span class="pending" aria-hidden="true">{labels.starsPending}</span>
 								</a>
 							)}
 						</div>
@@ -206,6 +210,11 @@ const { Content } = await render(section.intro);
 	/* Before the build's star counts arrive — or without a `GITHUB_TOKEN` at all — the count span is
 	   empty, and its gap would push the star off the cell's centre. The script fills it and it shows. */
 	[data-stars]:empty {
+		display: none;
+	}
+
+	/* The two are alternatives: as soon as the count has text, the standing-in word goes. */
+	[data-stars]:not(:empty) + .pending {
 		display: none;
 	}
 

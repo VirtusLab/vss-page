@@ -16,7 +16,8 @@ const { sections, benefitsLabel, repoLabel, repoUrl } = Astro.props;
 ---
 
 <nav class="nav">
-	<ul>
+	{/* `list-style: none` drops list semantics in Safari/VoiceOver; the role puts them back. */}
+	<ul role="list">
 		{/* The benefits sit above the nav, not below it, but the row is the page's index: leaving
 		    them out would be the one block a reader cannot jump back to. */}
 		<li><a href="#benefits">{benefitsLabel}</a></li>

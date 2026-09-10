@@ -222,7 +222,9 @@ const labels = defineCollection({
 			githubLabel: z.string(),
 			docsLabel: z.string(),
 			starsLabel: z.string(),
-			starsTitle: z.string(),
+			// Stands in for the count until the browser fetches it, so the cell is never a bare
+			// icon. Hidden from screen readers: `starsLabel` already names the link.
+			starsPending: z.string(),
 			llmsLabel: z.string(),
 			// Goes through `withBase`, which only handles site-absolute paths.
 			llmsHref: z.string().refine((h) => h.startsWith('/'), 'must be a site-absolute path'),
@@ -237,6 +239,10 @@ const labels = defineCollection({
 			chapterSnippets: z.string(),
 			chapterBenefits: z.string(),
 			chapterComponents: z.string(),
+			// First focusable in the body; jumps to `#content`.
+			skipLink: z.string(),
+			// `og:image:alt` for `public/og.png`.
+			shareImageAlt: z.string(),
 		})
 		.strict()
 		// The switcher splits the sentence on the command to wrap it in a `<code>`, so a note that

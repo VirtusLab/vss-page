@@ -5,10 +5,20 @@ import { pageUrl, withBase } from '../lib/base';
 interface Props {
 	title: string;
 	description: string;
+	/** Hero title on its own, without the acronym: what a share card names as the site. */
+	siteName: string;
+	/** Alternative text of `public/og.png`, for consumers that show it. */
+	imageAlt: string;
+	/** Visible text of the skip link. */
+	skipLabel: string;
+	/** Schema.org graph, built in `index.astro` from the same content the page renders. */
+	jsonLd: unknown;
 }
 
-const { title, description } = Astro.props;
+const { title, description, siteName, imageAlt, skipLabel, jsonLd } = Astro.props;
 const canonical = pageUrl(Astro.site);
+// Absolute, because every consumer of og:image fetches it without a document to resolve against.
+const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 ---
 
 <!doctype html>
@@ -20,21 +30,44 @@ const canonical = pageUrl(Astro.site);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
-		{/* No og:image: the hero art is inline SVG, and a raster export would be a second source of truth. */}
+		{/* The plain-text mirror, findable without fetching the body. */}
+		<link rel="alternate" type="text/plain" href={withBase('/llms.txt')} title="llms.txt" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonical} />
-		<meta name="twitter:card" content="summary" />
+		<meta property="og:site_name" content={siteName} />
+		{/* Hand-drawn once and committed, from `public/og.svg`: the title and the tagline never change. */}
+		<meta property="og:image" content={shareImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={imageAlt} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{/* Same two values as `--bg`, so the browser chrome carries the page's ground. */}
+		<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9f6f5" />
+		<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#07160f" />
 		<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+		{/* Raster copies of the same mark, for Safari < 16.4 and for "add to home screen". */}
+		<link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
+		<link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Montserrat:wght@600;700&family=Source+Sans+3:wght@400&display=swap"
 		/>
+		{/* `is:inline` because this is data, not code: it must ship verbatim, unbundled. `set:html`
+		    writes the string raw, so any `<` in the content would be free to close the script early. */}
+		<script
+			is:inline
+			type="application/ld+json"
+			set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+		/>
 	</head>
 	<body>
+		<a class="skip" href="#content">{skipLabel}</a>
 		<slot />
 	</body>
 </html>
@@ -237,6 +270,29 @@ const canonical = pageUrl(Astro.site);
 		outline-offset: var(--border-thick);
 	}
 
+	/* The first focusable on the page, parked above the top edge until it takes focus. Fixed, not
+	   absolute, so it is on screen wherever the reader has scrolled to; `z-index: 2` clears the
+	   sticky nav, which is 1. */
+	.skip {
+		position: fixed;
+		left: var(--space-3);
+		top: calc(var(--space-3) * -4);
+		z-index: 2;
+		padding: var(--space-2) var(--space-3);
+		border-radius: var(--radius-pill);
+		background: var(--accent);
+		color: var(--on-accent);
+		font-family: var(--font-display);
+		font-size: var(--text-sm);
+		font-weight: 700;
+		text-decoration: none;
+		transition: top 0.15s ease;
+	}
+
+	.skip:focus-visible {
+		top: var(--space-3);
+	}
+
 	/* Every surface on the page: a hairline, a soft shadow and the shared radius. Components override
 	   the background and the border colour; only the card and the CTA lift on hover. */
 	.panel {
@@ -288,6 +344,12 @@ const canonical = pageUrl(Astro.site);
 		/* The nav is sticky at this width, so an anchor must not land underneath it. */
 		html {
 			scroll-padding-top: calc(var(--nav-height) + var(--space-3));
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.skip {
+			transition: none;
 		}
 	}
 </style>
