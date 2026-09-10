@@ -103,11 +103,9 @@ const canonical = pageUrl(Astro.site);
 		--page-width: 62rem;
 		/* Height of the sticky nav row; anchors scroll clear of it. */
 		--nav-height: 3.75rem;
-		/* Section-icon tile, the frog mark in the code panel's title bar, and the one figure-sized
-		   illustration outside the hero. */
+		/* Section-icon tile, and the frog mark in the code panel's title bar. */
 		--icon: 48px;
 		--mark: 22px;
-		--figure: 120px;
 
 		--border: 1px;
 		--border-thick: 2px;
@@ -258,8 +256,9 @@ const canonical = pageUrl(Astro.site);
 
 	@media (min-width: 720px) {
 		:root {
-			/* Two steps further up the scale: the hero only has room to be large on the wide layout. */
-			--text-2xl: 3.052rem;
+			/* One step further up the scale: the hero only has room to be larger on the wide layout,
+			   and a step more would push the acronym pill off the title's line. */
+			--text-2xl: 2.441rem;
 		}
 
 		/* The nav is sticky at this width, so an anchor must not land underneath it. */

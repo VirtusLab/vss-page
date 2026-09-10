@@ -1,5 +1,6 @@
 ---
 title: VirtusLab Scala Stack
+acronym: VSS
 tagline: "Direct-style Scala 3: plain control flow, no effect wrappers, code that agents can write."
 lede: >-
   Direct style means ordinary code: call a function, get a value back, use if,

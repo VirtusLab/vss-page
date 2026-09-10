@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 import Nav from '../components/Nav.astro';
 import SnippetSwitcher from '../components/SnippetSwitcher.astro';
+import Divider from '../components/graphics/Divider.astro';
 import { loadSite } from '../lib/content';
 import { snippetRegion } from '../lib/snippets';
 
@@ -21,17 +22,22 @@ const tabs = snippets.map((snippet) => ({
 }));
 ---
 
-<Base title={hero.title} description={hero.tagline}>
+<Base title={`${hero.title} (${hero.acronym})`} description={hero.tagline}>
 	<div class="page">
 		<main>
+			{/* Hero and code first, chrome after: the nav is the lead-in to the sections it links to,
+			    and the divider closes the opening block. */}
 			<Hero hero={hero} labels={labels} />
-			{/* The nav sits between the hero and the switcher, so the first screen is hero + code. */}
-			<Nav sections={sections} repoLabel={footer.repoLabel} repoUrl={footer.repoUrl} />
 			<SnippetSwitcher
 				tabs={tabs}
 				fullExampleLabel={labels.fullExample}
 				legend={labels.snippetsLegend}
+				heading={labels.snippetsHeading}
+				note={labels.snippetsNote}
+				command={labels.snippetsCommand}
 			/>
+			<Divider />
+			<Nav sections={sections} repoLabel={footer.repoLabel} repoUrl={footer.repoUrl} />
 			{sections.map((section) => <ComponentSection section={section} repoLabel={labels.repo} />)}
 			<Commercial commercial={commercial} visdom={visdom} />
 		</main>

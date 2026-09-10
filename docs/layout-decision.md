@@ -11,8 +11,8 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 ### Nav
 
-- No top masthead. The nav is a single `<nav>` row placed between the hero and the switcher, so
-  the first screen is hero + code, not chrome.
+- No top masthead. The nav is a single `<nav>` row placed after the switcher, so the first screen
+  is hero + code, not chrome, and the row leads straight into the sections it links to.
 - Six plain text links in YAML order. Nav label and section `<h2>` both render the YAML `title`
   verbatim, so they cannot diverge. Plus a link to the source repo; Visdom is not in the nav.
 - Desktop (>720px): `position: sticky; top: 0`, one row, sticks on scroll.
@@ -21,17 +21,22 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 ### Hero + tagline + CTAs
 
 - One column, full width, capped at ~65 characters of measure. Same on both widths.
-- `<h1>`: what the stack is, one line. Below it, one-sentence tagline (`<p>`).
+- `<h1>`: what the stack is, one line, followed by the acronym "VSS" as a filled pill on the same
+  line, wrapping whole when there is no room. Below it, one-sentence tagline (`<p>`).
 - One CTA only: "Start a project" → `#template`. No second CTA — no single install command.
 - Under the CTA, one small line for the other audience: "For coding agents: `llms.txt` ·
   scala-skill". The first links to `/llms.txt`; the second is an in-page link to `#scala-skill`,
   the existing AI-tooling component. Nothing new is built for either.
 - No version numbers, star counts, event banners or countdowns.
-- `<title>` and meta description come from hero title and tagline.
+- `<title>` is hero title plus acronym, "VirtusLab Scala Stack (VSS)"; meta description is the
+  tagline.
 
 ### Snippet switcher
 
-- Directly under the nav row, still within the first scroll on desktop.
+- Directly under the hero, still within the first scroll on desktop. The divider closes the block
+  and the nav follows it, so the order is hero → switcher → divider → nav → sections.
+- Above the tab strip: an `<h2>` ("VSS in action:") and one muted sentence saying the snippets are
+  excerpts of scala-cli scripts that run with `scala-cli run <file>`. The hidden `<legend>` stays.
 - Form: CSS-only radio tabs. Four `<input type="radio" name="snippet">` (first `checked`),
   four `<label>`s forming the visible strip, four panels shown via `:checked ~ .panels > #id`.
   No `role="tab"`/`aria-controls` — those imply JS-managed focus.
@@ -78,8 +83,8 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
 
 - Position: after all six component sections, before the footer. Not mid-page, not in the nav.
   The reader has seen the whole free stack before any offer appears.
-- Markup: its own `<section id="commercial">` with an eyebrow `<p>` reading "Commercial" above
-  the name.
+- Markup: its own `<section id="commercial">`. No label saying "commercial": the border, the tint
+  and Visdom's own logo on the right set the block apart.
 - Same shape as a card (name link + one-line description) but explicitly NOT the card grid: full
   width, one item, set apart by a border plus a background tint. No full-bleed color band, no
   illustration, no logo — on a page this short the loudest block would own the reader's memory.
@@ -104,10 +109,10 @@ Backend 7, AI tooling 5, DevOps 1, Template 2 = 18.
    Page and source file agree, so humans and agents see the same stack.
 6. **Anchors** — an explicit `id` field on every section and every component in the YAML, used
    verbatim. Six section ids alone do not satisfy "quick navigation to any component".
-7. **Navigation** — six links under the hero, sticky above 720px only, no JS, no Visdom link.
+7. **Navigation** — six links under the snippets, sticky above 720px only, no JS, no Visdom link.
    A sticky bar costs more phone height than two wrapped rows of plain links.
-8. **Commercial insert** — after section six, before the footer; "Commercial" eyebrow, bordered
-   block, not the card format. Visible but never mistaken for part of the open-source stack.
+8. **Commercial insert** — after section six, before the footer; bordered block with Visdom's
+   logo, not the card format. Visible but never mistaken for part of the open-source stack.
 9. **Hero** — title + one-sentence tagline + one CTA (`#template`) + one agent line. A second
    CTA would have to be invented; there is no install command.
 10. **Agent supplement** — ship `/llms.txt` with all four snippets in full and all 18 components

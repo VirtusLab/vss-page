@@ -2,7 +2,6 @@
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../lib/base';
 import HeroArt from './graphics/HeroArt.astro';
-import Divider from './graphics/Divider.astro';
 
 /** Title, tagline, lede, the single CTA, and one line pointing coding agents at llms.txt and scala-skill. */
 interface Props {
@@ -16,7 +15,9 @@ const { hero, labels } = Astro.props;
 <header class="hero">
 	<div class="cols">
 		<div class="text">
-			<h1>{hero.title}</h1>
+			{/* Written without a gap: the badge carries its own left margin, and a line break here
+			    would add a second, breakable space in front of it. */}
+			<h1>{hero.title}<span class="acronym">{hero.acronym}</span></h1>
 			<p class="tagline">{hero.tagline}</p>
 			<p class="lede">{hero.lede}</p>
 			<p class="cta-row"><a class="cta" href={hero.ctaHref}>{hero.ctaLabel}</a></p>
@@ -27,7 +28,6 @@ const { hero, labels } = Astro.props;
 		</div>
 		<div class="art"><HeroArt /></div>
 	</div>
-	<Divider />
 </header>
 
 <style>
@@ -38,7 +38,6 @@ const { hero, labels } = Astro.props;
 	.cols {
 		display: grid;
 		gap: var(--space-4);
-		margin-bottom: var(--space-5);
 	}
 
 	/* The bright-green mark that opens the page; the same rule runs down every section intro. */
@@ -56,6 +55,21 @@ const { hero, labels } = Astro.props;
 		max-width: var(--measure);
 		margin: 0 0 var(--space-3);
 		font-size: var(--text-2xl);
+	}
+
+	/* Inline-block, so it rides the last line of the title when there is room and drops whole to the
+	   next line when there is not. Sized off the heading, so it scales with it. */
+	.acronym {
+		display: inline-block;
+		margin-left: 0.3em;
+		padding: 0.05em 0.45em;
+		border-radius: var(--radius-pill);
+		background: var(--accent);
+		color: var(--on-accent);
+		font-size: 0.45em;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		vertical-align: 0.35em;
 	}
 
 	.tagline {
@@ -114,7 +128,7 @@ const { hero, labels } = Astro.props;
 
 	.art {
 		width: 100%;
-		max-width: 32rem;
+		max-width: 16rem;
 		justify-self: center;
 	}
 
@@ -123,20 +137,19 @@ const { hero, labels } = Astro.props;
 			padding-top: var(--space-6);
 		}
 
-		/* Text first, art beside it — and the art gets the wider column: the illustration is the
-		   page's one big moment. */
+		/* Text first, art beside it. The text takes the wider column: at this size the frog is a
+		   companion to the headline, not the headline itself. */
 		.cols {
-			grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+			grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
 			align-items: center;
 			gap: var(--space-4);
 		}
 
-		/* The disc bleeds out through the page container's own gutter, so the art runs to the edge
-		   of the page rather than stopping on the column line. The negative margin is exactly the
-		   container's padding, so it can never push the page wider than the viewport. */
+		/* No bleed into the page gutter: at this size the disc reads as a cropped mistake rather
+		   than a deliberate run-off, so the art stops on the column line. */
 		.art {
+			max-width: 22rem;
 			justify-self: end;
-			margin-right: calc(var(--space-3) * -1);
 		}
 	}
 

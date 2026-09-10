@@ -140,6 +140,8 @@ const hero = defineCollection({
 	schema: z
 		.object({
 			title: z.string(),
+			// Shown as a badge after the title, and in the `<title>` as "<title> (<acronym>)".
+			acronym: z.string(),
 			tagline: z.string(),
 			lede: z.string(),
 			ctaLabel: z.string(),
@@ -151,14 +153,10 @@ const hero = defineCollection({
 		.strict(),
 });
 
+/** The note under the Visdom entry; the body is the whole content, there are no fields. */
 const visdom = defineCollection({
 	loader: glob({ base: 'content', pattern: 'visdom.md' }),
-	schema: z
-		.object({
-			// Small label shown above the heading.
-			eyebrow: z.string(),
-		})
-		.strict(),
+	schema: z.object({}).strict(),
 });
 
 const footer = defineCollection({
@@ -187,8 +185,19 @@ const labels = defineCollection({
 			llmsHref: z.string().refine((h) => h.startsWith('/'), 'must be a site-absolute path'),
 			// Names the snippet tab group for screen readers; not shown.
 			snippetsLegend: z.string(),
+			// Heading above the tab strip.
+			snippetsHeading: z.string(),
+			// Sentence under the heading, and the command inside it.
+			snippetsNote: z.string(),
+			snippetsCommand: z.string(),
 		})
-		.strict(),
+		.strict()
+		// The switcher splits the sentence on the command to wrap it in a `<code>`, so a note that
+		// does not carry the command verbatim would render without it.
+		.refine(
+			(l) => l.snippetsNote.includes(l.snippetsCommand),
+			'snippetsNote must contain snippetsCommand verbatim',
+		),
 });
 
 /** One intro paragraph per section, keyed by the file name, which is the section id. */

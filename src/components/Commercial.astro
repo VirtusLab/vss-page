@@ -1,11 +1,12 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
-import CommercialArt from './graphics/CommercialArt.astro';
+import VisdomLogo from './graphics/VisdomLogo.astro';
 
 /**
  * The single paid entry, after all six sections. Card-shaped but deliberately not in the card grid:
  * full width, and the only block on the page carrying the amber accent, so it reads as an offer and
- * not as part of the open-source stack.
+ * not as part of the open-source stack. No label says "commercial"; the border and the tint set it
+ * apart, and the product's own lockup names it.
  */
 interface Props {
 	commercial: CollectionEntry<'commercial'>['data'];
@@ -18,14 +19,13 @@ const { Content } = await render(visdom);
 
 <section id="commercial" class="panel">
 	<div class="body">
-		<p class="eyebrow">{visdom.data.eyebrow}</p>
 		<h2 id={commercial.id}><a href={commercial.url}>{commercial.name}</a></h2>
 		<p>{commercial.description}</p>
 		<div class="note"><Content /></div>
 	</div>
-	{/* After the copy in the DOM, beside it on a wide screen: the animal carries through to the one
-	    block that is not part of the free stack. */}
-	<div class="art"><CommercialArt /></div>
+	{/* After the copy in the DOM, beside it on a wide screen: the product's own mark, not the
+	    page's frog, because this block is not part of the free stack. */}
+	<div class="art"><VisdomLogo name={commercial.name} /></div>
 </section>
 
 <style>
@@ -42,21 +42,6 @@ const { Content } = await render(visdom);
 
 	.body {
 		justify-self: stretch;
-	}
-
-	/* A filled label, not a line of small caps: the one place the amber accent is a solid block. */
-	.eyebrow {
-		display: inline-block;
-		margin: 0 0 var(--space-3);
-		padding: var(--space-1) var(--space-3);
-		border-radius: var(--radius-pill);
-		background: var(--accent-2);
-		color: var(--on-accent-2);
-		font-family: var(--font-display);
-		font-size: var(--text-xs);
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
 	}
 
 	h2 {

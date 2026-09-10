@@ -6,3 +6,6 @@ dist/
 .astro/
 .bsp/
 .superpowers/
+.metals/
+.bloop/
+.vscode/

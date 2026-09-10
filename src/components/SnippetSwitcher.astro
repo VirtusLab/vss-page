@@ -17,9 +17,17 @@ interface Props {
 	}[];
 	fullExampleLabel: string;
 	legend: string;
+	heading: string;
+	/** One sentence containing `command` verbatim, which is rendered as inline code. */
+	note: string;
+	command: string;
 }
 
-const { tabs, fullExampleLabel, legend } = Astro.props;
+const { tabs, fullExampleLabel, legend, heading, note, command } = Astro.props;
+
+// Splitting keeps the whole sentence in the content file while the command still gets its own
+// element. The labels schema guarantees the command is in there.
+const [noteBefore, noteAfter] = note.split(command);
 
 const radioId = (id: string) => `snippet-${id}`;
 const panelId = (id: string) => `panel-${id}`;
@@ -47,6 +55,9 @@ const tabRules = tabs
 ---
 
 <div class="switcher">
+	<h2>{heading}</h2>
+	{/* Kept on one line: the build drops a whitespace-only text node between two tags. */}
+	<p class="note">{noteBefore}<code>{command}</code>{noteAfter}</p>
 	<fieldset>
 		<legend>{legend}</legend>
 		{
@@ -99,6 +110,22 @@ const tabRules = tabs
 	.switcher {
 		position: relative;
 		margin: var(--space-5) 0;
+	}
+
+	/* No icon: the frog mark already sits in the panel's title bar, one line below. */
+	h2 {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-xl);
+	}
+
+	.note {
+		margin: 0 0 var(--space-3);
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	.note code {
+		font-size: var(--text-code);
 	}
 
 	/* Groups the radios for screen readers; every default box of a fieldset is unwanted here. */

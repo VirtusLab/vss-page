@@ -15,8 +15,8 @@ Green body, amber eyes: the animal is already the palette. It reads at 48px from
 a wide body and two domed eyes — which a chameleon (long body, curled tail) and a gecko (a plain
 lizard outline) do not. It fits the argument too: direct style is a jump, not a pipeline. It appears
 as the hero (off-centre on a lily pad in a lit disc, gaze turned back to the headline), the six
-section icons (one prop each, pupils on the prop), the commercial block (figure-sized, with an amber
-briefcase — the one prop that is not open source), the code panel's mark, and the favicon.
+section icons (one prop each, pupils on the prop), the code panel's mark, and the favicon. Not on
+the Visdom block: that carries Visdom's own logo, being no part of the free stack.
 
 ## Palette
 
@@ -51,11 +51,11 @@ Artwork uses a fill-only ramp from the VL green scale (`--art-ink`, `--art-frog-
 
 ## Type
 
-- Display (`h1`–`h3`, nav, tabs, CTA, eyebrow, footer and repo links): **Montserrat** 600/700, the
-  face virtuslab.com uses for headlines, tracked tight (−0.03em on the `h1`).
+- Display (`h1`–`h3`, nav, tabs, CTA, the "VSS" pill, footer links): **Montserrat** 600/700, the face
+  virtuslab.com uses for headlines, tracked tight (−0.03em on the `h1`).
 - Body: **Source Sans 3** 400. Mono: **JetBrains Mono** 400. Only rendered weights are requested.
-- Scale: 1rem base, ×1.25 up (3.052rem for the `h1` ≥720px), 0.875 and 0.75rem below, code
-  0.8125rem. Line height 1.65 body, 1.2 headings.
+- Scale: 1rem base, ×1.25 up (2.441rem for the `h1` ≥720px — a step more and the acronym pill drops
+  off the title's line), 0.875 and 0.75rem below, code 0.8125rem. Line height 1.65 body, 1.2 headings.
 
 ## Space, radius, depth
 
@@ -70,7 +70,7 @@ Artwork uses a fill-only ramp from the VL green scale (`--art-ink`, `--art-frog-
   own shape.
 - Ground: the warm colour plus two faint radial washes, placed and sized in pixels — a percentage
   offset resolves against the whole page height and pushes them off the only screen they tint.
-  Illustration sizes: `--icon` 48, `--mark` 22, `--figure` 120.
+  Illustration sizes: `--icon` 48, `--mark` 22.
 
 ## Motifs
 
@@ -78,15 +78,15 @@ All hand-drawn inline SVG in `src/components/graphics/`, `aria-hidden`, filled f
 - `HeroArt.astro` — 320×300: leaves breaking the disc at the headline's corner only, a veined lily
   pad, and the frog 18 units right of the disc centre with its head 8 units left of its body, so it
   looks back at the headline. Every toe overlaps the foot bar, so nothing floats. One eye is drawn
-  once and placed twice with `use`; only the blink clip-paths are per-eye. `overflow: visible`,
-  because the leaf tips reach past the viewBox into the gutter on purpose. On desktop the art takes
-  the wider column and bleeds out through the container's gutter; on mobile it is centred.
-- `SectionIcon.astro` — six 48×48 tiles, the same frog at the same coordinates with one prop over its
-  right shoulder: a page, a lambda, a gear, a rack, a spark, two chevrons. Head and toe pads clear
-  the tile's rounded corners.
-- `Divider.astro` — a 40px three-leaf sprig with a green rule fading out to each page edge.
-- `CommercialArt.astro` — 120×120: the frog holding an amber briefcase, beside the copy above 720px.
-- `CodeBar.astro` — a head, two eyes and three window lights; the same head in `public/favicon.svg`.
+  once and placed twice with `use`; only the blink clip-paths are per-eye. `overflow: visible`, as
+  the leaf tips reach past the viewBox on purpose. Capped at 22rem on desktop (16rem on mobile), in
+  the narrower column (0.8fr to the text's 1.2fr); not bled into the gutter, where at that size a
+  cropped disc reads as a mistake.
+- `SectionIcon.astro` — six 48×48 tiles, the same frog with one prop over its right shoulder: a page,
+  a lambda, a gear, a rack, a spark, two chevrons; head and toe pads clear the rounded corners.
+- `Divider.astro` — a 40px three-leaf sprig, a green rule fading to each edge; closes the hero block.
+- `VisdomLogo.astro` — Visdom's crest, 48px, beside the name; `currentColor`, so it takes the amber.
+- `CodeBar.astro` — a head, two eyes, three window lights; the same head in `public/favicon.svg`.
 
 ## Code themes
 

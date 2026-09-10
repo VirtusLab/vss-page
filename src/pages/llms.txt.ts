@@ -24,7 +24,7 @@ const entry = (c: { id: string; name: string; description: string; url: string; 
 export const GET: APIRoute = async ({ site }) => {
 	const { hero, sections, commercial, visdom, footer, snippets } = await loadSite();
 
-	const blocks: string[] = [`# ${hero.title}`, pageUrl(site), hero.tagline, hero.lede];
+	const blocks: string[] = [`# ${hero.title} (${hero.acronym})`, pageUrl(site), hero.tagline, hero.lede];
 
 	for (const section of sections) {
 		blocks.push(`## ${section.title}`);
@@ -33,7 +33,8 @@ export const GET: APIRoute = async ({ site }) => {
 		blocks.push(...section.components.map(entry));
 	}
 
-	blocks.push(`## ${visdom.data.eyebrow}`, entry(commercial));
+	// Structural, like `## Snippets`: the entry below already carries the product's name.
+	blocks.push('## Commercial', entry(commercial));
 	const note = visdom.body?.trim();
 	if (note) blocks.push(note);
 

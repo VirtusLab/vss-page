@@ -109,5 +109,5 @@ sections:
 commercial:
   id: visdom
   name: Visdom
-  description: Commercial platform for running and managing coding agents across the development lifecycle.
+  description: Platform for running and managing coding agents across the development lifecycle.
   url: https://visdom.virtuslab.com
