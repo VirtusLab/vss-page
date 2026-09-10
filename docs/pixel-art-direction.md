@@ -167,9 +167,9 @@ Accepted version per asset, from OpenAI's image model via `codex exec`:
 
 ### After the critique
 
-Post-processing only — the Codex workspace ran out of image credits, so items 7–9 of the critique's
-fix list (rerolling `icon-template`, `icon-ai`, `icon-devops`, `icon-tooling`, `benefit-direct-style`)
-could not be attempted beyond one failed call. Their v1 generations ship.
+Post-processing only — the Codex workspace was out of image credits at the time, so items 7–9 of the
+critique's fix list (rerolling `icon-template`, `icon-ai`, `icon-devops`, `icon-tooling`,
+`benefit-direct-style`) waited for the next round; see below.
 
 - `--icon` moved 48px → 64px. 32 native at 48px is ×1.5, which makes `image-rendering: pixelated`
   alternate 1px and 2px blocks; ×2 keeps the grid.
@@ -192,3 +192,19 @@ could not be attempted beyond one failed call. Their v1 generations ship.
   and one pupil-less smear, and nothing smaller than a redraw reads at the 66px it ships at.
 - Character block: drop the `#004929` back stripe. No shipped asset shows the frog from behind, so
   it never rendered and never mattered.
+
+### After the credits reset
+
+- `icon-template`, `icon-ai`, `icon-tooling` — v3, first try each. The v3 prompts crop the frog at
+  mid-chest and demand one big prop clear of the body, which is what makes them read at 64px;
+  `icon-language` and `icon-backend` keep their full-body v1.
+- `icon-devops` — v4, try 2 of 2. A prop only a third of the tile tall cannot survive the 39:1
+  downscale: v3 and v4 try 1 both drew a good rocket that collapsed to an orange blob at 32 native.
+  Try 2 asked for it bolt upright and as tall as the frog's head, which is the size the silhouette
+  needs.
+- `icon-tooling` — the checkerboard's white squares sit above `dekey.py`'s grey range, so it is
+  keyed with `hi=255`. The frog's bottom edge has no outline, so the last belly row averaged to
+  white; `fix_tooling.py` repaints it.
+- `benefit-direct-style` — v2, try 3 of 3. Try 1 painted the pond in saturated blue and centred the
+  frog; try 2 dropped the tangle. Try 3 holds all three: teal palette, frog on the right third, the
+  grey knot small and inset in the upper left.
