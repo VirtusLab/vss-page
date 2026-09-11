@@ -1,1 +1,0 @@
-Built by VirtusLab to bring the context, governance, CI, and traceability needed to make AI-generated code production ready.

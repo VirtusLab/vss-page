@@ -23,6 +23,11 @@ sections:
         description: Combines the best features of functional & object-oriented programming.
         url: https://www.scala-lang.org
         repo: https://github.com/scala/scala3
+      - id: scala-native
+        name: Scala Native
+        description: Experimental compiler from Scala to native code, with no JVM at runtime.
+        url: https://scala-native.org
+        repo: https://github.com/scala-native/scala-native
 
   - id: tooling
     title: Tooling
@@ -107,9 +112,3 @@ sections:
         description: Pulumi SDK for Scala.
         url: https://virtuslab.github.io/besom/
         repo: https://github.com/VirtusLab/besom
-
-commercial:
-  id: visdom
-  name: Visdom
-  description: "AI-native SDLC platform: the missing layer between AI coding and production"
-  url: https://visdom.virtuslab.com

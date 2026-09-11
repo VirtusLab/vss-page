@@ -103,8 +103,8 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 ### Component sections (six, YAML order)
 
 Each section: `<section id="...">` → `<h2>` (YAML `title`) → one `<ul>` of components. Same
-treatment for every section, including the one-component ones. Sizes: Language 1, Tooling 2,
-Backend 6, AI tooling 6, DevOps 1, Templates 2 = 18.
+treatment for every section, including the one-component ones. Sizes: Language 2, Tooling 2,
+Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 
 - Nothing between the `<h2>` and the `<ul>`: the sections carry no intro paragraphs.
 - Grid: 2 columns above 720px, 1 below, row-wise DOM order.
@@ -127,15 +127,20 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 18.
 - The AI section's YAML `title` is "AI tooling"; its `id` stays `ai`, so `#ai` keeps working.
   sttp-ai is its first component.
 
-### Visdom insert
+### Promos
 
-- Position: after all six component sections, before the footer. Not mid-page, not in the nav.
-  The reader has seen the whole free stack before any offer appears.
-- Markup: its own `<section id="commercial">`. No label saying "commercial": the border, the tint
-  and Visdom's own logo on the right set the block apart.
-- Same shape as a card (name link + one-line description) but explicitly NOT the card grid: full
-  width, one item, set apart by a border plus a background tint. No full-bleed color band, no
-  illustration, no logo — on a page this short the loudest block would own the reader's memory.
+- Everything that is not part of the open-source stack: one file per block in `content/promos/`,
+  with `placement` picking one of the page's two slots and `order` the place within it.
+- `after-snippets`: directly under the switcher, before the benefits band. One block — VirtusLab's
+  Scala work — placed where the reader has just seen the code the team maintains.
+- `after-components`: after all six component sections, before the footer, wrapped in a
+  `<section id="commercial">` that keeps the old anchor. Visdom first, conferences second: the
+  reader has seen the whole free stack before any offer appears.
+- Markup: each block is its own `<section id="promo-{id}">`, same shape as a card (title link plus a
+  sentence or two) but explicitly NOT the card grid: full width, set apart by a border plus a
+  background tint. No label saying "commercial". On the right, Visdom's own logo (`logo: visdom`) or
+  the `linkLabel` as a pill. No full-bleed colour band and no illustration — on a page this short
+  the loudest block would own the reader's memory.
 
 ### Footer
 
@@ -167,11 +172,12 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 18.
    scrolled away, at every width. The picker is what makes a long page navigable from anywhere,
    and keeping it out of the flow is what keeps the first screen free of chrome. It needs the one
    IntersectionObserver the page already ships a pattern for, and degrades to nothing without it.
-8. **Commercial insert** — after section six, before the footer; bordered block with Visdom's
-   logo, not the card format. Visible but never mistaken for part of the open-source stack.
+8. **Promos** — the paid and event blocks, one per file in `content/promos/`: one under the
+   snippets, the rest after section six and before the footer. Bordered blocks, not the card
+   format. Visible but never mistaken for part of the open-source stack.
 9. **Hero** — title + one-sentence tagline + one CTA (`#template`) + one agent line. A second
    CTA would have to be invented; there is no install command.
-10. **Agent supplement** — ship `/llms.txt` with all eight snippets in full and all 18 components
+10. **Agent supplement** — ship `/llms.txt` with all eight snippets in full and all 19 components
     (id, name, description, url, repo). Covers what hidden tab panels lose in renderers.
 11. **Theme** — `prefers-color-scheme` only, no toggle. Build-time dual-theme highlighting.
 12. **Tech choice** — Astro (section 4). Chosen on build-time Shiki and typed content
@@ -187,10 +193,10 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 18.
   No text hidden in attributes, alt text or images.
 - All eight snippets are always in the HTML, highlighted at build time, inside `<pre><code>`.
 - Anchor ids: `#language`, `#tooling`, `#backend`, `#ai`, `#devops`, `#template`, `#commercial`,
-  `#benefits`, `#snippets`, plus one per component (`#scala-3`, `#tapir`, `#ox`, ...) and one per benefit
-  (`#benefit-direct-style`, ...). Each id is an explicit kebab-case field in the YAML — or, for a
+  `#benefits`, `#snippets`, plus one per component (`#scala-3`, `#tapir`, `#ox`, ...), one per
+  promo (`#promo-visdom`, ...) and one per benefit (`#benefit-direct-style`, ...). Each id is an explicit kebab-case field in the YAML — or, for a
   benefit, its file name — not slugged from a title, and is a stable URL contract.
-- Raw HTML always carries everything — all eight snippets, all 18 components. Rendered-text
+- Raw HTML always carries everything — all eight snippets, all 19 components. Rendered-text
   extractors may drop the seven `visibility: hidden` panels, which are also out of the
   accessibility tree; that gap is exactly what `llms.txt` covers.
 - `/llms.txt` is a plain-text mirror generated from the same YAML and the same `.scala` files —
@@ -242,12 +248,12 @@ Claims still inferred; check during implementation.
 2. **Tab labels wrap to four rows of two at 360px.** Inferred from bun's class names. The labels
    are longer now that they carry library names ("Infrastructure — Besom"); measure the real
    strip.
-3. **End-to-end agent read.** Give the deployed URL to a coding agent and ask it to list all 18
+3. **End-to-end agent read.** Give the deployed URL to a coding agent and ask it to list all 19
    components and their purpose. This is the only real test of section 3.
 4. **Panel height.** The grid stack makes the tallest snippet set the height; check the shortest
    panel does not leave an obviously empty box, and even out snippet lengths rather than scroll.
-5. **Astro `file()` loader on a nested YAML shape.** One document with a `sections` array plus a
-   `commercial` object, not a flat entry array. If a `parser` does not cover it, fall back to a
-   plain `import` of the YAML plus a manual Zod parse.
+5. **Astro `file()` loader on a nested YAML shape.** One document with a `sections` array, not a
+   flat entry array. If a `parser` does not cover it, fall back to a plain `import` of the YAML plus
+   a manual Zod parse. The promos are their own markdown collection, so they never went through it.
 6. **Dual-theme Shiki with `defaultColor: false`** producing usable CSS variables without any
    client JS — verify before the design task builds a palette on top of it.

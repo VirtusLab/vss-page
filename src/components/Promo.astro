@@ -1,0 +1,106 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import VisdomLogo from './graphics/VisdomLogo.astro';
+
+/**
+ * One block that is not part of the open-source stack: what VirtusLab sells, and where to meet it.
+ * Card-shaped but deliberately not in the card grid — full width, and carrying the page's amber
+ * accent, so it reads as an offer. No label says "commercial"; the border and the tint set it apart,
+ * and on the right the product's own lockup or the link as a pill names the destination.
+ */
+interface Props {
+	promo: CollectionEntry<'promos'>;
+}
+
+const { promo } = Astro.props;
+const { title, url, linkLabel, logo, secondaryUrl, secondaryLabel } = promo.data;
+const { Content } = await render(promo);
+---
+
+<section id={`promo-${promo.id}`} class="panel">
+	<div class="body">
+		<h2><a href={url}>{title}</a></h2>
+		<div class="note"><Content /></div>
+	</div>
+	{/* After the copy in the DOM, beside it on a wide screen. */}
+	<div class="art">
+		{logo ? <VisdomLogo name={title} /> : <a class="pill" href={url}>{linkLabel}</a>}
+		{secondaryUrl && <a class="pill" href={secondaryUrl}>{secondaryLabel}</a>}
+	</div>
+</section>
+
+<style>
+	/* The amber-edged blocks on a page of green ones. */
+	section {
+		display: grid;
+		gap: var(--space-4);
+		justify-items: center;
+		margin: var(--space-6) 0 var(--space-5);
+		padding: var(--space-4);
+		border-color: var(--accent-2);
+		background: var(--surface);
+	}
+
+	.body {
+		justify-self: stretch;
+	}
+
+	h2 {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-lg);
+	}
+
+	h2 a {
+		color: var(--accent-2-text);
+	}
+
+	.note {
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	.note :global(p) {
+		margin: 0;
+	}
+
+	.note :global(p + p) {
+		margin-top: var(--space-2);
+	}
+
+	.art {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-2);
+	}
+
+	/* The same shape as a footer follow link, filled with the block's own accent so it reads as the
+	   one thing to press here. */
+	.pill {
+		padding: var(--space-2) var(--space-3);
+		border: var(--border) solid var(--accent-2);
+		border-radius: var(--radius-pill);
+		background: var(--accent-2);
+		color: var(--on-accent-2);
+		font-family: var(--font-display);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		text-align: center;
+		text-decoration: none;
+	}
+
+	.pill:hover,
+	.pill:focus-visible {
+		background: transparent;
+		color: var(--accent-2-text);
+	}
+
+	@media (min-width: 720px) {
+		section {
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: center;
+			gap: var(--space-5);
+			padding: var(--space-5);
+		}
+	}
+</style>

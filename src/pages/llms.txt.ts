@@ -26,7 +26,7 @@ const entry = (c: { id: string; name: string; description: string; url: string; 
  * which the hidden switcher panels do not give a rendered-text extractor.
  */
 export const GET: APIRoute = async ({ site }) => {
-	const { hero, sections, commercial, visdom, footer, snippets, benefits } = await loadSite();
+	const { hero, sections, promos, footer, snippets, benefits } = await loadSite();
 
 	const blocks: string[] = [`# ${hero.title} (${hero.acronym})`, pageUrl(site), hero.tagline, hero.lede];
 
@@ -45,10 +45,17 @@ export const GET: APIRoute = async ({ site }) => {
 		blocks.push(...section.components.map(entry));
 	}
 
-	// Structural, like `## Snippets`: the entry below already carries the product's name.
-	blocks.push('## Commercial', entry(commercial));
-	const note = visdom.body?.trim();
-	if (note) blocks.push(note);
+	// Structural, like `## Snippets`: the entries below already carry their own names. Both promo
+	// slots land here, in page order — the file has no snippet switcher to sit the first one after.
+	blocks.push('## Commercial');
+	for (const promo of [...promos.afterSnippets, ...promos.afterComponents]) {
+		const body = promo.body?.trim();
+		blocks.push(
+			[`### ${promo.data.title}`, `url: ${promo.data.url}`, ...(body ? ['', plainLinks(body)] : [])].join(
+				'\n',
+			),
+		);
+	}
 
 	blocks.push('## Snippets');
 	for (const snippet of snippets) {

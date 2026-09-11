@@ -1,19 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import BenefitsSection from '../components/BenefitsSection.astro';
-import Commercial from '../components/Commercial.astro';
 import ComponentSection from '../components/ComponentSection.astro';
 import FloatingNav from '../components/FloatingNav.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 import Nav from '../components/Nav.astro';
+import Promo from '../components/Promo.astro';
 import SnippetSwitcher from '../components/SnippetSwitcher.astro';
 import Divider from '../components/graphics/Divider.astro';
 import { pageUrl } from '../lib/base';
 import { loadSite } from '../lib/content';
 import { snippetRegion } from '../lib/snippets';
 
-const { hero, sections, commercial, visdom, footer, labels, snippets, benefits } = await loadSite();
+const { hero, sections, promos, footer, labels, snippets, benefits } = await loadSite();
 
 const tabs = snippets.map((snippet) => ({
 	id: snippet.id,
@@ -85,6 +85,7 @@ const jsonLd = {
 				heading={labels.snippetsHeading}
 				note={labels.snippetsNote}
 			/>
+			{promos.afterSnippets.map((promo) => <Promo promo={promo} />)}
 		</div>
 		<BenefitsSection benefits={benefits} />
 		<div class="page">
@@ -97,7 +98,11 @@ const jsonLd = {
 				label={labels.chapterComponents}
 			/>
 			{sections.map((section) => <ComponentSection section={section} labels={labels} />)}
-			<Commercial commercial={commercial} visdom={visdom} />
+			{/* The wrapper holds `#commercial`, the anchor from when this was a single block; each
+			    block inside answers to its own `#promo-<id>`. */}
+			<section id="commercial">
+				{promos.afterComponents.map((promo) => <Promo promo={promo} />)}
+			</section>
 		</div>
 	</main>
 	<div class="page">

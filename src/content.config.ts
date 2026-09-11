@@ -7,13 +7,12 @@ const repoRoot = new URL('../', import.meta.url);
 const componentsFile = 'content/components.yaml';
 const snippetsFile = 'content/snippets.yaml';
 const benefitsDir = 'content/benefits/';
+const promosDir = 'content/promos/';
 
 const read = (path: string) => readFileSync(new URL(path, repoRoot), 'utf-8');
 
-/** One YAML file backs both the `sections` and the `commercial` collections. */
 type ComponentsFile = {
 	sections: { id: string; components: { id: string }[] }[];
-	commercial: { id: string };
 };
 
 const readComponentsFile = (text: string) => parseYaml(text) as ComponentsFile;
@@ -35,8 +34,8 @@ const failOnDuplicates = (what: string, ids: string[]) => {
 // front. The file() loader swallows exceptions thrown by a parser, so anything that
 // must fail the build is read and checked here instead.
 const componentsYaml = readComponentsFile(read(componentsFile));
-if (!Array.isArray(componentsYaml?.sections) || !componentsYaml.commercial) {
-	throw new Error(`${componentsFile}: needs a \`sections\` array and a \`commercial\` entry`);
+if (!Array.isArray(componentsYaml?.sections)) {
+	throw new Error(`${componentsFile}: needs a \`sections\` array`);
 }
 for (const section of componentsYaml.sections) {
 	if (!Array.isArray(section?.components)) {
@@ -47,15 +46,10 @@ const sectionIds = failOnDuplicates(
 	'section',
 	componentsYaml.sections.map((section) => section.id),
 );
-const sectionComponentIds = failOnDuplicates(
+const componentIds = failOnDuplicates(
 	'component',
 	componentsYaml.sections.flatMap((section) => section.components.map((c) => c.id)),
 );
-// Again with the commercial entry, which cannot reuse a section component's id either.
-const componentIds = failOnDuplicates('component', [
-	...sectionComponentIds,
-	componentsYaml.commercial.id,
-]);
 
 // Parsed here only so that a YAML syntax error throws instead of being logged and ignored.
 const snippetsYaml = parseYaml(read(snippetsFile));
@@ -63,17 +57,27 @@ if (!Array.isArray(snippetsYaml) || snippetsYaml.length === 0) {
 	throw new Error(`${snippetsFile} must be a non-empty list of snippets`);
 }
 
-// A benefit's `order` is what puts it in place on the page, so two benefits sharing one is a silent
-// reordering rather than an error. The schema cannot see the other files, so the check is here; the
-// frontmatter is read with a regex because the config is loaded before the collection exists.
-const benefitOrders = new Map<number, string>();
-for (const fileName of readdirSync(new URL(benefitsDir, repoRoot)).filter((f) => f.endsWith('.md'))) {
-	const order = read(`${benefitsDir}${fileName}`).match(/^order:\s*(\d+)\s*$/m)?.[1];
-	if (order === undefined) throw new Error(`${benefitsDir}${fileName}: needs an \`order\` number`);
-	const taken = benefitOrders.get(Number(order));
-	if (taken) throw new Error(`${benefitsDir}: ${fileName} and ${taken} share order ${order}`);
-	benefitOrders.set(Number(order), fileName);
-}
+/**
+ * Fails the build when two files in `dir` share an `order`, which is what puts each of them in place
+ * on the page and so is a silent reordering rather than an error. A schema cannot see the other
+ * files, and the frontmatter is read with a regex because the config is loaded before the
+ * collections exist. `groupField` is a second frontmatter field whose value scopes the check, so
+ * promos only clash within one placement.
+ */
+const failOnSharedOrder = (dir: string, groupField?: string) => {
+	const taken = new Map<string, string>();
+	for (const fileName of readdirSync(new URL(dir, repoRoot)).filter((f) => f.endsWith('.md'))) {
+		const text = read(`${dir}${fileName}`);
+		const order = text.match(/^order:\s*(\d+)\s*$/m)?.[1];
+		if (order === undefined) throw new Error(`${dir}${fileName}: needs an \`order\` number`);
+		const group = groupField ? text.match(new RegExp(`^${groupField}:\\s*(\\S+)`, 'm'))?.[1] : '';
+		const other = taken.get(`${group}/${order}`);
+		if (other) throw new Error(`${dir}: ${fileName} and ${other} share order ${order}`);
+		taken.set(`${group}/${order}`, fileName);
+	}
+};
+failOnSharedOrder(benefitsDir);
+failOnSharedOrder(promosDir, 'placement');
 
 const kebabCase = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const id = z.string().regex(kebabCase, 'must be kebab-case');
@@ -134,10 +138,38 @@ const sections = defineCollection({
 		.strict(),
 });
 
-/** The single paid entry, same shape as a component. */
-const commercial = defineCollection({
-	loader: file(componentsFile, { parser: (text) => [readComponentsFile(text).commercial] }),
-	schema: component,
+/**
+ * The blocks that are not part of the open-source stack: what VirtusLab sells, and where to meet it.
+ * One file per block, the file name being its id (`#promo-<id>`), with a body of one or two
+ * sentences. `placement` says which of the page's two promo slots it sits in and `order` the place
+ * within that slot; the loop above holds those unique. The right-hand side of the box is either a
+ * product lockup or the link as a pill, so `logo` and `linkLabel` come one at a time.
+ */
+const promos = defineCollection({
+	loader: glob({ base: promosDir, pattern: '*.md' }),
+	schema: z
+		.object({
+			order: z.number().int().positive(),
+			placement: z.enum(['after-snippets', 'after-components']),
+			title: z.string(),
+			url: httpUrl,
+			// A cell of its own, so it has to stay a word or three.
+			linkLabel: z.string().min(1).max(40).optional(),
+			// The only product with a lockup of its own; `VisdomLogo.astro` draws it.
+			logo: z.literal('visdom').optional(),
+			// A second link under the first, for a block naming two destinations. Both or neither.
+			secondaryUrl: httpUrl.optional(),
+			secondaryLabel: z.string().min(1).max(40).optional(),
+		})
+		.strict()
+		.refine(
+			(promo) => (promo.logo === undefined) !== (promo.linkLabel === undefined),
+			'needs either a `logo` or a `linkLabel`, not both',
+		)
+		.refine(
+			(promo) => (promo.secondaryUrl === undefined) === (promo.secondaryLabel === undefined),
+			'`secondaryUrl` and `secondaryLabel` are written together',
+		),
 });
 
 // The "full example" link is built as footer `repoUrl` + `/blob/main/` + this `file`.
@@ -152,10 +184,7 @@ const snippets = defineCollection({
 			file: z
 				.string()
 				.refine((path) => existsSync(new URL(path, repoRoot)), 'no such file in the repo'),
-			// The tab links to the component's card, and the commercial entry has no card.
-			component: z
-				.string()
-				.refine((c) => sectionComponentIds.has(c), 'unknown section component id'),
+			component: z.string().refine((c) => componentIds.has(c), 'unknown section component id'),
 		})
 		.strict(),
 });
@@ -176,12 +205,6 @@ const hero = defineCollection({
 			agentSkillHref: anchor(componentIds, 'component'),
 		})
 		.strict(),
-});
-
-/** The note under the Visdom entry; the body is the whole content, there are no fields. */
-const visdom = defineCollection({
-	loader: glob({ base: 'content', pattern: 'visdom.md' }),
-	schema: z.object({}).strict(),
 });
 
 const footer = defineCollection({
@@ -278,10 +301,9 @@ const benefits = defineCollection({
 
 export const collections = {
 	sections,
-	commercial,
+	promos,
 	snippets,
 	hero,
-	visdom,
 	footer,
 	labels,
 	benefitsSection,

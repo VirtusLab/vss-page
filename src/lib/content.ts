@@ -121,13 +121,19 @@ export const loadSite = async () => {
 		})),
 	};
 
+	// The two promo slots, each in its own authored order. The entries are passed on whole, not as
+	// `data`: the block renders the file's body.
+	const allPromos = byOrder(await getCollection('promos'));
+	const promos = {
+		afterSnippets: allPromos.filter((promo) => promo.data.placement === 'after-snippets'),
+		afterComponents: allPromos.filter((promo) => promo.data.placement === 'after-components'),
+	};
+
 	return {
 		hero: (await getEntry('hero', 'hero'))!.data,
 		benefits,
 		sections,
-		// The collection has exactly one entry, so the code never names the commercial id.
-		commercial: (await getCollection('commercial'))[0]!.data,
-		visdom: (await getEntry('visdom', 'visdom'))!,
+		promos,
 		footer: (await getEntry('footer', 'footer'))!.data,
 		labels: (await getEntry('labels', 'labels'))!.data,
 		snippets,

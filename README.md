@@ -20,15 +20,18 @@ npm run check-links  # check links in the built site (run after npm run build)
   `// snippet:end` around the lines to show, then an entry in
   `content/snippets.yaml` pointing at it.
 - **A section**: add an entry under `sections:` in `content/components.yaml`.
+- **A promo block**: add a file to `content/promos/`. `placement: after-snippets`
+  puts it under the code examples, `after-components` after the stack.
 
 ## Content files
 
 - `content/components.yaml` — every section and component (name, description,
-  URL, repo), plus the one commercial entry. See `docs/layout-decision.md`.
+  URL, repo). See `docs/layout-decision.md`.
 - `content/snippets.yaml` — the snippet tabs, in order.
 - `content/hero.md` — title, tagline, lede, the CTA and the agent line.
 - `content/labels.md` — link texts used in more than one place.
-- `content/visdom.md` — the label and note in the commercial block.
+- `content/promos/` — one file per promo block (Visdom, VirtusLab's Scala work,
+  conferences): `placement` picks the slot on the page, `order` the place in it.
 - `content/footer.md` — maintainers, page source link, license.
 
 ## Star counts
