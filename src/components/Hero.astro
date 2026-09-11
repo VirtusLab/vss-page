@@ -29,8 +29,9 @@ const { hero, labels } = Astro.props;
 </header>
 
 <style>
+	/* The fixed picker covers the top edge, so the hero starts below it. */
 	.hero {
-		padding: var(--space-5) 0 var(--space-4);
+		padding: calc(var(--float-nav-height) + var(--space-5)) 0 var(--space-4);
 	}
 
 	.cols {

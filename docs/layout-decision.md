@@ -4,7 +4,7 @@ Merges `task-2-research.md` and `task-2-critique.md`. Where they conflict, the c
 Colors, fonts and spacing scale are decided in a later task; this document fixes structure only.
 
 Global rules: one breakpoint at 720px. No client-side JavaScript except the star-count refresh and
-the floating picker's visibility; the page must be complete without either. Every section and every
+the picker's current-chapter mark; the page must be complete without either. Every section and every
 component carries an explicit `id` in the YAML, used verbatim as its anchor. Content comes from
 `content/components.yaml`; snippets from `.scala` files compiled in CI.
 
@@ -12,9 +12,9 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 ### Nav
 
-- No top masthead. The first screen is hero + code, not chrome.
-- The page's only navigation is the chapter picker (`FloatingNav`), fixed to the top edge and shown
-  only once the hero is off screen: "In action" → `#snippets`, "Benefits" → `#benefits`, then the six
+- No masthead beyond the picker strip. The first screen is hero + code, not chrome.
+- The page's only navigation is the chapter picker (`FloatingNav`), fixed to the top edge and always
+  on screen: "In action" → `#snippets`, "Benefits" → `#benefits`, then the six
   section titles. Eight pills, no repo link. The labels are the two chapter names from
   `content/labels.md` and the YAML section titles, so nothing is written twice. The repo link lives
   in the footer instead.
@@ -24,10 +24,9 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   than an `IntersectionObserver`: a jump between two positions that both leave the line bare — an
   anchor, or the page's end, where the last section no longer reaches it — crosses nothing an
   observer could report, and the end of the page has to keep the last section current.
-- The picker is `display: none` until the inline script sets `data-visible` on it, so without
-  JavaScript it never appears and the page falls back to its anchors. An `IntersectionObserver` on
-  `#hero` is the whole of the visibility mechanism; the bar's fade and
-  the pill's colour transition are both off under `prefers-reduced-motion`.
+- The picker is plain anchors and needs no JavaScript; the script only fills the pill of the current
+  chapter. The hero pads its top by `--float-nav-height` so the bar never covers it. The pill's colour
+  transition is off under `prefers-reduced-motion`.
 - Mobile: the picker is one row that scrolls sideways, never wrapping, with the scrollbar hidden.
   No hamburger, no `<select>`.
 
@@ -168,10 +167,9 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
    Page and source file agree, so humans and agents see the same stack.
 6. **Anchors** — an explicit `id` field on every section and every component in the YAML, used
    verbatim. Six section ids alone do not satisfy "quick navigation to any component".
-7. **Navigation** — one `<nav>`, not a masthead. The eight-entry picker floats over the page once the
-   hero has scrolled away, at every width, and is what makes a long page navigable from anywhere. It
-   needs the one IntersectionObserver the page already ships a pattern for, and degrades to nothing
-   without it, falling back to the page's anchors.
+7. **Navigation** — one `<nav>`, not a masthead. The eight-entry picker is fixed over the page at
+   every width, and is what makes a long page navigable from anywhere. It is plain anchors; only the
+   current-chapter mark needs the script.
 8. **Promos** — the paid and event blocks, one per file in `content/promos/`, each at the end of a
    chapter: under the snippets, at the foot of the benefits band, and after section six before the
    footer.

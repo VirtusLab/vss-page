@@ -96,4 +96,4 @@ Shiki `github-light-high-contrast` and `github-dark-high-contrast`, on our own p
 ## Motion
 
 CSS only, all eased, all off under `prefers-reduced-motion: reduce`: cards and the CTA lift on
-hover, the floating picker fades in, the skip link slides down. The artwork is raster and still.
+hover, the skip link slides down. The artwork is raster and still.

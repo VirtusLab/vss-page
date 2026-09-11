@@ -104,8 +104,8 @@ const jsonLd = {
 		The page's only JavaScript, in two parts. First, star counts, refreshed when a card scrolls into
 		view and cached for an hour. Everything else works without it, and so does this — a build with a
 		GITHUB_TOKEN bakes the counts into the HTML, and a card with no count at all still links to the
-		repository, where the star button is. Second, the floating chapter picker, shown while the hero
-		is off screen; without the script it never appears, and the page falls back to its anchors.
+		repository, where the star button is. Second, the current-chapter mark in the floating picker;
+		without the script the picker is still there, only with no pill filled.
 	*/}
 	<script is:inline>
 		(() => {
@@ -155,12 +155,7 @@ const jsonLd = {
 
 		(() => {
 			const bar = document.querySelector('[data-float-nav]');
-			const hero = document.getElementById('hero');
-			if (!bar || !hero || !('IntersectionObserver' in window)) return;
-			// The whole hero, not a sentinel line: the bar appears once none of it is left on screen.
-			new IntersectionObserver(([entry]) => {
-				bar.toggleAttribute('data-visible', !entry.isIntersecting);
-			}).observe(hero);
+			if (!bar) return;
 
 			const links = [...bar.querySelectorAll('a')];
 			const targets = links.map((link) => document.getElementById(link.hash.slice(1)));

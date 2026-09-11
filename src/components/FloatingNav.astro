@@ -1,10 +1,9 @@
 ---
 /**
- * The chapter picker that floats over the page once the hero has scrolled away. It is the page's only
- * navigation: hidden until the inline script in `index.astro` sets `data-visible` on it, so without
- * JavaScript it never shows and the page falls back to its anchors. Labels come from the same content
- * the chapters render, so picker and headings cannot diverge. The same script marks the entry the
- * reader is in with `aria-current="location"`, which is what fills its pill.
+ * The chapter picker fixed to the top edge of every screen. It is the page's only navigation, and
+ * works without JavaScript: plain anchors. Labels come from the same content the chapters render, so
+ * picker and headings cannot diverge. The inline script in `index.astro` marks the entry the reader
+ * is in with `aria-current="location"`, which is what fills its pill.
  */
 interface Props {
 	sections: { id: string; title: string }[];
@@ -39,13 +38,11 @@ const entries = [
 </nav>
 
 <style>
-	/* Hidden until the script says otherwise, and gone entirely without it: `display: none` also
-	   keeps the links out of the tab order while the hero is on screen. */
 	.float {
 		position: fixed;
 		inset: 0 0 auto;
 		z-index: 1;
-		display: none;
+		display: flex;
 		min-height: var(--float-nav-height);
 		align-items: center;
 		border-bottom: var(--border) solid var(--line);
@@ -57,28 +54,6 @@ const entries = [
 		background: color-mix(in srgb, var(--bg) 88%, transparent);
 		-webkit-backdrop-filter: blur(10px);
 		backdrop-filter: blur(10px);
-		/* The bar has no box while hidden, so the fade needs `allow-discrete` to hold `display` open
-		   across it. Browsers without it drop the whole transition and the bar appears at once —
-		   the same as under reduced motion, which is the point: neither is a broken state. */
-		opacity: 0;
-		translate: 0 -100%;
-		transition:
-			opacity 0.18s ease,
-			translate 0.18s ease,
-			display 0.18s allow-discrete;
-	}
-
-	.float[data-visible] {
-		display: flex;
-		opacity: 1;
-		translate: 0 0;
-	}
-
-	@starting-style {
-		.float[data-visible] {
-			opacity: 0;
-			translate: 0 -100%;
-		}
 	}
 
 	/* One row at every width: below the breakpoint it scrolls sideways rather than wrapping, so the
@@ -139,7 +114,6 @@ const entries = [
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.float,
 		.float a {
 			transition: none;
 		}
