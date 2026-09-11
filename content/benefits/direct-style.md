@@ -1,7 +1,7 @@
 ---
 order: 1
 title: Direct style
-tagline: "Familiar style"
+tagline: "No more lost context, function coloring, viral datatypes"
 ---
 
 Direct-style is programming as we all know it - it is immediately familiar for
