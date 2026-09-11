@@ -11,7 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check-links": "linkinator dist --recurse --skip \"^https://virtuslab\\.github\\.io/vss-page(/|$)\" --url-rewrite-search \"^(https?://(?:localhost|127\\.0\\.0\\.1):[0-9]+)/vss-page/\" --url-rewrite-replace '$1/'"
+    "check-links": "linkinator dist --recurse --skip \"^https://virtuslab\\.github\\.io/vss-page(/|$)\" --skip \"^https://www\\\\.linkedin\\\\.com/\" --url-rewrite-search \"^(https?://(?:localhost|127\\.0\\.0\\.1):[0-9]+)/vss-page/\" --url-rewrite-replace '$1/'"
   },
   "dependencies": {
     "astro": "^7.3.2"

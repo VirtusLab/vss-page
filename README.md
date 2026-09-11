@@ -10,6 +10,8 @@ npm install
 npm run dev       # dev server with live reload
 npm run build     # build to dist/
 npm run check-links  # check links in the built site (run after npm run build)
+# The page's own canonical URL and linkedin.com are skipped: the first is not live until deployed,
+# LinkedIn rate-limits automated checkers (429). Verify LinkedIn links by hand.
 ./scripts/compile-snippets.sh  # compile every snippet, as CI does
 ```
 
