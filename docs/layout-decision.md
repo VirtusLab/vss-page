@@ -99,6 +99,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   text at up to 320px. The item numbers are a CSS counter, not content.
 - The file name is the id — the anchor and the illustration key — and a frontmatter `order` number
   is the place on the page. The build fails if two files share an `order` or one is missing it.
+- After the list, still inside the band, come the `after-benefits` promos (see Promos).
 
 ### Component sections (six, YAML order)
 
@@ -134,8 +135,9 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
   is the end of a chapter, so a promo never interrupts one.
 - `after-snippets`: directly under the switcher, before the benefits band. VirtusLab's Scala work,
   where the reader has just seen the code the team maintains.
-- `after-benefits`: under the sprig that closes the benefits band and above the nav, inside the page
-  column. The conferences block.
+- `after-benefits`: the last block inside the benefits band, after the fifth benefit and before the
+  sprig that closes the chapter, so the tint carries it. `BenefitsSection.astro` renders it, in the
+  band's own column; the band's bottom padding is the air below it. The conferences block.
 - `after-components`: after all six component sections, before the footer, wrapped in a
   `<section id="commercial">` that keeps the old anchor. Visdom, once the reader has seen the whole
   free stack.
@@ -176,7 +178,8 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
    and keeping it out of the flow is what keeps the first screen free of chrome. It needs the one
    IntersectionObserver the page already ships a pattern for, and degrades to nothing without it.
 8. **Promos** — the paid and event blocks, one per file in `content/promos/`, each at the end of a
-   chapter: under the snippets, under the benefits, and after section six before the footer.
+   chapter: under the snippets, at the foot of the benefits band, and after section six before the
+   footer.
    Bordered blocks, not the card format. Visible but never mistaken for part of the open-source
    stack.
 9. **Hero** — title + one-sentence tagline + one CTA (`#template`) + one agent line. A second

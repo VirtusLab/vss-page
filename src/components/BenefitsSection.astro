@@ -1,18 +1,21 @@
 ---
 import { render } from 'astro:content';
 import type { Site } from '../lib/content';
+import Promo from './Promo.astro';
 import BenefitArt from './graphics/BenefitArt.astro';
 
 /**
  * The argument for the stack, between the snippets and the components. Sits on a full-bleed
  * `--surface` band, which is what separates the page's three chapters; the band is why this is the
- * one block rendered outside the page container.
+ * one block rendered outside the page container. The `after-benefits` promos close the chapter,
+ * inside the band, so the tint carries them too.
  */
 interface Props {
 	benefits: Site['benefits'];
+	promos: Site['promos']['afterBenefits'];
 }
 
-const { benefits } = Astro.props;
+const { benefits, promos } = Astro.props;
 
 // `render` is async and cannot be awaited inside the template, so the bodies are rendered up front.
 const items = await Promise.all(
@@ -46,6 +49,7 @@ const items = await Promise.all(
 				))
 			}
 		</ol>
+		<div class="promos">{promos.map((promo) => <Promo promo={promo} />)}</div>
 	</section>
 </div>
 
@@ -84,6 +88,20 @@ const items = await Promise.all(
 
 	.items li {
 		counter-increment: benefit;
+	}
+
+	/* The band's bottom padding is the air under the last block in the chapter, so a promo closing it
+	   keeps only its top gap. `:global`, because the box is another component's scoped element. */
+	.promos {
+		margin-top: var(--space-6);
+	}
+
+	.promos :global(section) {
+		margin: 0;
+	}
+
+	.promos :global(section + section) {
+		margin-top: var(--space-5);
 	}
 
 	article {

@@ -87,10 +87,9 @@ const jsonLd = {
 			/>
 			{promos.afterSnippets.map((promo) => <Promo promo={promo} />)}
 		</div>
-		<BenefitsSection benefits={benefits} />
+		<BenefitsSection benefits={benefits} promos={promos.afterBenefits} />
 		<div class="page">
 			<Divider />
-			{promos.afterBenefits.map((promo) => <Promo promo={promo} />)}
 			<Nav
 				sections={sections}
 				benefitsLabel={benefits.heading}
