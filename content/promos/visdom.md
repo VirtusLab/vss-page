@@ -2,7 +2,9 @@
 order: 1
 placement: after-components
 title: Visdom
-url: https://visdom.virtuslab.com
+links:
+  - label: Visdom
+    url: https://visdom.virtuslab.com
 logo: visdom
 ---
 

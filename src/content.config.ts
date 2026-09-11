@@ -142,8 +142,9 @@ const sections = defineCollection({
  * The blocks that are not part of the open-source stack: what VirtusLab sells, and where to meet it.
  * One file per block, the file name being its id (`#promo-<id>`), with a body of one or two
  * sentences. `placement` says which of the page's three promo slots it sits in and `order` the place
- * within that slot; the loop above holds those unique. The right-hand side of the box is either a
- * product lockup or the link as a pill, so `logo` and `linkLabel` come one at a time.
+ * within that slot; the loop above holds those unique. `links` is one or more destinations; the
+ * first is always the title link. With `logo` set, the logo stands in for the rest of the row and no
+ * pills are rendered; otherwise every link, including the first, renders as a pill.
  */
 const promos = defineCollection({
 	loader: glob({ base: promosDir, pattern: '*.md' }),
@@ -152,24 +153,12 @@ const promos = defineCollection({
 			order: z.number().int().positive(),
 			placement: z.enum(['after-snippets', 'after-benefits', 'after-components']),
 			title: z.string(),
-			url: httpUrl,
-			// A cell of its own, so it has to stay a word or three.
-			linkLabel: z.string().min(1).max(40).optional(),
+			// Each a cell of its own, so a label has to stay a word or three.
+			links: z.array(z.object({ label: z.string().min(1).max(40), url: httpUrl }).strict()).min(1),
 			// The only product with a lockup of its own; `VisdomLogo.astro` draws it.
 			logo: z.literal('visdom').optional(),
-			// A second link under the first, for a block naming two destinations. Both or neither.
-			secondaryUrl: httpUrl.optional(),
-			secondaryLabel: z.string().min(1).max(40).optional(),
 		})
-		.strict()
-		.refine(
-			(promo) => (promo.logo === undefined) !== (promo.linkLabel === undefined),
-			'needs either a `logo` or a `linkLabel`, not both',
-		)
-		.refine(
-			(promo) => (promo.secondaryUrl === undefined) === (promo.secondaryLabel === undefined),
-			'`secondaryUrl` and `secondaryLabel` are written together',
-		),
+		.strict(),
 });
 
 // The "full example" link is built as footer `repoUrl` + `/blob/main/` + this `file`.
@@ -261,12 +250,10 @@ const labels = defineCollection({
 			snippetsHeading: z.string(),
 			// Sentence under the heading.
 			snippetsNote: z.string(),
-			// The first two name the floating picker's chapter entries; the third is the in-flow nav's
-			// accessible name and the JSON-LD list's.
+			// Name the floating picker's first two chapter entries.
 			chapterSnippets: z.string(),
 			chapterBenefits: z.string(),
-			chapterComponents: z.string(),
-			// Accessible name of the floating chapter picker, so the page's two navs differ.
+			// Accessible name of the floating chapter picker, the page's only `<nav>`.
 			chapterPicker: z.string(),
 			// First focusable in the body; jumps to `#content`.
 			skipLink: z.string(),

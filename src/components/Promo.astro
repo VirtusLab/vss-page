@@ -13,19 +13,26 @@ interface Props {
 }
 
 const { promo } = Astro.props;
-const { title, url, linkLabel, logo, secondaryUrl, secondaryLabel } = promo.data;
+const { title, links, logo } = promo.data;
 const { Content } = await render(promo);
 ---
 
 <section id={`promo-${promo.id}`} class="panel">
 	<div class="body">
-		<h2><a href={url}>{title}</a></h2>
+		<h2><a href={links[0].url}>{title}</a></h2>
 		<div class="note"><Content /></div>
 	</div>
 	{/* After the copy in the DOM, beside it on a wide screen. */}
 	<div class="art">
-		{logo ? <VisdomLogo name={title} /> : <a class="pill" href={url}>{linkLabel}</a>}
-		{secondaryUrl && <a class="pill" href={secondaryUrl}>{secondaryLabel}</a>}
+		{logo ? (
+			<VisdomLogo name={title} />
+		) : (
+			links.map((link) => (
+				<a class="pill" href={link.url}>
+					{link.label}
+				</a>
+			))
+		)}
 	</div>
 </section>
 
@@ -101,6 +108,10 @@ const { Content } = await render(promo);
 			align-items: center;
 			gap: var(--space-5);
 			padding: var(--space-5);
+		}
+
+		.art {
+			justify-content: flex-end;
 		}
 	}
 </style>

@@ -13,15 +13,11 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 ### Nav
 
 - No top masthead. The first screen is hero + code, not chrome.
-- The in-flow nav is a single `<nav>` row placed after the benefits block, so it leads straight into
-  the sections it links to. Seven plain text links: `#benefits` first, labelled with the benefits
-  heading, then the six sections in YAML order. Nav label and section `<h2>` both render the YAML
-  `title` verbatim, so they cannot diverge. Plus a link to the source repo; Visdom is not in the nav.
-  It is static at every width — never sticky — and its labels wrap to two rows on a phone.
-- Over it floats the chapter picker (`FloatingNav`), fixed to the top edge and shown only once the
-  hero is off screen: "In action" → `#snippets`, "Benefits" → `#benefits`, then the six section
-  titles. Eight pills, no repo link. The labels are the two chapter names from `content/labels.md`
-  and the YAML section titles, so again nothing is written twice.
+- The page's only navigation is the chapter picker (`FloatingNav`), fixed to the top edge and shown
+  only once the hero is off screen: "In action" → `#snippets`, "Benefits" → `#benefits`, then the six
+  section titles. Eight pills, no repo link. The labels are the two chapter names from
+  `content/labels.md` and the YAML section titles, so nothing is written twice. The repo link lives
+  in the footer instead.
 - The pill for the chapter the reader is in carries `aria-current="location"` and is filled with the
   accent, the same as a checked snippet tab. Current is the last of the eight targets starting above
   a line 40% down the viewport, remeasured on scroll and resize (one read per frame). Geometry rather
@@ -29,8 +25,8 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
   anchor, or the page's end, where the last section no longer reaches it — crosses nothing an
   observer could report, and the end of the page has to keep the last section current.
 - The picker is `display: none` until the inline script sets `data-visible` on it, so without
-  JavaScript it never appears, no pill is ever current, and the in-flow row is the page's only index.
-  An `IntersectionObserver` on `#hero` is the whole of the visibility mechanism; the bar's fade and
+  JavaScript it never appears and the page falls back to its anchors. An `IntersectionObserver` on
+  `#hero` is the whole of the visibility mechanism; the bar's fade and
   the pill's colour transition are both off under `prefers-reduced-motion`.
 - Mobile: the picker is one row that scrolls sideways, never wrapping, with the scrollbar hidden.
   No hamburger, no `<select>`.
@@ -52,8 +48,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 - Under the hero and the divider that closes it, still within the first scroll on desktop. The block
   carries `id="snippets"`, which is what the picker's first entry jumps to. The
-  benefits band follows, and the nav follows that, so the order is hero → divider → switcher →
-  benefits → divider → nav → sections.
+  benefits band follows, so the order is hero → divider → switcher → benefits → divider → sections.
 - Above the tab strip: an `<h2>` ("VSS in action:") and one muted sentence saying the snippets are
   excerpts of scala-cli scripts that compile as-is. The hidden `<legend>` stays. No eyebrow over the
   `<h2>` — see Benefits.
@@ -86,7 +81,7 @@ component carries an explicit `id` in the YAML, used verbatim as its anchor. Con
 
 ### Benefits
 
-- Between the switcher and the nav, on a full-bleed `--surface` band — the one block rendered
+- Between the switcher and the component sections, on a full-bleed `--surface` band — the one block rendered
   outside the page container, so the tint runs to the window's edges and the page reads as three
   chapters. No chapter carries an eyebrow over its heading: the band, the divider strips and the air
   above each heading already mark the breaks. The chapter names in `content/labels.md` stay — they are
@@ -144,8 +139,9 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 - Markup: each block is its own `<section id="promo-{id}">`, same shape as a card (title link plus a
   sentence or two) but explicitly NOT the card grid: full width, set apart by a border plus a
   background tint. No label saying "commercial". On the right, Visdom's own logo (`logo: visdom`) or
-  the `linkLabel` as a pill. No full-bleed colour band and no illustration — on a page this short
-  the loudest block would own the reader's memory.
+  its `links` as a wrapping row of pills, one per link, the first also being the title link. No
+  full-bleed colour band and no illustration — on a page this short the loudest block would own the
+  reader's memory.
 
 ### Footer
 
@@ -172,11 +168,10 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
    Page and source file agree, so humans and agents see the same stack.
 6. **Anchors** — an explicit `id` field on every section and every component in the YAML, used
    verbatim. Six section ids alone do not satisfy "quick navigation to any component".
-7. **Navigation** — two rows, neither of them a masthead. The in-flow row of seven links sits after
-   the benefits band and never sticks; the eight-entry picker floats over the page once the hero has
-   scrolled away, at every width. The picker is what makes a long page navigable from anywhere,
-   and keeping it out of the flow is what keeps the first screen free of chrome. It needs the one
-   IntersectionObserver the page already ships a pattern for, and degrades to nothing without it.
+7. **Navigation** — one `<nav>`, not a masthead. The eight-entry picker floats over the page once the
+   hero has scrolled away, at every width, and is what makes a long page navigable from anywhere. It
+   needs the one IntersectionObserver the page already ships a pattern for, and degrades to nothing
+   without it, falling back to the page's anchors.
 8. **Promos** — the paid and event blocks, one per file in `content/promos/`, each at the end of a
    chapter: under the snippets, at the foot of the benefits band, and after section six before the
    footer.
@@ -190,8 +185,8 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 12. **Tech choice** — Astro (section 4). Chosen on build-time Shiki and typed content
     collections; "supports tabs" is deliberately not a criterion.
 13. **Benefits block** — five benefits on a tinted full-bleed band between the snippets and the
-    nav, and in the nav as its first link. The band is what divides the page into three chapters;
-    the nav stays directly above the sections it links to.
+    component sections, and in the floating picker as its first link. The band is what divides the
+    page into three chapters.
 
 ## 3. Agent readability
 

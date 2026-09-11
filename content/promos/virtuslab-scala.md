@@ -1,11 +1,12 @@
 ---
 order: 1
 placement: after-snippets
-title: VirtusLab maintains Scala
-url: https://virtuslab.com/expertise/scala
-linkLabel: Scala at VirtusLab
+title: "VirtusLab: the company behind Scala"
+links:
+  - label: "Scala at VirtusLab"
+    url: https://virtuslab.com/expertise/scala
 ---
 
-VirtusLab engineers maintain the Scala 3 compiler and the toolchain around it: Scala CLI, Metals, and
-libraries from this stack. The same team builds and maintains Scala systems for companies, including
-migrations from Scala 2 to Scala 3.
+VirtusLab maintains the Scala 3 compiler and the Scala runner (Scala CLI). We provide enterprise support,
+consulting and development services, as well as a broad migration offer, between Scala version and to/from
+Scala.

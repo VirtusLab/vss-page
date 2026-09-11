@@ -51,9 +51,11 @@ export const GET: APIRoute = async ({ site }) => {
 	for (const promo of [...promos.afterSnippets, ...promos.afterBenefits, ...promos.afterComponents]) {
 		const body = promo.body?.trim();
 		blocks.push(
-			[`### ${promo.data.title}`, `url: ${promo.data.url}`, ...(body ? ['', plainLinks(body)] : [])].join(
-				'\n',
-			),
+			[
+				`### ${promo.data.title}`,
+				...promo.data.links.map((link) => `${link.label}: ${link.url}`),
+				...(body ? ['', plainLinks(body)] : []),
+			].join('\n'),
 		);
 	}
 

@@ -1,10 +1,12 @@
 ---
 order: 1
 placement: after-benefits
-title: Meet us at conferences
-url: https://scaladays.org
-linkLabel: Scala Days 2026
+title: Meet us & learn more about Scala+AI
+links:
+  - label: "Scala Days 2026"
+    url: https://scaladays.org
 ---
 
-Scala Days 2026 takes place in Berlin on October 12–13. After the conference we are touring San
-Francisco, Chicago and New York on October 19–26.
+Scala Days 2026 takes place in Berlin on October 12–13. After the conference we are touring
+[San Francisco](https://www.meetup.com/sf-scala/), [Chicago](https://www.meetup.com/chicagoscala/) and
+[New York](https://www.meetup.com/ny-scala/) on October 19–26, bringing some of ScalaDays to the US.

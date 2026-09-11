@@ -33,7 +33,9 @@ npm run check-links  # check links in the built site (run after npm run build)
 - `content/labels.md` — link texts used in more than one place.
 - `content/promos/` — one file per promo block (VirtusLab's Scala work,
   conferences, Visdom): `placement` picks the slot on the page, `order` the
-  place in it.
+  place in it, `title` the heading, `links` one or more destinations (the
+  first is also the title link), and `logo` an optional product lockup
+  (`visdom`) that replaces the link pills.
 - `content/footer.md` — maintainers, page source link, license.
 
 ## Star counts
