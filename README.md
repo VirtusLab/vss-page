@@ -70,12 +70,7 @@ and `public/sitemap.xml` all have to change together.
 
 ## robots.txt
 
-`public/robots.txt` is served at `/vss-page/robots.txt`, which is not where a
-crawler looks: on a project site the host's file is
-`https://virtuslab.github.io/robots.txt`, and this repo cannot write it. The
-file ships anyway, so the rules travel with the site if it ever moves to a
-custom domain, and so `llms.txt` and the sitemap have a machine-readable
-pointer.
+`public/robots.txt` and `public/sitemap.xml` are served at the root of the custom domain, so they are the real ones; keep their absolute URLs in step with `site` in `astro.config.mjs` and `public/CNAME`.
 
 ## Artwork
 

@@ -1,11 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// site and base must match the GitHub Pages URL: https://<org>.github.io/<repo>.
-// Update both if the repo is renamed or moved to a custom domain.
+// `site` is the custom domain the page is served from (at the root, so no `base`).
+// Change it together with public/CNAME, public/robots.txt and public/sitemap.xml if the domain moves.
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://virtuslab.github.io',
-  base: '/vss-page',
+  site: 'https://vss.virtuslab.com',
   output: 'static',
 });

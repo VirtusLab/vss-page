@@ -2,6 +2,6 @@ User-agent: *
 Allow: /
 
 # Plain-text mirror of this page for coding agents.
-LLM-Content: https://virtuslab.github.io/vss-page/llms.txt
+LLM-Content: https://vss.virtuslab.com/llms.txt
 
-Sitemap: https://virtuslab.github.io/vss-page/sitemap.xml
+Sitemap: https://vss.virtuslab.com/sitemap.xml
