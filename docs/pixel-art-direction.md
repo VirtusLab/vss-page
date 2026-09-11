@@ -93,17 +93,21 @@ left or right third, never centred) + STYLE:
 
 - `direct-style` — hopping along a straight clear line of lily pads running right; behind, in a
   duller `#6b7a70`/`#1f5f57` plane, a tangled knotted alternative route lies abandoned.
-- `type-safety` — sliding a `#00c859` F-pentomino — a bar of three squares, one out to the upper
-  right, one to the middle left — into an opening cut to exactly that silhouette, two pixels from
-  seating, `#ffd08a` light behind it; a triangle and a disc lie rejected at its feet.
-- `mature-platform` — a Roman aqueduct crossing a valley, six or seven identical arches marching
-  edge to edge, an open `#4f9683` water channel along the top, CHARACTER walking that channel on the
-  right third. Misty dithered slopes behind. The stone is plain — no carving, no text.
+- `type-safety` — pushing a chunky `#00c859` block, a stepped L/T shape with wobbling edges, dithered
+  faces and chipped corners, into an opening hacked to the same silhouette in a mossy wall. A few
+  pixels from seating, `#ffd08a` light escaping around it to trace the hole's full contour; a
+  triangle and a disc rejected at its feet. Block and hole as hand-pixelled as the stone.
+- `mature-platform` — a Roman aqueduct in warm late light, six or seven arches marching edge to
+  edge, seen from a three-quarter elevated angle so the water channel along the top reads as a
+  trough. CHARACTER swims in that channel on the right third, body half submerged, ripples and a
+  dithered wake around it, lit and shadowed like the stone so it belongs. Stone plain, no carving.
 - `structured-concurrency` — a captain frog on one raft holding three taut ropes down to three small
   frogs in the water, all returning to that raft, one already climbing aboard.
-- `no-lock-in` — a beige rack of five identical slots on the right two thirds, four holding
-  identical `#1f5f57` cartridges and one empty; CHARACTER on the left third has pulled one out and
-  holds up a `#c67a10` replacement of the same shape, lined up with the gap. No chains, no locks.
+- `no-lock-in` — an open `#cbc7bd` rack on the right two thirds holding five identical `#1f5f57`
+  slide-in modules, cartridge- or blade-server-like: no doors, no lids, no locks, no handles.
+  CHARACTER on the left third has gripped one with both hands and drawn it halfway out, its bay a
+  dark hollow behind; a `#c67a10` replacement of the same slab shape leans against the rack, ready.
+  Nothing may read as a suitcase, locker or cabinet.
 
 **13. Divider** (160×24, transparent). A symmetric ornament, not a landscape: on one baseline, a fan
 of reeds, a `#007c3e` lily pad, a centred pad carrying an open `#f9f6f5`/`#fff0c8` water-lily, a
@@ -156,4 +160,11 @@ of 5) attached. What the pipeline has to fix each time:
 
 **Round 3, the owner's five.** The hero became a transparent 160×160 sprite, the bridge an aqueduct,
 the crates a cartridge swap, the divider a symmetric ornament. The model would not draw a piece and
-its hole in the same silhouette, so `fix_type_safety.py` cuts both from one cell map.
+its hole in the same silhouette, so `fix_type_safety.py` cut both from one cell map.
+
+**Round 4, three scenes reworked.** The hand-cut piece read vector-clean, so that fix is dropped: ask
+for a hand-pixelled block and a hacked-out hole, then hold the block a few pixels low and left so
+warm light traces the hole's whole contour (v6 of 3). The aqueduct frog stops looking pasted on only
+when the prompt says *swimming, half submerged, with a wake*, and reads at 320px only once the stone
+is warm limestone (v5 of 2). Banning doors, locks and handles by name kills the locker read, but a
+flat-on panel still looks like a swung door — the module needs its top face visible (v6 of 3).
