@@ -309,8 +309,11 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		max-width: var(--measure);
 	}
 
-	code {
+	/* Inline code only; the snippet blocks size themselves. JetBrains Mono has a taller x-height and
+	   wider glyphs than Source Sans, so at the prose size it looks a step too big next to it. */
+	:not(pre) > code {
 		font-family: var(--font-mono);
+		font-size: 0.875em;
 	}
 
 	@media (min-width: 720px) {
