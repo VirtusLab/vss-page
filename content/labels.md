@@ -9,6 +9,7 @@ llmsHref: /llms.txt
 snippetsLegend: Code examples
 snippetsHeading: "VSS in action!"
 snippetsNote: Each tab is an excerpt of a runnable scala-cli script.
+chapterHome: VSS
 chapterSnippets: In action
 chapterBenefits: Benefits
 chapterPicker: Chapters

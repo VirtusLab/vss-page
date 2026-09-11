@@ -26,7 +26,7 @@ const entry = (c: { id: string; name: string; description: string; url: string; 
  * which the hidden switcher panels do not give a rendered-text extractor.
  */
 export const GET: APIRoute = async ({ site }) => {
-	const { hero, sections, promos, footer, snippets, benefits } = await loadSite();
+	const { hero, agentPrompt, sections, promos, footer, snippets, benefits } = await loadSite();
 
 	const blocks: string[] = [`# ${hero.title} (${hero.acronym})`, pageUrl(site), hero.tagline, hero.lede];
 
@@ -39,6 +39,9 @@ export const GET: APIRoute = async ({ site }) => {
 			[`### ${benefit.title}`, benefit.tagline, ...(body ? ['', plainLinks(body)] : [])].join('\n'),
 		);
 	}
+
+	// The prompt as the page shows it: an agent that reads this file is the one meant to run it.
+	blocks.push(`## ${agentPrompt.title}\n\n${agentPrompt.text}`);
 
 	for (const section of sections) {
 		blocks.push(`## ${section.title}`);

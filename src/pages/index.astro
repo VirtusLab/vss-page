@@ -5,6 +5,7 @@ import ComponentSection from '../components/ComponentSection.astro';
 import FloatingNav from '../components/FloatingNav.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
+import AgentPrompt from '../components/AgentPrompt.astro';
 import Promo from '../components/Promo.astro';
 import SnippetSwitcher from '../components/SnippetSwitcher.astro';
 import Divider from '../components/graphics/Divider.astro';
@@ -12,7 +13,8 @@ import { pageUrl } from '../lib/base';
 import { loadSite } from '../lib/content';
 import { snippetRegion } from '../lib/snippets';
 
-const { hero, sections, promos, footer, labels, snippets, benefits } = await loadSite();
+const { hero, agentPrompt, sections, promos, footer, labels, snippets, benefits } =
+	await loadSite();
 
 const tabs = snippets.map((snippet) => ({
 	id: snippet.id,
@@ -63,6 +65,7 @@ const jsonLd = {
 	    the script shows it. */}
 	<FloatingNav
 		sections={sections}
+		homeLabel={labels.chapterHome}
 		snippetsLabel={labels.chapterSnippets}
 		benefitsLabel={labels.chapterBenefits}
 		label={labels.chapterPicker}
@@ -84,6 +87,8 @@ const jsonLd = {
 				heading={labels.snippetsHeading}
 				note={labels.snippetsNote}
 			/>
+			{/* Still part of the stack's story, so before the promos: the code, then how to start. */}
+			<AgentPrompt prompt={agentPrompt} />
 			{promos.afterSnippets.map((promo) => <Promo promo={promo} />)}
 		</div>
 		<BenefitsSection benefits={benefits} promos={promos.afterBenefits} />
@@ -101,11 +106,13 @@ const jsonLd = {
 		<Footer footer={footer} labels={labels} />
 	</div>
 	{/*
-		The page's only JavaScript, in two parts. First, star counts, refreshed when a card scrolls into
+		The page's only JavaScript, in three parts. First, star counts, refreshed when a card scrolls into
 		view and cached for an hour. Everything else works without it, and so does this — a build with a
 		GITHUB_TOKEN bakes the counts into the HTML, and a card with no count at all still links to the
 		repository, where the star button is. Second, the current-chapter mark in the floating picker;
-		without the script the picker is still there, only with no pill filled.
+		without the script the picker is still there, only with no pill filled. Third, the copy button on
+		the agent prompt, shown only where there is a clipboard to write to; without it the prompt is
+		still there to select.
 	*/}
 	<script is:inline>
 		(() => {
@@ -157,7 +164,8 @@ const jsonLd = {
 			const bar = document.querySelector('[data-float-nav]');
 			if (!bar) return;
 
-			const links = [...bar.querySelectorAll('a')];
+			// The home pill is left out: it jumps to the top, which is no chapter, and must never fill.
+			const links = [...bar.querySelectorAll('a:not([data-home])')];
 			const targets = links.map((link) => document.getElementById(link.hash.slice(1)));
 
 			const show = (current) => {
@@ -203,6 +211,26 @@ const jsonLd = {
 			addEventListener('resize', schedule, { passive: true });
 			mark();
 			fromHash();
+		})();
+
+		(() => {
+			const button = document.querySelector('[data-copy]');
+			if (!button || !navigator.clipboard) return;
+			const text = button.parentElement.querySelector('pre');
+			const idle = button.textContent;
+			button.hidden = false;
+			let timer;
+			button.addEventListener('click', async () => {
+				try {
+					await navigator.clipboard.writeText(text.textContent);
+				} catch {
+					// Nothing to report: the text is right there to select.
+					return;
+				}
+				button.textContent = button.dataset.copiedLabel;
+				clearTimeout(timer);
+				timer = setTimeout(() => (button.textContent = idle), 2000);
+			});
 		})();
 	</script>
 </Base>

@@ -1,0 +1,108 @@
+---
+/**
+ * The box between the snippets and the first promo that hands the reader a prompt for a coding
+ * agent. `text` is shown in a `<pre>` and copied as it is. The button is hidden until the inline
+ * script in `index.astro` finds a clipboard to write to; without one the text is still there to
+ * select. Green, like the stack, and not the promos' amber: this is part of the story.
+ */
+interface Props {
+	prompt: { title: string; note: string; copyLabel: string; copiedLabel: string; text: string };
+}
+
+const { title, note, copyLabel, copiedLabel, text } = Astro.props.prompt;
+---
+
+<section id="agent-prompt" class="panel">
+	<h2>{title}</h2>
+	<p class="note">{note}</p>
+	<div class="frame">
+		<button type="button" class="copy" data-copy data-copied-label={copiedLabel} hidden
+			>{copyLabel}</button
+		>
+		<pre>{text}</pre>
+	</div>
+</section>
+
+<style>
+	section {
+		margin: var(--space-6) 0 var(--space-5);
+		padding: var(--space-4);
+		background: var(--surface);
+	}
+
+	h2 {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-lg);
+	}
+
+	.note {
+		margin: 0 0 var(--space-3);
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	/* `flow-root` keeps the floated button (wide screens) inside the box. Not a `.panel`: no shadow,
+	   the snippet frames are the page's hero content and this is a box in a box. */
+	.frame {
+		display: flow-root;
+		border: var(--border) solid var(--line);
+		border-radius: var(--radius);
+		background: var(--code-bg);
+	}
+
+	/* Wraps rather than scrolls: a prompt is read as prose, and the one long line — the curl body —
+	   must not give a phone a sideways scroll. */
+	pre {
+		margin: 0;
+		padding: var(--space-3);
+		font-family: var(--font-mono);
+		font-size: var(--text-code);
+		line-height: 1.65;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+		color: var(--fg);
+	}
+
+	/* The hero CTA's shape and fill at the promo pill's size; hover inverts it the same way. */
+	.copy {
+		margin: var(--space-3) var(--space-3) 0;
+		padding: var(--space-2) var(--space-3);
+		border: var(--border) solid var(--accent);
+		border-radius: var(--radius-pill);
+		background: var(--accent);
+		color: var(--on-accent);
+		font-family: var(--font-display);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		line-height: 1.5;
+		cursor: pointer;
+		transition:
+			background 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.copy:hover,
+	.copy:focus-visible {
+		background: transparent;
+		color: var(--accent);
+	}
+
+	@media (min-width: 720px) {
+		section {
+			padding: var(--space-5);
+		}
+
+		/* Top-right corner of the box, with the first lines of the prompt flowing around it. A float,
+		   not absolute positioning: nothing has to reserve room for it. */
+		.copy {
+			float: right;
+			margin: var(--space-3) var(--space-3) var(--space-2);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.copy {
+			transition: none;
+		}
+	}
+</style>

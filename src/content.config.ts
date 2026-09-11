@@ -250,6 +250,8 @@ const labels = defineCollection({
 			snippetsHeading: z.string(),
 			// Sentence under the heading.
 			snippetsNote: z.string(),
+			// The floating picker's first pill, which jumps back to the top of the page.
+			chapterHome: z.string(),
 			// Name the floating picker's first two chapter entries.
 			chapterSnippets: z.string(),
 			chapterBenefits: z.string(),
@@ -259,6 +261,20 @@ const labels = defineCollection({
 			skipLink: z.string(),
 			// `og:image:alt` for `public/og.png`.
 			shareImageAlt: z.string(),
+		})
+		.strict(),
+});
+
+// The body is the prompt: shown and copied verbatim, never rendered as markdown.
+const agentPrompt = defineCollection({
+	loader: glob({ base: 'content', pattern: 'agent-prompt.md' }),
+	schema: z
+		.object({
+			title: z.string(),
+			note: z.string(),
+			copyLabel: z.string(),
+			// What the button reads for two seconds after a successful copy.
+			copiedLabel: z.string(),
 		})
 		.strict(),
 });
@@ -293,6 +309,7 @@ export const collections = {
 	hero,
 	footer,
 	labels,
+	agentPrompt,
 	benefitsSection,
 	benefits,
 };

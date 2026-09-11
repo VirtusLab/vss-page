@@ -131,8 +131,13 @@ export const loadSite = async () => {
 		afterComponents: inSlot('after-components'),
 	};
 
+	// The prompt is the file's body; the schema only covers the frontmatter.
+	const prompt = (await getEntry('agentPrompt', 'agent-prompt'))!;
+	const agentPrompt = { ...prompt.data, text: prompt.body!.trim() };
+
 	return {
 		hero: (await getEntry('hero', 'hero'))!.data,
+		agentPrompt,
 		benefits,
 		sections,
 		promos,

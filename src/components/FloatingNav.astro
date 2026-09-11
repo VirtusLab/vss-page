@@ -1,12 +1,15 @@
 ---
 /**
  * The chapter picker fixed to the top edge of every screen. It is the page's only navigation, and
- * works without JavaScript: plain anchors. Labels come from the same content the chapters render, so
- * picker and headings cannot diverge. The inline script in `index.astro` marks the entry the reader
- * is in with `aria-current="location"`, which is what fills its pill.
+ * works without JavaScript: plain anchors. First the site's name, which jumps back to the top, then
+ * a rule, then the chapters. Labels come from the same content the chapters render, so picker and
+ * headings cannot diverge. The inline script in `index.astro` marks the entry the reader is in with
+ * `aria-current="location"`, which is what fills its pill; the home pill never gets it.
  */
 interface Props {
 	sections: { id: string; title: string }[];
+	/** The site's name, on the pill that jumps to the top of the page. */
+	homeLabel: string;
 	/** Names the snippets chapter, which the first entry jumps to. */
 	snippetsLabel: string;
 	/** Names the benefits chapter. Not the benefits heading: the strip needs the short word. */
@@ -15,7 +18,7 @@ interface Props {
 	label: string;
 }
 
-const { sections, snippetsLabel, benefitsLabel, label } = Astro.props;
+const { sections, homeLabel, snippetsLabel, benefitsLabel, label } = Astro.props;
 
 const entries = [
 	{ href: '#snippets', label: snippetsLabel },
@@ -27,6 +30,11 @@ const entries = [
 <nav class="float" data-float-nav aria-label={label}>
 	{/* `list-style: none` drops list semantics in Safari/VoiceOver; the role puts them back. */}
 	<ul role="list">
+		{/* `#content` is the top of `<main>`, which is the top of the page: `scroll-padding-top` has
+		    nothing to push it under the bar, and the hero already keeps clear of it. */}
+		<li class="home">
+			<a href="#content" data-home>{homeLabel}</a>
+		</li>
 		{
 			entries.map((entry) => (
 				<li>
@@ -88,6 +96,21 @@ const entries = [
 				transparent
 			);
 		}
+	}
+
+	/* The rule between the site's name and the chapters. On the item, not the link, so the pill's
+	   hover fill stops at its own edge. */
+	.home {
+		display: flex;
+		align-items: center;
+		gap: var(--space-1);
+	}
+
+	.home::after {
+		content: '';
+		width: var(--border);
+		height: 1.25em;
+		background: var(--line-strong);
 	}
 
 	/* A quiet pill that fills with the accent only on hover, focus or as the current chapter: chrome
