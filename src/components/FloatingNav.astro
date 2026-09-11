@@ -1,10 +1,10 @@
 ---
 /**
- * The chapter picker that floats over the page once the hero has scrolled away. Hidden until the
- * inline script in `index.astro` sets `data-visible` on it, so without JavaScript it never shows and
- * the in-flow `Nav` row stays the only index. Labels come from the same content the chapters render,
- * so picker and headings cannot diverge. The same script marks the entry the reader is in with
- * `aria-current="location"`, which is what fills its pill.
+ * The chapter picker that floats over the page once the hero has scrolled away. It is the page's only
+ * navigation: hidden until the inline script in `index.astro` sets `data-visible` on it, so without
+ * JavaScript it never shows and the page falls back to its anchors. Labels come from the same content
+ * the chapters render, so picker and headings cannot diverge. The same script marks the entry the
+ * reader is in with `aria-current="location"`, which is what fills its pill.
  */
 interface Props {
 	sections: { id: string; title: string }[];
@@ -12,7 +12,7 @@ interface Props {
 	snippetsLabel: string;
 	/** Names the benefits chapter. Not the benefits heading: the strip needs the short word. */
 	benefitsLabel: string;
-	/** Accessible name of the bar; the page carries a second `<nav>`. Not shown. */
+	/** Accessible name of the bar. Not shown. */
 	label: string;
 }
 
@@ -115,7 +115,8 @@ const entries = [
 		}
 	}
 
-	/* The same quiet pill as the in-flow nav, one step tighter: chrome over the page, not in it. */
+	/* A quiet pill that fills with the accent only on hover, focus or as the current chapter: chrome
+	   over the page, not in it. */
 	.float a {
 		display: block;
 		padding: var(--space-2) var(--space-3);

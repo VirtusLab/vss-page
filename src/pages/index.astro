@@ -5,7 +5,6 @@ import ComponentSection from '../components/ComponentSection.astro';
 import FloatingNav from '../components/FloatingNav.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
-import Nav from '../components/Nav.astro';
 import Promo from '../components/Promo.astro';
 import SnippetSwitcher from '../components/SnippetSwitcher.astro';
 import Divider from '../components/graphics/Divider.astro';
@@ -38,7 +37,6 @@ const jsonLd = {
 		},
 		{
 			'@type': 'ItemList',
-			name: labels.chapterComponents,
 			itemListElement: sections
 				.flatMap((section) => section.components)
 				.map((component, index) => ({
@@ -70,10 +68,11 @@ const jsonLd = {
 		label={labels.chapterPicker}
 	/>
 	{/* Three chapters, each opened by its own heading: the snippets show the code, the benefits make
-	    the argument, and the nav leads into the sections it links to. A sprig closes the hero and
-	    another closes the benefits; the snippets need none, because the band's top edge is already a
-	    line across the page. The band paints its own ground, which is why it sits outside `.page` —
-	    the only block that runs to the window's edges. */}
+	    the argument, and the components chapter lists the stack. A sprig closes the hero and another
+	    closes the benefits, leading straight into the components chapter; the snippets need none,
+	    because the band's top edge is already a line across the page. The band paints its own
+	    ground, which is why it sits outside `.page` — the only block that runs to the window's
+	    edges. */}
 	<main id="content">
 		<div class="page">
 			<Hero hero={hero} labels={labels} />
@@ -90,13 +89,6 @@ const jsonLd = {
 		<BenefitsSection benefits={benefits} promos={promos.afterBenefits} />
 		<div class="page">
 			<Divider />
-			<Nav
-				sections={sections}
-				benefitsLabel={benefits.heading}
-				repoLabel={footer.repoLabel}
-				repoUrl={footer.repoUrl}
-				label={labels.chapterComponents}
-			/>
 			{sections.map((section) => <ComponentSection section={section} labels={labels} />)}
 			{/* The wrapper holds `#commercial`, the anchor from when this was a single block; each
 			    block inside answers to its own `#promo-<id>`. */}
@@ -113,7 +105,7 @@ const jsonLd = {
 		view and cached for an hour. Everything else works without it, and so does this — a build with a
 		GITHUB_TOKEN bakes the counts into the HTML, and a card with no count at all still links to the
 		repository, where the star button is. Second, the floating chapter picker, shown while the hero
-		is off screen; without the script it never appears and the in-flow nav is the page's index.
+		is off screen; without the script it never appears, and the page falls back to its anchors.
 	*/}
 	<script is:inline>
 		(() => {

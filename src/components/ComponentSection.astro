@@ -86,8 +86,10 @@ const { section, labels } = Astro.props;
 </section>
 
 <style>
+	/* Margin, not padding, so it collapses with the divider's own margin above the first section
+	   instead of adding to it — the same chapter-opening air either way. */
 	section {
-		padding-top: var(--space-5);
+		margin-top: var(--space-5);
 	}
 
 	/* Only the icon row; the size comes from the global `.chapter-heading`. The gap to the cards is
@@ -216,7 +218,7 @@ const { section, labels } = Astro.props;
 
 	@media (min-width: 720px) {
 		section {
-			padding-top: var(--space-6);
+			margin-top: var(--space-6);
 		}
 
 		.components {
