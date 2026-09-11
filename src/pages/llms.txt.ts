@@ -45,10 +45,10 @@ export const GET: APIRoute = async ({ site }) => {
 		blocks.push(...section.components.map(entry));
 	}
 
-	// Structural, like `## Snippets`: the entries below already carry their own names. Both promo
-	// slots land here, in page order — the file has no snippet switcher to sit the first one after.
+	// Structural, like `## Snippets`: the entries below already carry their own names. All three
+	// promo slots land here, in page order — the file has no chapters to spread them between.
 	blocks.push('## Commercial');
-	for (const promo of [...promos.afterSnippets, ...promos.afterComponents]) {
+	for (const promo of [...promos.afterSnippets, ...promos.afterBenefits, ...promos.afterComponents]) {
 		const body = promo.body?.trim();
 		blocks.push(
 			[`### ${promo.data.title}`, `url: ${promo.data.url}`, ...(body ? ['', plainLinks(body)] : [])].join(

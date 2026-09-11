@@ -90,6 +90,7 @@ const jsonLd = {
 		<BenefitsSection benefits={benefits} />
 		<div class="page">
 			<Divider />
+			{promos.afterBenefits.map((promo) => <Promo promo={promo} />)}
 			<Nav
 				sections={sections}
 				benefitsLabel={benefits.heading}

@@ -141,7 +141,7 @@ const sections = defineCollection({
 /**
  * The blocks that are not part of the open-source stack: what VirtusLab sells, and where to meet it.
  * One file per block, the file name being its id (`#promo-<id>`), with a body of one or two
- * sentences. `placement` says which of the page's two promo slots it sits in and `order` the place
+ * sentences. `placement` says which of the page's three promo slots it sits in and `order` the place
  * within that slot; the loop above holds those unique. The right-hand side of the box is either a
  * product lockup or the link as a pill, so `logo` and `linkLabel` come one at a time.
  */
@@ -150,7 +150,7 @@ const promos = defineCollection({
 	schema: z
 		.object({
 			order: z.number().int().positive(),
-			placement: z.enum(['after-snippets', 'after-components']),
+			placement: z.enum(['after-snippets', 'after-benefits', 'after-components']),
 			title: z.string(),
 			url: httpUrl,
 			// A cell of its own, so it has to stay a word or three.

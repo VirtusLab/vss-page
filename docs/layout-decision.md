@@ -130,12 +130,15 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 ### Promos
 
 - Everything that is not part of the open-source stack: one file per block in `content/promos/`,
-  with `placement` picking one of the page's two slots and `order` the place within it.
-- `after-snippets`: directly under the switcher, before the benefits band. One block — VirtusLab's
-  Scala work — placed where the reader has just seen the code the team maintains.
+  with `placement` picking one of the page's three slots and `order` the place within it. Each slot
+  is the end of a chapter, so a promo never interrupts one.
+- `after-snippets`: directly under the switcher, before the benefits band. VirtusLab's Scala work,
+  where the reader has just seen the code the team maintains.
+- `after-benefits`: under the sprig that closes the benefits band and above the nav, inside the page
+  column. The conferences block.
 - `after-components`: after all six component sections, before the footer, wrapped in a
-  `<section id="commercial">` that keeps the old anchor. Visdom first, conferences second: the
-  reader has seen the whole free stack before any offer appears.
+  `<section id="commercial">` that keeps the old anchor. Visdom, once the reader has seen the whole
+  free stack.
 - Markup: each block is its own `<section id="promo-{id}">`, same shape as a card (title link plus a
   sentence or two) but explicitly NOT the card grid: full width, set apart by a border plus a
   background tint. No label saying "commercial". On the right, Visdom's own logo (`logo: visdom`) or
@@ -172,9 +175,10 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
    scrolled away, at every width. The picker is what makes a long page navigable from anywhere,
    and keeping it out of the flow is what keeps the first screen free of chrome. It needs the one
    IntersectionObserver the page already ships a pattern for, and degrades to nothing without it.
-8. **Promos** — the paid and event blocks, one per file in `content/promos/`: one under the
-   snippets, the rest after section six and before the footer. Bordered blocks, not the card
-   format. Visible but never mistaken for part of the open-source stack.
+8. **Promos** — the paid and event blocks, one per file in `content/promos/`, each at the end of a
+   chapter: under the snippets, under the benefits, and after section six before the footer.
+   Bordered blocks, not the card format. Visible but never mistaken for part of the open-source
+   stack.
 9. **Hero** — title + one-sentence tagline + one CTA (`#template`) + one agent line. A second
    CTA would have to be invented; there is no install command.
 10. **Agent supplement** — ship `/llms.txt` with all eight snippets in full and all 19 components

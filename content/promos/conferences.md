@@ -1,6 +1,6 @@
 ---
-order: 2
-placement: after-components
+order: 1
+placement: after-benefits
 title: Meet us at conferences
 url: https://scaladays.org
 linkLabel: Scala Days 2026
