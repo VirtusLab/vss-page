@@ -38,7 +38,8 @@ animals or mascots.
 Everything lives in `scripts/art/`: `theme.md` is the block every prompt starts with, `prompts/<asset>.md`
 the subject of each image, `gen.sh <asset> <WxH>` one render through the Codex CLI's image tool into
 the git-ignored `gen/`, and `finish.py <asset>...` the step from a raw render to `public/`: key out the
-ground, fit the result to the target aspect and Lanczos-resize it to 2x. subject's bounding box after keying. `og` composes the hero render with the title in Montserrat
+ground, fit the result to the target aspect and Lanczos-resize it to 2x. `og` composes the hero
+render with the title in Montserrat
 and `favicons` cuts the slab mark of the hero onto a `#07160f` tile (both need the two variable fonts
 in `fonts/`, see the script). Renders come out at 1024 or 1536 on the long side.
 
