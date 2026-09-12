@@ -7,8 +7,8 @@ and no hex appears outside that file.
 
 Warm green, VirtusLab's. Clean geometry and a lot of empty space on a warm off-white ground, deep
 forest green in dark mode, bright VL green as the signature accent, amber used sparingly. The
-interface is clean and modern; the artwork is mid-90s adventure-game pixel art, and the contrast
-between the two is deliberate. One soft shadow, one green rule.
+interface is clean and modern; the artwork is clean 3D renders of trees and plants on cream plates,
+so the two share one register. One soft shadow, one green rule.
 
 ## Chapters
 
@@ -20,13 +20,13 @@ painting its own ground — and its inner section restores the page's cap and gu
 chapters start on one edge. Rows are text plus a 320px illustration, mirrored every second row so
 the gutter never changes; below 720px the illustration stacks above.
 
-## The animal: a tree frog
+## The motif: trees and plants
 
-Green body, amber eyes: the animal is already the palette. It reads at 48px from silhouette alone — a
-wide body and two domed eyes — which a chameleon and a gecko do not. Direct style is a jump, not a
-pipeline, so it fits the argument too. It is the hero (on a lily pad beside a terminal, looking
-across the pond at the headline), the six section icons, the five benefit scenes, the code panel's
-mark and the favicon — not the Visdom block, which is no part of the free stack.
+Wood and leaves are already the palette: VirtusLab greens and warm wood on a cream ground. Growth,
+grafting and pruning give every benefit a concrete subject. The motif carries the hero (the Scala
+logo as stacked wooden bars with a branch growing from it), the six section icons, the five benefit
+plates, the code panel's mark and the favicon — not the Visdom block, which is no part of the free
+stack.
 
 ## Palette
 
@@ -46,7 +46,7 @@ Grounds: `--bg` `#f9f6f5` / `#07160f`, `--surface` `#eef3e7` / `#0f2418`, light 
 The card's link band is `--surface-2` `#e6eddd` / `#14301f` and its hovered cell `--surface-2-hover`
 `#dce7d0` / `#1b3f29`; on the worse of the two, `--muted` is 5.64 / 6.08 and `--accent` 5.17 / 7.22.
 
-The artwork has no tokens: it carries its own 24-colour palette and nothing recolours it. Text on
+The artwork has no tokens: each plate carries its own colours and nothing recolours it. Text on
 the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#d9f0e1`).
 
 ## Type
@@ -64,8 +64,8 @@ the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#d9f0e1`)
 - Spacing `4 / 8 / 16 / 28 / 48 / 72`px. Borders `--border` 1px, `--border-thick` 2px (also the focus
   ring), `--rule` 3px for the green mark. Page container 62rem. Sizes are tokens too.
 - Radius `--radius-sm` 8, `--radius` 14, `--radius-pill`, and `--radius-lg` 26 on the code panel
-  alone. Nothing in the interface has a square corner; the artwork does, because a radius would cut
-  into the frame drawn in the image. Illustration sizes: `--icon` 48, `--mark` 22.
+  alone. Nothing has a square corner: the artwork takes `--radius` through `.plate`, the section
+  icons `--radius-sm`. Illustration sizes: `--icon` 64, `--mark` 22.
 - `.panel` is the one surface rule — hairline, radius, `--shadow-soft` — and the only use of that
   name: a scoped `.panel` elsewhere still matches it and doubles the hairline, which is why the
   snippet panels are `.snippet-panel`. `--shadow-lift` is it raised: the code panel at rest, cards
@@ -75,14 +75,14 @@ the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#d9f0e1`)
 
 ## Motifs
 
-Art is generated pixel-art PNGs in `public/art/`, drawn through the shared `.pixel` class at an
-integer multiple of each native grid; see `docs/pixel-art-direction.md`. All are decorative.
+Art is rendered PNG plates in `public/art/`, each on its own cream ground at 2x its CSS size, given
+its corners by the shared `.plate` class; see `docs/art-direction.md`. All are decorative.
 
-- `HeroArt.astro` — `art/hero.png`, 160×120 native at ×4, shown at 320 at both widths.
-- `SectionIcon.astro` — `art/icon-<section>.png`, 32×32 at ×4, shown at `--icon`; `BenefitArt.astro`
-  — `art/benefit-<id>.png`, 160×120 at ×4, shown at 320. An id with no image fails the build.
-- `Divider.astro` — `art/divider.png`, 160×24 at ×4, shown at 320×48 centred with its own vertical
-  margin; `CodeBar.astro` — `art/codebar.png`, 33×11 at ×8, shown at 66×22 in the panel's title bar.
+- `HeroArt.astro` — `art/hero.png`, shown at 320×320 at both widths.
+- `SectionIcon.astro` — `art/icon-<section>.png`, shown at `--icon`; `BenefitArt.astro` —
+  `art/benefit-<id>.png`, shown at 320×240. An id with no image fails the build.
+- `Divider.astro` — `art/divider.png`, shown at 320×48 centred with its own vertical margin;
+  `CodeBar.astro` — `art/codebar.png`, shown at 66×22 in the panel's title bar.
 - `public/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `public/og.png` (1200×630) — same
   direction, generated and committed.
 - Interface, not art, so still inline SVG: `VisdomLogo.astro` (Visdom's crest, 48px,

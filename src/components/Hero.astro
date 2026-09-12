@@ -111,8 +111,8 @@ const { hero, labels } = Astro.props;
 		color: var(--muted);
 	}
 
-	/* 320px is twice the sprite's 160px native grid, so every logical pixel is exactly two device
-	   ones. The same cap at both widths; on a 360px phone the column is 328px and still holds it. */
+	/* 320px is the plate's CSS size; the PNG is 2x. The same cap at both widths: on a 360px phone the
+	   column is 328px and still holds it. */
 	.art {
 		width: 100%;
 		max-width: 320px;
@@ -124,8 +124,8 @@ const { hero, labels } = Astro.props;
 			padding-top: var(--space-6);
 		}
 
-		/* Text first, art beside it. The art track is a fixed 320px — twice the sprite's 160px native
-		   grid, so the pixels stay square — and the text takes whatever is left. */
+		/* Text first, art beside it. The art track is a fixed 320px, the plate's size, and the text
+		   takes whatever is left. */
 		.cols {
 			grid-template-columns: minmax(0, 1fr) 320px;
 			align-items: center;

@@ -2,9 +2,8 @@
 import { withBase } from '../../lib/base';
 
 /**
- * One illustration per benefit, keyed by the benefit id: `public/art/benefit-<name>.png`, a 160×120
- * pixel-art scene exported at ×4 and shown at 320 wide, so every logical pixel is two device ones.
- * Each scene paints its own background inside a dark frame. Decorative, hence `aria-hidden`.
+ * One illustration per benefit, keyed by the benefit id: `public/art/benefit-<name>.png`, a rendered
+ * plate on its own cream ground, exported at 2x and shown at 320×240. Decorative, hence `aria-hidden`.
  */
 interface Props {
 	/** A benefit id. An id with no illustration fails the build. */
@@ -17,7 +16,7 @@ if (!drawn.includes(name)) throw new Error(`No benefit illustration drawn for "$
 ---
 
 <img
-	class="benefit-art pixel"
+	class="benefit-art plate"
 	src={withBase(`/art/benefit-${name}.png`)}
 	width="320"
 	height="240"
@@ -28,7 +27,6 @@ if (!drawn.includes(name)) throw new Error(`No benefit illustration drawn for "$
 />
 
 <style>
-	/* Square corners: the scene's own frame is drawn in the image, and a radius would clip it. */
 	.benefit-art {
 		display: block;
 		width: 100%;

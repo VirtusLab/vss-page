@@ -37,7 +37,7 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonical} />
 		<meta property="og:site_name" content={siteName} />
-		{/* Generated once and committed, per docs/pixel-art-direction.md: the title never changes. */}
+		{/* Generated once and committed, per docs/art-direction.md: the title never changes. */}
 		<meta property="og:image" content={shareImage} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
@@ -100,8 +100,8 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		--line: #dbe3d3;
 		--line-strong: #bed0b2;
 
-		/* The artwork carries no tokens: it is raster pixel art with its own 24-colour palette baked
-		   in, in `public/art/`. See docs/pixel-art-direction.md. */
+		/* The artwork carries no tokens: it is rendered PNG plates on a cream ground, in `public/art/`,
+		   with their own colours baked in. See docs/art-direction.md. */
 
 		/* Background of the code panel: a hair greener and darker than the page, so the panel reads
 		   as a surface without an outline doing the work. */
@@ -127,9 +127,8 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		--page-width: 62rem;
 		/* Height of the floating chapter picker; anchors scroll clear of it. */
 		--float-nav-height: 3.25rem;
-		/* Section-icon tile, the card's link icons, and the frog mark in the code panel's title bar.
-		   The icons are 32 native pixels, so the tile must stay an integer multiple of 32: at 48px
-		   `image-rendering: pixelated` mixes 1px and 2px blocks and the grid falls apart. */
+		/* Section-icon tile, the card's link icons, and the mark in the code panel's title bar. The
+		   icons ship at 128px, twice the tile, so they stay crisp on a 2x screen. */
 		--icon: 64px;
 		--icon-sm: 20px;
 		--mark: 22px;
@@ -265,11 +264,10 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		top: var(--space-3);
 	}
 
-	/* Every artwork image. The PNGs are drawn on a small logical grid and shown at an integer
-	   multiple of it, so the browser must scale them by repeating pixels, not by smoothing. */
-	.pixel {
-		image-rendering: pixelated;
-		image-rendering: crisp-edges;
+	/* Every artwork image: a render on its own cream ground. The radius is what makes it read as an
+	   object sitting on the page rather than a hole in it, most of all on the dark ground. */
+	.plate {
+		border-radius: var(--radius);
 	}
 
 	/* Every surface on the page: a hairline, a soft shadow and the shared radius. Components override

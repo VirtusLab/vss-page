@@ -2,15 +2,15 @@
 import { withBase } from '../../lib/base';
 
 /**
- * The band that separates the major blocks of the page: `public/art/divider.png`, a 160×24 pixel-art
- * strip of pond exported at ×4 and shown at 320×48, centred. Transparent above the waterline and
- * dithered out at both ends, so it needs no rule behind it. Decorative, hence `aria-hidden`.
+ * The band that separates the major blocks of the page: `public/art/divider.png`, a horizontal branch
+ * rendered on its own cream plate, exported at 2x and shown at 320×48, centred. Decorative, hence
+ * `aria-hidden`.
  */
 ---
 
 <div class="divider" aria-hidden="true">
 	<img
-		class="sprig pixel"
+		class="sprig plate"
 		src={withBase('/art/divider.png')}
 		width="320"
 		height="48"
@@ -29,7 +29,7 @@ import { withBase } from '../../lib/base';
 		margin: var(--space-4) 0;
 	}
 
-	/* Fixed at ×2 of the native grid, and never wider than a narrow window. */
+	/* Fixed at the plate's size, and never wider than a narrow window. */
 	.sprig {
 		display: block;
 		flex: none;

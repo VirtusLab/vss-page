@@ -2,9 +2,8 @@
 import { withBase } from '../../lib/base';
 
 /**
- * One icon per stack section, keyed by the section id: `public/art/icon-<name>.png`, a 32×32
- * pixel-art sprite exported at ×4 and shown at `--icon`. Drawn on transparency with an outline that
- * survives both grounds. Decorative, hence `aria-hidden`.
+ * One icon per stack section, keyed by the section id: `public/art/icon-<name>.png`, a rendered plate
+ * on its own cream ground, exported at 2x and shown at `--icon`. Decorative, hence `aria-hidden`.
  */
 interface Props {
 	/** A section id from `content/components.yaml`. An id with no icon fails the build. */
@@ -13,14 +12,14 @@ interface Props {
 
 const { name } = Astro.props;
 const drawn = ['template', 'language', 'tooling', 'backend', 'ai', 'devops'];
-if (!drawn.includes(name)) throw new Error(`No frog icon drawn for section "${name}"`);
+if (!drawn.includes(name)) throw new Error(`No icon drawn for section "${name}"`);
 ---
 
 <img
-	class="icon pixel"
+	class="icon plate"
 	src={withBase(`/art/icon-${name}.png`)}
-	width="48"
-	height="48"
+	width="64"
+	height="64"
 	alt=""
 	aria-hidden="true"
 	decoding="async"
@@ -28,7 +27,9 @@ if (!drawn.includes(name)) throw new Error(`No frog icon drawn for section "${na
 />
 
 <style>
+	/* The plate radius is too round for a tile this small. */
 	.icon {
+		border-radius: var(--radius-sm);
 		display: block;
 		flex: none;
 		width: var(--icon);

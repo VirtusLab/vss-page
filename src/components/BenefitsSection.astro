@@ -109,8 +109,8 @@ const items = await Promise.all(
 		gap: var(--space-3);
 	}
 
-	/* Each scene paints its own ground inside a dark frame drawn in the image, so the wrapper adds
-	   no border, no padding and no radius — a radius here would clip the frame's own pixels. */
+	/* The image is a plate that carries its own ground and radius, so the wrapper adds no border,
+	   padding or radius of its own. */
 	.art {
 		width: 100%;
 		max-width: 320px;

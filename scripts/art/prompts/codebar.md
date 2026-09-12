@@ -1,0 +1,1 @@
+SUBJECT (wide landscape): A tiny sprig: one short horizontal stem in warm wood brown with three simple leaves, two leaf green and one bright mint, centred in the frame and small, occupying about a third of the width, with empty cream space all around. Plain solid cream #f4efe6 background, soft studio light, faint contact shadow.

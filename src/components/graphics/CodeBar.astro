@@ -2,15 +2,14 @@
 import { withBase } from '../../lib/base';
 
 /**
- * The mark in the code panel's title bar: `public/art/codebar.png`, a 33×11 pixel-art sprite of the
- * frog's head peeking over a bar, exported at ×8 and shown at 66×22 — three times `--mark`. The bar
- * strip itself, and the panel's outline and shadow, are CSS on the panel. Decorative, hence
- * `aria-hidden`.
+ * The mark in the code panel's title bar: `public/art/codebar.png`, a small leaf sprig rendered on its
+ * own cream plate, exported at 2x and shown at 66×22 — `--mark` tall. The panel's outline and shadow
+ * are CSS on the panel. Decorative, hence `aria-hidden`.
  */
 ---
 
 <img
-	class="bar-art pixel"
+	class="bar-art plate"
 	src={withBase('/art/codebar.png')}
 	width="66"
 	height="22"
