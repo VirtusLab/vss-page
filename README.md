@@ -31,7 +31,7 @@ npm run check-links  # check links in the built site (run after npm run build)
 - `content/components.yaml` — every section and component (name, description,
   URL, repo). See `docs/layout-decision.md`.
 - `content/snippets.yaml` — the snippet tabs, in order.
-- `content/hero.md` — title, tagline, lede, the CTA and the agent line.
+- `content/hero.md` — title, tagline, lede, the two CTAs and the agent line.
 - `content/agent-prompt.md` — the "start with your coding agent" box: heading, note and
   button labels in the frontmatter, the prompt itself as the body.
 - `content/labels.md` — link texts used in more than one place.

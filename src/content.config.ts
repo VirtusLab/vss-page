@@ -50,6 +50,9 @@ const componentIds = failOnDuplicates(
 	'component',
 	componentsYaml.sections.flatMap((section) => section.components.map((c) => c.id)),
 );
+// Every anchor the floating picker offers: its three fixed chapters (the ids hard-coded in
+// `FloatingNav.astro` and the components they point at) and one per section.
+const chapterIds = new Set(['snippets', 'prompt', 'benefits', ...sectionIds]);
 
 // Parsed here only so that a YAML syntax error throws instead of being logged and ignored.
 const snippetsYaml = parseYaml(read(snippetsFile));
@@ -187,8 +190,12 @@ const hero = defineCollection({
 			acronym: z.string(),
 			tagline: z.string(),
 			lede: z.string(),
-			ctaLabel: z.string(),
-			ctaHref: anchor(sectionIds, 'section'),
+			// The filled button, leading off-site to the starter wizard.
+			ctaPrimaryLabel: z.string(),
+			ctaPrimaryHref: httpUrl,
+			// The outlined button beside it, jumping to a chapter of this page.
+			ctaSecondaryLabel: z.string(),
+			ctaSecondaryHref: anchor(chapterIds, 'chapter'),
 			agentLabel: z.string(),
 			agentSkillLabel: z.string(),
 			agentSkillHref: anchor(componentIds, 'component'),

@@ -7,8 +7,10 @@ lede: >-
   its advanced type system, and Java's Virtual Threads, which bring the performance
   of reactive programming while retaining a familiar programming model. Use the 
   libraries together or each one separately, whatever is the best fit for your project.
-ctaLabel: Generate a seed project
-ctaHref: "#template"
+ctaPrimaryLabel: Download a starter
+ctaPrimaryHref: https://adopt-tapir.softwaremill.com
+ctaSecondaryLabel: Generate with your agent
+ctaSecondaryHref: "#prompt"
 agentLabel: "For coding agents:"
 agentSkillLabel: scala-skill
 agentSkillHref: "#scala-skill"

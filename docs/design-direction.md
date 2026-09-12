@@ -53,7 +53,7 @@ the two `--ground` washes clears 4.5:1 too (worst 7.79, `--muted` on `#062d19`).
 
 ## Type
 
-- Display (`h1`–`h3`, nav, tabs, CTA, the "VSS" pill, footer links): **Montserrat** 600/700, the face
+- Display (`h1`–`h3`, nav, tabs, CTAs, the "VSS" pill, footer links): **Montserrat** 600/700, the face
   virtuslab.com uses for headlines, tracked tight (−0.03em on the `h1`).
 - Body: **Source Sans 3** 400. Mono: **JetBrains Mono** 400. Only rendered weights are requested.
 - Scale: 1rem base, ×1.25 up (2.441rem for the `h1` ≥720px — a step more and the acronym pill drops
@@ -73,7 +73,7 @@ the two `--ground` washes clears 4.5:1 too (worst 7.79, `--muted` on `#062d19`).
 - `.panel` is the one surface rule — hairline, radius, `--shadow-soft` — and the only use of that
   name: a scoped `.panel` elsewhere still matches it and doubles the hairline, which is why the
   snippet panels are `.snippet-panel`. `--shadow-lift` is it raised: the code panel at rest, cards
-  and the CTA on hover. `:focus-visible` sets no radius, so the ring keeps the element's own shape.
+  and the CTAs on hover. `:focus-visible` sets no radius, so the ring keeps the element's own shape.
 - Ground: the warm colour plus two faint radial washes, placed and sized in pixels — a percentage
   offset resolves against the whole page height and pushes them off the only screen they tint.
 
@@ -99,5 +99,5 @@ clears 4.5:1 — worst 9.14.
 
 ## Motion
 
-CSS only, all eased, all off under `prefers-reduced-motion: reduce`: cards and the CTA lift on
+CSS only, all eased, all off under `prefers-reduced-motion: reduce`: cards and the CTAs lift on
 hover, the skip link slides down. The artwork is raster and still.

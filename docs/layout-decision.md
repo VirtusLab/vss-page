@@ -40,8 +40,9 @@ compiled in CI.
 - One column, full width, capped at ~65 characters of measure. Same on both widths.
 - `<h1>`: what the stack is, one line, with the acronym in brackets after it — "VirtusLab Scala
   Stack (VSS)", plain text, no badge. Below it, one-sentence tagline (`<p>`).
-- One CTA only: "Start a project" → `#template`. No second CTA — no single install command.
-- Under the CTA, one small line for the other audience: "For coding agents: `llms.txt` ·
+- Two CTAs: "Download a starter" → Adopt Tapir's wizard (off-site), filled; "Generate with your
+  agent" → `#prompt`, outlined. Side by side from 720px, stacked full width below.
+- Under the CTAs, one small line for the other audience: "For coding agents: `llms.txt` ·
   scala-skill". The first links to `/llms.txt`; the second is an in-page link to `#scala-skill`,
   the existing AI-tooling component. Nothing new is built for either.
 - No version numbers, star counts (they sit on the cards), event banners or countdowns.
@@ -186,8 +187,7 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
    footer.
    Bordered blocks, not the card format. Visible but never mistaken for part of the open-source
    stack.
-9. **Hero** — title + one-sentence tagline + one CTA (`#template`) + one agent line. A second
-   CTA would have to be invented; there is no install command.
+9. **Hero** — title + one-sentence tagline + two CTAs + one agent line: the wizard, or your agent.
 10. **Agent supplement** — ship `/llms.txt` with all eight snippets in full and all 19 components
     (id, name, description, url, repo). Covers what hidden tab panels lose in renderers.
 11. **Theme** — dark only, no toggle and no OS preference. Build-time single-theme highlighting.

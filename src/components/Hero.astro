@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../lib/base';
 import HeroArt from './graphics/HeroArt.astro';
 
-/** Title, tagline, lede, the single CTA, and one line pointing coding agents at llms.txt and scala-skill. */
+/** Title, tagline, lede, the two CTAs, and one line pointing coding agents at llms.txt and scala-skill. */
 interface Props {
 	hero: CollectionEntry<'hero'>['data'];
 	labels: CollectionEntry<'labels'>['data'];
@@ -18,7 +18,10 @@ const { hero, labels } = Astro.props;
 			<h1>{hero.title} ({hero.acronym})</h1>
 			<p class="tagline">{hero.tagline}</p>
 			<p class="lede">{hero.lede}</p>
-			<p class="cta-row"><a class="cta" href={hero.ctaHref}>{hero.ctaLabel}</a></p>
+			<p class="cta-row">
+				<a class="cta" href={hero.ctaPrimaryHref}>{hero.ctaPrimaryLabel}</a>
+				<a class="cta cta-outline" href={hero.ctaSecondaryHref}>{hero.ctaSecondaryLabel}</a>
+			</p>
 			{/* Kept on one line: the build drops a whitespace-only text node between two tags. */}
 			<p class="agents">
 				{hero.agentLabel} <a href={withBase(labels.llmsHref)}>{labels.llmsLabel}</a> · <a href={hero.agentSkillHref}>{hero.agentSkillLabel}</a>
@@ -71,19 +74,30 @@ const { hero, labels } = Astro.props;
 		color: var(--muted);
 	}
 
+	/* Free of the global `p` measure, which is a line-length cap for prose and would be just short
+	   of the pair. */
 	.cta-row {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		max-width: none;
 		margin: 0;
 	}
 
-	/* The page's primary button: solid VirtusLab green, pill-shaped, soft shadow. The only other
-	   filled button is a promo's amber pill, which carries that block's accent, not this one. */
+	/* The page's two buttons, both pills of the same size. The only other filled button is a
+	   promo's amber pill, which carries that block's accent, not this one. */
 	.cta {
+		--cta-rest-shadow: var(--shadow-soft);
 		display: inline-block;
-		padding: var(--space-3) var(--space-5);
+		/* Sides at --space-4, not --space-5: the pair plus the gap has to fit the text column
+		   beside the art on a 1280px screen. */
+		padding: var(--space-3) var(--space-4);
+		border: var(--border-thick) solid var(--accent);
 		border-radius: var(--radius-pill);
 		background: var(--accent);
-		box-shadow: var(--shadow-soft);
+		box-shadow: var(--cta-rest-shadow);
 		color: var(--on-accent);
+		text-align: center;
 		font-family: var(--font-display);
 		font-size: var(--text-sm);
 		font-weight: 700;
@@ -102,7 +116,13 @@ const { hero, labels } = Astro.props;
 
 	.cta:active {
 		transform: translateY(0);
-		box-shadow: var(--shadow-soft);
+		box-shadow: var(--cta-rest-shadow);
+	}
+
+	.cta-outline {
+		--cta-rest-shadow: none;
+		background: transparent;
+		color: var(--accent);
 	}
 
 	.agents {
@@ -122,6 +142,11 @@ const { hero, labels } = Astro.props;
 	@media (min-width: 720px) {
 		.hero {
 			padding-top: var(--space-6);
+		}
+
+		.cta-row {
+			flex-direction: row;
+			flex-wrap: wrap;
 		}
 
 		/* Text first, art beside it. The art track is a fixed 320px, the image's size, and the text
