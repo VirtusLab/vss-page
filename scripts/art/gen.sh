@@ -11,5 +11,5 @@ codex exec --skip-git-repo-check -C "$D" --sandbox workspace-write -- "Use your 
 
 $(cat "$A/theme.md")
 
-$(cat "$pf")" > "$D/log.txt" 2>&1
+$(cat "$pf")" < /dev/null > "$D/log.txt" 2>&1
 ls -la "$D/$name.png"

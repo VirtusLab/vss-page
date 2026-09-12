@@ -7,8 +7,8 @@ hero, icon-<id>, divider, codebar, og, favicons. Raw renders are read from scrip
 SourceSans3[wght].ttf in scripts/art/fonts/ (git-ignored; both are on github.com/google/fonts).
 
 Every render sits on the solid ground the prompt asks for; `key()` turns that ground into
-transparency. Scenes are centre-cropped to their aspect and resized with Lanczos to twice their CSS
-size. Wide strips (divider, code-bar mark) are cropped around what survived the keying.
+transparency. Every asset is then fitted around what survived the keying, padded to its aspect and
+resized with Lanczos to twice its CSS size.
 """
 import base64
 import io
@@ -81,16 +81,6 @@ def key(im, t0=4, t1=48):
     return Image.fromarray(out, "RGBA")
 
 
-def crop_aspect(im, w, h):
-    """Largest centred crop of aspect w:h."""
-    W, H = im.size
-    if W * h > H * w:
-        cw = H * w // h
-        return im.crop(((W - cw) // 2, 0, (W - cw) // 2 + cw, H))
-    ch = W * h // w
-    return im.crop((0, (H - ch) // 2, W, (H - ch) // 2 + ch))
-
-
 def subject_box(im):
     """Bounding box of everything that survived the keying."""
     return im.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox()
@@ -120,7 +110,9 @@ def save(im, name):
 
 
 def benefit(name):
-    save(crop_aspect(load(name), 4, 3).resize((640, 480), Image.LANCZOS), f"art/{name}.png")
+    # Fitted around the subject, not centre-cropped: a scene that spans the render would lose its
+    # ends to the crop, and the transparent padding costs nothing.
+    save(strip(load(name), 640, 480, 40), f"art/{name}.png")
 
 
 def hero():
