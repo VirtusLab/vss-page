@@ -90,7 +90,7 @@ compiled in CI.
   what the picker's first two entries read.
 - `<section id="benefits">` → `<h2>` and an intro paragraph from `content/benefits-section.md` →
   an `<ol>` of five `<article>`s, one per file in `content/benefits/`.
-- Each item: a rendered plate (`BenefitArt`, keyed by the benefit id, `public/art/`), an `<h3
+- Each item: a rendered illustration (`BenefitArt`, keyed by the benefit id, `public/art/`), an `<h3
   id="benefit-{id}">`, the tagline as a lead line, and the body paragraphs. Above 720px the
   illustration is a 320px column that changes sides down the list; below it, it stacks above the
   text at up to 320px. The item numbers are a CSS counter, not content.

@@ -2,8 +2,8 @@
 import { withBase } from '../../lib/base';
 
 /**
- * One illustration per benefit, keyed by the benefit id: `public/art/benefit-<name>.png`, a rendered
- * plate on its own cream ground, exported at 2x and shown at 320×240. Decorative, hence `aria-hidden`.
+ * One illustration per benefit, keyed by the benefit id: `public/art/benefit-<name>.png`, a transparent
+ * render of the benefit's subject, exported at 2x and shown at 320×240. Decorative, hence `aria-hidden`.
  */
 interface Props {
 	/** A benefit id. An id with no illustration fails the build. */
@@ -16,7 +16,7 @@ if (!drawn.includes(name)) throw new Error(`No benefit illustration drawn for "$
 ---
 
 <img
-	class="benefit-art plate"
+	class="benefit-art"
 	src={withBase(`/art/benefit-${name}.png`)}
 	width="320"
 	height="240"

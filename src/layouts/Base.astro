@@ -99,8 +99,8 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		--line: #22402e;
 		--line-strong: #2f5a40;
 
-		/* The artwork carries no tokens: it is rendered PNG plates on a cream ground, in `public/art/`,
-		   with their own colours baked in. See docs/art-direction.md. */
+		/* The artwork carries no tokens: it is transparent rendered PNGs in `public/art/`, with their
+		   own colours baked in. See docs/art-direction.md. */
 
 		/* Background of the code panel: github-dark-high-contrast on a forest black of our own, so
 		   the panel joins the palette and reads as a surface without an outline doing the work. */
@@ -223,12 +223,6 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 
 	.skip:focus-visible {
 		top: var(--space-3);
-	}
-
-	/* Every artwork image: a render on its own cream ground. The radius is what makes it read as an
-	   object sitting on the page rather than a hole in it. */
-	.plate {
-		border-radius: var(--radius);
 	}
 
 	/* Every surface on the page: a hairline, a soft shadow and the shared radius. Components override

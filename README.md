@@ -76,8 +76,8 @@ and `public/sitemap.xml` all have to change together.
 
 ## Artwork
 
-Every illustration is a rendered PNG plate in `public/art/`, on its own cream
-ground, at exactly 2x its CSS size. `public/og.png` (1200×630),
+Every illustration is a transparent rendered PNG in `public/art/`, at exactly
+2x its CSS size. `public/og.png` (1200×630),
 `public/favicon.svg`, `public/favicon-32.png` and `public/apple-touch-icon.png`
 (180×180) are the same set. All are generated and committed; the prompts and
 scripts are in `scripts/art/`, described in `docs/art-direction.md`.

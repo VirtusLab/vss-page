@@ -2,13 +2,14 @@
 import { withBase } from '../../lib/base';
 
 /**
- * The hero illustration: `public/art/hero.png`, a rendered plate on its own cream ground, exported at
- * 2x and shown at 320×320. Decorative, hence `aria-hidden`. Eager, because it is above the fold.
+ * The hero illustration: `public/art/hero.png`, a transparent render of the wooden Scala logo and its
+ * branch, exported at 2x and shown at 320×320. Decorative, hence `aria-hidden`. Eager, because it is
+ * above the fold.
  */
 ---
 
 <img
-	class="hero-art plate"
+	class="hero-art"
 	src={withBase('/art/hero.png')}
 	width="320"
 	height="320"

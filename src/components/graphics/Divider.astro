@@ -2,15 +2,15 @@
 import { withBase } from '../../lib/base';
 
 /**
- * The band that separates the major blocks of the page: `public/art/divider.png`, a horizontal branch
- * rendered on its own cream plate, exported at 2x and shown at 320×48, centred. Decorative, hence
+ * The band that separates the major blocks of the page: `public/art/divider.png`, a transparent render
+ * of a horizontal leafy branch, exported at 2x and shown at 320×48, centred. Decorative, hence
  * `aria-hidden`.
  */
 ---
 
 <div class="divider" aria-hidden="true">
 	<img
-		class="sprig plate"
+		class="sprig"
 		src={withBase('/art/divider.png')}
 		width="320"
 		height="48"
@@ -29,7 +29,7 @@ import { withBase } from '../../lib/base';
 		margin: var(--space-4) 0;
 	}
 
-	/* Fixed at the plate's size, and never wider than a narrow window. */
+	/* Fixed at the image's CSS size, and never wider than a narrow window. */
 	.sprig {
 		display: block;
 		flex: none;

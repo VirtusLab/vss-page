@@ -2,14 +2,14 @@
 import { withBase } from '../../lib/base';
 
 /**
- * The mark in the code panel's title bar: `public/art/codebar.png`, a small leaf sprig rendered on its
- * own cream plate, exported at 2x and shown at 66×22 — `--mark` tall. The panel's outline and shadow
+ * The mark in the code panel's title bar: `public/art/codebar.png`, a transparent render of a
+ * three-leaf sprig, exported at 2x and shown at 66×22 — `--mark` tall. The panel's outline and shadow
  * are CSS on the panel. Decorative, hence `aria-hidden`.
  */
 ---
 
 <img
-	class="bar-art plate"
+	class="bar-art"
 	src={withBase('/art/codebar.png')}
 	width="66"
 	height="22"

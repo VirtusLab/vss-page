@@ -2,8 +2,9 @@
 import { withBase } from '../../lib/base';
 
 /**
- * One icon per stack section, keyed by the section id: `public/art/icon-<name>.png`, a rendered plate
- * on its own cream ground, exported at 2x and shown at `--icon`. Decorative, hence `aria-hidden`.
+ * One icon per stack section, keyed by the section id: `public/art/icon-<name>.png`, a transparent
+ * render of the section's subject, exported at 2x and shown at 64×64 (`--icon`). Decorative, hence
+ * `aria-hidden`.
  */
 interface Props {
 	/** A section id from `content/components.yaml`. An id with no icon fails the build. */
@@ -16,7 +17,7 @@ if (!drawn.includes(name)) throw new Error(`No icon drawn for section "${name}"`
 ---
 
 <img
-	class="icon plate"
+	class="icon"
 	src={withBase(`/art/icon-${name}.png`)}
 	width="64"
 	height="64"
@@ -27,9 +28,7 @@ if (!drawn.includes(name)) throw new Error(`No icon drawn for section "${name}"`
 />
 
 <style>
-	/* The plate radius is too round for a tile this small. */
 	.icon {
-		border-radius: var(--radius-sm);
 		display: block;
 		flex: none;
 		width: var(--icon);

@@ -8,7 +8,7 @@ and no hex appears outside that file.
 Forest green, VirtusLab's. Clean geometry and a lot of empty space on a deep forest green-black
 ground, bright VL green as the signature accent, amber used sparingly. Dark only: no light
 variant, whatever the OS asks for. The interface is clean and modern; the artwork is clean 3D
-renders of trees and plants on cream plates, so the two share one register. One soft shadow, one
+renders of trees and plants sitting directly on the page, so the two share one register. One soft shadow, one
 green rule.
 
 ## Chapters
@@ -23,10 +23,10 @@ the gutter never changes; below 720px the illustration stacks above.
 
 ## The motif: trees and plants
 
-Wood and leaves are already the palette: VirtusLab greens and warm wood on a cream ground. Growth,
+Wood and leaves are already the palette: VirtusLab greens and warm wood on the forest ground. Growth,
 grafting and pruning give every benefit a concrete subject. The motif carries the hero (the Scala
 logo as stacked wooden bars with a branch growing from it), the six section icons, the five benefit
-plates, the code panel's mark and the favicon — not the Visdom block, which is no part of the free
+illustrations, the code panel's mark and the favicon — not the Visdom block, which is no part of the free
 stack.
 
 ## Palette
@@ -47,7 +47,7 @@ Grounds: `--bg` `#07160f`, `--surface` `#0f2418`. `--on-accent` on a solid `--ac
 hovered cell `--surface-2-hover` `#1b3f29`; on the worse of the two, `--muted` is 6.08 and
 `--accent` 7.22.
 
-The artwork has no tokens: each plate carries its own colours and nothing recolours it. Text on
+The artwork has no tokens: each image carries its own colours and nothing recolours it. Text on
 the two `--ground` washes clears 4.5:1 too (worst 7.79, `--muted` on `#062d19`).
 
 ## Type
@@ -65,8 +65,8 @@ the two `--ground` washes clears 4.5:1 too (worst 7.79, `--muted` on `#062d19`).
 - Spacing `4 / 8 / 16 / 28 / 48 / 72`px. Borders `--border` 1px, `--border-thick` 2px (also the focus
   ring), `--rule` 3px for the green mark. Page container 62rem. Sizes are tokens too.
 - Radius `--radius-sm` 8, `--radius` 14, `--radius-pill`, and `--radius-lg` 26 on the code panel
-  alone. Nothing has a square corner: the artwork takes `--radius` through `.plate`, the section
-  icons `--radius-sm`. Illustration sizes: `--icon` 64, `--mark` 22.
+  alone. Nothing has a square corner; the artwork is transparent and has none to round. Illustration
+  sizes: `--icon` 64, `--mark` 22.
 - `.panel` is the one surface rule — hairline, radius, `--shadow-soft` — and the only use of that
   name: a scoped `.panel` elsewhere still matches it and doubles the hairline, which is why the
   snippet panels are `.snippet-panel`. `--shadow-lift` is it raised: the code panel at rest, cards
@@ -76,8 +76,8 @@ the two `--ground` washes clears 4.5:1 too (worst 7.79, `--muted` on `#062d19`).
 
 ## Motifs
 
-Art is rendered PNG plates in `public/art/`, each on its own cream ground at 2x its CSS size, given
-its corners by the shared `.plate` class; see `docs/art-direction.md`. All are decorative.
+Art is transparent rendered PNGs in `public/art/`, each at 2x its CSS size, the subject and its soft
+shadow sitting directly on the page; see `docs/art-direction.md`. All are decorative.
 
 - `HeroArt.astro` — `art/hero.png`, shown at 320×320 at both widths.
 - `SectionIcon.astro` — `art/icon-<section>.png`, shown at `--icon`; `BenefitArt.astro` —

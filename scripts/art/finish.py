@@ -6,25 +6,79 @@ hero, icon-<id>, divider, codebar, og, favicons. Raw renders are read from scrip
 <asset>.png (git-ignored), as gen.sh leaves them. `og` and `favicons` need Montserrat[wght].ttf and
 SourceSans3[wght].ttf in scripts/art/fonts/ (git-ignored; both are on github.com/google/fonts).
 
-Every render is a cream product plate; nothing is keyed out. Scenes are centre-cropped to their
-aspect and resized with Lanczos to twice their CSS size. Wide strips (divider, code-bar mark) are
-cropped around the subject's bounding box on the cream ground.
+Every render sits on the solid ground the prompt asks for; `key()` turns that ground into
+transparency. Scenes are centre-cropped to their aspect and resized with Lanczos to twice their CSS
+size. Wide strips (divider, code-bar mark) are cropped around what survived the keying.
 """
 import base64
 import io
 import sys
 from pathlib import Path
 
+import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 S = str(Path(__file__).resolve().parent) + "/"
 P = str(Path(__file__).resolve().parents[2] / "public") + "/"
-CREAM = (244, 239, 230)
-INK = (11, 61, 46)  # deep green, the site's dark text on cream
+GROUND = (15, 36, 24)  # the solid ground every prompt asks for; keyed out below
+PAGE = (7, 22, 15)  # --bg, for the share image and favicon tiles, which cannot be transparent
+INK = (234, 244, 234)  # --fg
+MUTED = (167, 193, 174)  # --muted
 
 
 def load(name):
-    return Image.open(f"{S}gen/{name}/{name}.png").convert("RGB")
+    """The raw render, shifted so its ground is exactly GROUND: the model lands a unit or two off,
+    which would leave the keyed edge a shade off."""
+    im = Image.open(f"{S}gen/{name}/{name}.png").convert("RGB")
+    px = im.load()
+    W, H = im.size
+    edge = [px[x, y] for x in range(0, W, 8) for y in (0, H - 1)] + [px[x, y] for y in range(0, H, 8) for x in (0, W - 1)]
+    median = tuple(sorted(c[i] for c in edge)[len(edge) // 2] for i in range(3))
+    shift = tuple(GROUND[i] - median[i] for i in range(3))
+    if any(shift):
+        im = Image.merge("RGB", [ch.point(lambda v, d=d: max(0, min(255, v + d))) for ch, d in zip(im.split(), shift)])
+    return key(im)
+
+
+def key(im, t0=4, t1=48):
+    """Ground to transparency. Alpha grows with the colour distance from GROUND between t0 and t1,
+    but only in the region connected to the frame edge, so a dark pixel inside a leaf stays put.
+    The colour is un-mixed from the ground so the soft edge does not carry a green fringe; a contact
+    shadow, darker than the ground, comes out as faint black, which is what a shadow is."""
+    rgb = np.asarray(im, dtype=np.float32)
+    g = np.array(GROUND, dtype=np.float32)
+    d = np.abs(rgb - g).max(axis=2)
+    # `.copy()`: an image made from an array is read-only and floodfill then does nothing.
+    near = Image.fromarray(((d < t1) * 255).astype(np.uint8)).copy()
+    W, H = im.size
+    for x in range(0, W, 16):
+        for y in (0, H - 1):
+            if near.getpixel((x, y)) == 255:
+                ImageDraw.floodfill(near, (x, y), 128)
+    for y in range(0, H, 16):
+        for x in (0, W - 1):
+            if near.getpixel((x, y)) == 255:
+                ImageDraw.floodfill(near, (x, y), 128)
+    # Enclosed pockets of ground (a trellis opening, the inside of a hoop) are keyed too, when they
+    # are bigger than a sliver; a small dark patch inside a leaf is shading and stays.
+    pocket = W * H // 2000
+    while True:
+        rest = np.argwhere(np.asarray(near) == 255)
+        if len(rest) == 0:
+            break
+        y, x = rest[0]
+        before = (np.asarray(near) == 255).sum()
+        ImageDraw.floodfill(near, (int(x), int(y)), 64)
+        filled = before - (np.asarray(near) == 255).sum()
+        if filled > pocket:
+            ImageDraw.floodfill(near, (int(x), int(y)), 128)
+    ground = np.asarray(near) == 128
+    a = np.clip((d - t0) / (t1 - t0), 0, 1)
+    a = np.where(ground, a, 1.0)
+    safe = np.maximum(a, 1e-3)[..., None]
+    unmixed = (rgb - (1 - a)[..., None] * g) / safe
+    out = np.dstack([np.clip(unmixed, 0, 255), a * 255]).astype(np.uint8)
+    return Image.fromarray(out, "RGBA")
 
 
 def crop_aspect(im, w, h):
@@ -37,18 +91,9 @@ def crop_aspect(im, w, h):
     return im.crop((0, (H - ch) // 2, W, (H - ch) // 2 + ch))
 
 
-def subject_box(im, tol=18):
-    """Bounding box of everything that is not the cream ground."""
-    px = im.load()
-    W, H = im.size
-    xs, ys = [], []
-    for y in range(0, H, 2):
-        for x in range(0, W, 2):
-            r, g, b = px[x, y]
-            if abs(r - CREAM[0]) + abs(g - CREAM[1]) + abs(b - CREAM[2]) > tol:
-                xs.append(x)
-                ys.append(y)
-    return min(xs), min(ys), max(xs) + 1, max(ys) + 1
+def subject_box(im):
+    """Bounding box of everything that survived the keying."""
+    return im.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox()
 
 
 def strip(im, w, h, pad):
@@ -64,7 +109,7 @@ def strip(im, w, h, pad):
         nw = bh * w // h
         x0 -= (nw - bw) // 2
         x1 = x0 + nw
-    out = Image.new("RGB", (x1 - x0, y1 - y0), CREAM)
+    out = Image.new("RGBA", (x1 - x0, y1 - y0), (0, 0, 0, 0))
     out.paste(im, (-x0, -y0))
     return out.resize((w, h), Image.LANCZOS)
 
@@ -101,32 +146,35 @@ def font(file, size, weight):
 
 
 def og():
-    """1200x630: the hero plate on the left, the title and tagline on the right."""
-    art = Image.open(f"{P}art/hero.png").convert("RGB").resize((520, 520), Image.LANCZOS)
-    out = Image.new("RGB", (1200, 630), CREAM)
-    out.paste(art, (40, 55))
+    """1200x630: the hero on the left, the title and tagline on the right, on the page colour."""
+    art = Image.open(f"{P}art/hero.png").convert("RGBA").resize((520, 520), Image.LANCZOS)
+    out = Image.new("RGB", (1200, 630), PAGE)
+    out.paste(art, (40, 55), art)
     d = ImageDraw.Draw(out)
     title = font("Montserrat[wght].ttf", 64, 700)
     sub = font("SourceSans3[wght].ttf", 34, 400)
     x, y = 590, 190
     d.text((x, y), "VirtusLab", font=title, fill=INK)
     d.text((x, y + 76), "Scala Stack", font=title, fill=INK)
-    d.text((x, y + 172), "Direct-style Scala: type-safe code", font=sub, fill=(70, 90, 80))
-    d.text((x, y + 214), "that is easy to comprehend and generate.", font=sub, fill=(70, 90, 80))
+    d.text((x, y + 172), "Direct-style Scala: type-safe code", font=sub, fill=MUTED)
+    d.text((x, y + 214), "that is easy to comprehend and generate.", font=sub, fill=MUTED)
     save(out, "og.png")
 
 
 def favicons():
-    """The logo part of the hero, square, on the cream plate: 32 PNG, 180 apple, 64 in the SVG."""
+    """The wooden-slab mark of the hero, square, on a page-coloured tile: 32 PNG, 180 apple, 64 in
+    the SVG. The branch is left out: at 32px it would be a smudge across the mark."""
     src = load("hero")
-    # The lower half only: the wooden bars are the mark, the thin branch would be a smudge at 32px.
-    W, H = src.size
-    x0, y0, x1, y1 = subject_box(src.crop((0, H * 45 // 100, W, H)))
-    y0, y1 = y0 + H * 45 // 100, y1 + H * 45 // 100
-    side = max(x1 - x0, y1 - y0) + 80
+    a = np.asarray(src)
+    # The slabs are the only pale material in the render.
+    pale = (a[..., 3] > 128) & (a[..., :3].min(axis=2) > 170)
+    ys, xs = np.nonzero(pale)
+    x0, y0, x1, y1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
+    side = max(x1 - x0, y1 - y0) + 60
     cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
-    tile = Image.new("RGB", (side, side), CREAM)
-    tile.paste(src, (side // 2 - cx, side // 2 - cy))
+    mark = src.crop((x0 - 20, y0 - 20, x1 + 20, y1 + 20))
+    tile = Image.new("RGB", (side, side), PAGE)
+    tile.paste(mark, (side // 2 - (cx - x0 + 20), side // 2 - (cy - y0 + 20)), mark)
     save(tile.resize((32, 32), Image.LANCZOS), "favicon-32.png")
     save(tile.resize((180, 180), Image.LANCZOS), "apple-touch-icon.png")
     buf = io.BytesIO()
