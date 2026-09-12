@@ -45,9 +45,8 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		{/* Same two values as `--bg`, so the browser chrome carries the page's ground. */}
-		<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9f6f5" />
-		<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#07160f" />
+		{/* Same value as `--bg`, so the browser chrome carries the page's ground. */}
+		<meta name="theme-color" content="#07160f" />
 		<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
 		{/* Raster copies of the same mark, for Safari < 16.4 and for "add to home screen". */}
 		<link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
@@ -74,38 +73,38 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 
 <style is:global>
 	:root {
-		color-scheme: light dark;
+		color-scheme: dark;
 
-		/* Warm paper, green-black ink, and VirtusLab's greens: a saturated green carries text and
-		   links, the bright one is a fill only, and one amber marks the eyes and the paid block. */
-		--bg: #f9f6f5;
-		--surface: #eef3e7;
-		/* One step down from --surface: the card's footer band, and the same band under a pointer.
-		   Both carry --muted and --accent text, so neither may go darker than this. */
-		--surface-2: #e6eddd;
-		--surface-2-hover: #dce7d0;
-		--fg: #16211a;
-		--muted: #4a5b50;
-		--accent: #046b39;
-		/* Too bright to read as text on the warm ground; used for fills, rules and the artwork. */
+		/* One palette: a deep forest green-black ground, VirtusLab's bright green carrying text, links
+		   and fills, and one amber, used sparingly, marking the eyes and the paid block. */
+		--bg: #07160f;
+		--surface: #0f2418;
+		/* Lighter than --surface: on the forest ground a band reads as a surface by rising out of the
+		   card, not by sinking into it. It is the card's footer band, and the same band under a
+		   pointer; both carry --muted and --accent text, so neither may go darker than this. */
+		--surface-2: #14301f;
+		--surface-2-hover: #1b3f29;
+		--fg: #eaf4ea;
+		--muted: #a7c1ae;
+		--accent: #67e387;
+		/* The brand green as printed; used for rules, fills and the artwork, never as text. */
 		--accent-bright: #00c859;
-		/* Amber is a fill, not an ink. --accent-2-text is the same amber taken down until it clears
-		   4.5:1 on both grounds. */
-		--accent-2: #e2a02c;
-		--accent-2-text: #8a4a00;
+		/* On the forest ground the amber already clears 4.5:1, so text and fill share one value. */
+		--accent-2: #f0b756;
+		--accent-2-text: #f0b756;
 		/* Text drawn on top of a solid --accent fill, and on a solid --accent-2 one. */
-		--on-accent: #f9f6f5;
-		--on-accent-2: #16211a;
+		--on-accent: #07160f;
+		--on-accent-2: #07160f;
 		/* Hairlines. Never text: --line separates, --line-strong outlines the thing being looked at. */
-		--line: #dbe3d3;
-		--line-strong: #bed0b2;
+		--line: #22402e;
+		--line-strong: #2f5a40;
 
 		/* The artwork carries no tokens: it is rendered PNG plates on a cream ground, in `public/art/`,
 		   with their own colours baked in. See docs/art-direction.md. */
 
-		/* Background of the code panel: a hair greener and darker than the page, so the panel reads
-		   as a surface without an outline doing the work. */
-		--code-bg: #f2f5ec;
+		/* Background of the code panel: github-dark-high-contrast on a forest black of our own, so
+		   the panel joins the palette and reads as a surface without an outline doing the work. */
+		--code-bg: #041009;
 
 		--font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 		--font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -152,56 +151,18 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 		--radius-lg: 26px;
 		--radius-pill: 999px;
 		--shadow-soft:
-			0 1px 2px rgb(16 36 26 / 0.05),
-			0 8px 22px rgb(16 36 26 / 0.07);
+			0 1px 2px rgb(0 0 0 / 0.4),
+			0 8px 22px rgb(0 0 0 / 0.45);
 		--shadow-lift:
-			0 2px 6px rgb(16 36 26 / 0.07),
-			0 18px 40px rgb(16 36 26 / 0.12);
+			0 2px 6px rgb(0 0 0 / 0.45),
+			0 18px 40px rgb(0 0 0 / 0.55);
 
-		/* Two washes over the warm ground: the page has weather, not a grid. Placed and sized in
+		/* Two washes over the forest ground: the page has weather, not a grid. Placed and sized in
 		   pixels — a percentage offset resolves against the whole page height, which pushes both
 		   washes far below the only screen they were meant to tint. */
 		--ground:
 			radial-gradient(940px 640px at 14% 60px, rgb(0 200 89 / 0.13), transparent 70%),
-			radial-gradient(780px 540px at 94% 190px, rgb(226 160 44 / 0.11), transparent 68%);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		:root {
-			/* Not an inversion: the ground becomes a deep forest green-black and the greens brighten,
-			   so the accent that was fill-only in light mode becomes the one that carries text. */
-			--bg: #07160f;
-			--surface: #0f2418;
-			/* Lighter than --surface here: on the forest ground a band reads as a surface by rising
-			   out of the card, not by sinking into it. */
-			--surface-2: #14301f;
-			--surface-2-hover: #1b3f29;
-			--fg: #eaf4ea;
-			--muted: #a7c1ae;
-			--accent: #67e387;
-			--accent-bright: #00c859;
-			--accent-2: #f0b756;
-			/* On the forest ground the bright amber already clears 4.5:1, so text and fill agree. */
-			--accent-2-text: #f0b756;
-			--on-accent: #07160f;
-			--on-accent-2: #07160f;
-			--line: #22402e;
-			--line-strong: #2f5a40;
-
-			/* github-dark-high-contrast on a forest black of our own, so the panel joins the palette. */
-			--code-bg: #041009;
-
-			--shadow-soft:
-				0 1px 2px rgb(0 0 0 / 0.4),
-				0 8px 22px rgb(0 0 0 / 0.45);
-			--shadow-lift:
-				0 2px 6px rgb(0 0 0 / 0.45),
-				0 18px 40px rgb(0 0 0 / 0.55);
-
-			--ground:
-				radial-gradient(940px 640px at 14% 60px, rgb(0 200 89 / 0.13), transparent 70%),
-				radial-gradient(780px 540px at 94% 190px, rgb(240 183 86 / 0.09), transparent 68%);
-		}
+			radial-gradient(780px 540px at 94% 190px, rgb(240 183 86 / 0.09), transparent 68%);
 	}
 
 	* {
@@ -265,7 +226,7 @@ const shareImage = new URL(withBase('/og.png'), Astro.site).href;
 	}
 
 	/* Every artwork image: a render on its own cream ground. The radius is what makes it read as an
-	   object sitting on the page rather than a hole in it, most of all on the dark ground. */
+	   object sitting on the page rather than a hole in it. */
 	.plate {
 		border-radius: var(--radius);
 	}

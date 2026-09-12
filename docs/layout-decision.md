@@ -186,7 +186,7 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
    CTA would have to be invented; there is no install command.
 10. **Agent supplement** — ship `/llms.txt` with all eight snippets in full and all 19 components
     (id, name, description, url, repo). Covers what hidden tab panels lose in renderers.
-11. **Theme** — `prefers-color-scheme` only, no toggle. Build-time dual-theme highlighting.
+11. **Theme** — dark only, no toggle and no OS preference. Build-time single-theme highlighting.
 12. **Tech choice** — Astro (section 4). Chosen on build-time Shiki and typed content
     collections; "supports tabs" is deliberately not a criterion.
 13. **Benefits block** — five benefits on a tinted full-bleed band between the snippets and the
@@ -235,8 +235,8 @@ Features and packages that will be used (nothing installed yet):
   `{ id, name, description, url, repo?, action? }`, where every `id` is kebab-case and unique across the
   whole file. A typo or a duplicate id breaks the build, not the page.
 - `<Code />` from `astro:components` for the eight snippets — Shiki at build time, `lang="scala"`,
-  `themes: { light, dark }` with `defaultColor: false`, so the two themes ship as CSS variables
-  switched by a `prefers-color-scheme` block. Concrete theme names are the later design task's.
+  a single `theme`, since the site is dark only; the colours ship inline. The concrete theme name
+  is the later design task's.
 - `import.meta.glob('../snippets/*.scala', { query: '?raw', eager: true })` to read the snippet
   files that CI compiles. A build-time helper slices out the `// snippet:start` / `// snippet:end`
   region before `<Code />` renders it, and fails the build if either marker is missing.
@@ -262,5 +262,5 @@ Claims still inferred; check during implementation.
 5. **Astro `file()` loader on a nested YAML shape.** One document with a `sections` array, not a
    flat entry array. If a `parser` does not cover it, fall back to a plain `import` of the YAML plus
    a manual Zod parse. The promos are their own markdown collection, so they never went through it.
-6. **Dual-theme Shiki with `defaultColor: false`** producing usable CSS variables without any
-   client JS — verify before the design task builds a palette on top of it.
+6. **Dual-theme Shiki with `defaultColor: false`** — moot: the site went dark only, so `<Code />`
+   takes a single `theme` and the colours ship inline.

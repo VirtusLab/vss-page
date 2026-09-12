@@ -22,6 +22,9 @@ interface Props {
 
 const { tabs, fullExampleLabel, legend, heading, note } = Astro.props;
 
+// Shiki writes the theme's own background inline on the `pre`; the panel paints ours instead.
+const ownBackground = { pre(node: { properties: Record<string, unknown> }) { delete node.properties.style; } };
+
 const radioId = (id: string) => `snippet-${id}`;
 const panelId = (id: string) => `panel-${id}`;
 
@@ -79,8 +82,8 @@ const tabRules = tabs
 								<Code
 									code={tab.code}
 									lang="scala"
-									themes={{ light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' }}
-									defaultColor={false}
+									theme="github-dark-high-contrast"
+									transformers={[ownBackground]}
 								/>
 							</div>
 						</div>
@@ -238,8 +241,8 @@ const tabRules = tabs
 		font-weight: 600;
 	}
 
-	/* Shiki renders both themes as CSS variables (defaultColor: false); pick one per color scheme.
-	   The panel background is our own token in both modes, so it belongs to the palette. */
+	/* Shiki inlines the syntax colours; the panel background is our own token so the panel belongs
+	   to the palette. */
 	.snippet-panel :global(pre.astro-code) {
 		margin: 0;
 		padding: var(--space-3);
@@ -248,22 +251,7 @@ const tabRules = tabs
 		line-height: 1.65;
 		overflow-x: auto;
 		scrollbar-width: thin;
-		color: var(--shiki-light);
 		background-color: var(--code-bg);
-	}
-
-	.snippet-panel :global(pre.astro-code span) {
-		color: var(--shiki-light);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.snippet-panel :global(pre.astro-code) {
-			color: var(--shiki-dark);
-		}
-
-		.snippet-panel :global(pre.astro-code span) {
-			color: var(--shiki-dark);
-		}
 	}
 
 	@media (min-width: 720px) {

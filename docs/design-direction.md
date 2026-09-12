@@ -5,10 +5,11 @@ and no hex appears outside that file.
 
 ## Direction
 
-Warm green, VirtusLab's. Clean geometry and a lot of empty space on a warm off-white ground, deep
-forest green in dark mode, bright VL green as the signature accent, amber used sparingly. The
-interface is clean and modern; the artwork is clean 3D renders of trees and plants on cream plates,
-so the two share one register. One soft shadow, one green rule.
+Forest green, VirtusLab's. Clean geometry and a lot of empty space on a deep forest green-black
+ground, bright VL green as the signature accent, amber used sparingly. Dark only: no light
+variant, whatever the OS asks for. The interface is clean and modern; the artwork is clean 3D
+renders of trees and plants on cream plates, so the two share one register. One soft shadow, one
+green rule.
 
 ## Chapters
 
@@ -30,24 +31,24 @@ stack.
 
 ## Palette
 
-Light is warm paper and green-black ink. Dark is not an inversion: the ground becomes forest
-green-black and the greens brighten, so the green that is fill-only in light mode carries the text.
-Never text in either mode: `--line`, `--line-strong`, `--accent-bright` `#00c859`.
+A forest green-black ground with a bright green that carries the text; the amber is bright enough
+here to be both fill and ink, so `--accent-2` and `--accent-2-text` share one value. Never text:
+`--line`, `--line-strong`, `--accent-bright` `#00c859`.
 
-| token | light | dark | light `--bg` | light `--surface` | dark `--bg` | dark `--surface` |
-| --- | --- | --- | ---: | ---: | ---: | ---: |
-| `--fg` | `#16211a` | `#eaf4ea` | 15.42 | 14.69 | 16.47 | 14.49 |
-| `--muted` | `#4a5b50` | `#a7c1ae` | 6.73 | 6.41 | 9.62 | 8.46 |
-| `--accent` | `#046b39` | `#67e387` | 6.17 | 5.88 | 11.42 | 10.04 |
-| `--accent-2-text` | `#8a4a00` | `#f0b756` | 6.38 | 6.08 | 10.27 | 9.03 |
+| token | value | on `--bg` | on `--surface` |
+| --- | --- | ---: | ---: |
+| `--fg` | `#eaf4ea` | 16.47 | 14.49 |
+| `--muted` | `#a7c1ae` | 9.62 | 8.46 |
+| `--accent` | `#67e387` | 11.42 | 10.04 |
+| `--accent-2-text` | `#f0b756` | 10.27 | 9.03 |
 
-Grounds: `--bg` `#f9f6f5` / `#07160f`, `--surface` `#eef3e7` / `#0f2418`, light first in every pair.
-`--on-accent` on a solid `--accent` is 6.17 / 11.42, `--on-accent-2` on `--accent-2` 7.34 / 10.27.
-The card's link band is `--surface-2` `#e6eddd` / `#14301f` and its hovered cell `--surface-2-hover`
-`#dce7d0` / `#1b3f29`; on the worse of the two, `--muted` is 5.64 / 6.08 and `--accent` 5.17 / 7.22.
+Grounds: `--bg` `#07160f`, `--surface` `#0f2418`. `--on-accent` on a solid `--accent` is 11.42,
+`--on-accent-2` on `--accent-2` 10.27. The card's link band is `--surface-2` `#14301f` and its
+hovered cell `--surface-2-hover` `#1b3f29`; on the worse of the two, `--muted` is 6.08 and
+`--accent` 7.22.
 
 The artwork has no tokens: each plate carries its own colours and nothing recolours it. Text on
-the two `--ground` washes clears 4.5:1 too (worst 5.53, `--accent` on `#d9f0e1`).
+the two `--ground` washes clears 4.5:1 too (worst 7.79, `--muted` on `#062d19`).
 
 ## Type
 
@@ -90,8 +91,8 @@ its corners by the shared `.plate` class; see `docs/art-direction.md`. All are d
 
 ## Code themes
 
-Shiki `github-light-high-contrast` and `github-dark-high-contrast`, on our own panel backgrounds
-(`#f2f5ec` light, `#041009` dark). Every syntax colour clears 4.5:1 — worst 7.31 light, 9.14 dark.
+Shiki `github-dark-high-contrast`, on our own panel background `#041009`. Every syntax colour
+clears 4.5:1 — worst 9.14.
 
 ## Motion
 
