@@ -15,7 +15,7 @@ interface Props {
 	/** Names the snippets chapter, which the first entry jumps to. */
 	snippetsLabel: string;
 	/** Names the agent-prompt chapter. */
-	startLabel: string;
+	promptLabel: string;
 	/** Names the benefits chapter. Not the benefits heading: the strip needs the short word. */
 	benefitsLabel: string;
 	/** Accessible name of the bar. Not shown. */
@@ -24,12 +24,12 @@ interface Props {
 	menuLabel: string;
 }
 
-const { sections, homeLabel, snippetsLabel, startLabel, benefitsLabel, label, menuLabel } =
+const { sections, homeLabel, snippetsLabel, promptLabel, benefitsLabel, label, menuLabel } =
 	Astro.props;
 
 const entries = [
 	{ href: '#snippets', label: snippetsLabel },
-	{ href: '#start', label: startLabel },
+	{ href: '#prompt', label: promptLabel },
 	{ href: '#benefits', label: benefitsLabel },
 	...sections.map((section) => ({ href: `#${section.id}`, label: section.title })),
 ];
@@ -96,23 +96,60 @@ const entries = [
 
 	/* A pill like the chapters', with three bars in it: the middle one is the box, the other two its
 	   shadow, so no image or icon font is needed. */
+	/* A fixed tile, not padding around the icon: the fill has to be a shape of its own, since the
+	   icon is three hairlines with air between them. */
 	.burger {
 		display: flex;
 		align-items: center;
-		padding: var(--space-2) var(--space-3);
-		border-radius: var(--radius-pill);
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: var(--radius-sm);
 		color: var(--fg);
 		cursor: pointer;
 	}
 
 	.bars {
+		position: relative;
 		display: block;
 		width: 18px;
 		height: 2px;
 		background: currentColor;
-		box-shadow:
-			0 -6px 0 currentColor,
-			0 6px 0 currentColor;
+		transition: background 0.15s ease;
+	}
+
+	.bars::before,
+	.bars::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: currentColor;
+		transition:
+			translate 0.15s ease,
+			rotate 0.15s ease;
+	}
+
+	.bars::before {
+		translate: 0 -6px;
+	}
+
+	.bars::after {
+		translate: 0 6px;
+	}
+
+	/* Open: the tile fills and the outer bars fold into a cross. */
+	.toggle:checked ~ .burger .bars {
+		background: transparent;
+	}
+
+	.toggle:checked ~ .burger .bars::before {
+		translate: 0;
+		rotate: 45deg;
+	}
+
+	.toggle:checked ~ .burger .bars::after {
+		translate: 0;
+		rotate: -45deg;
 	}
 
 	/* Read by screen readers, never shown: names the checkbox, and so the button. */
@@ -240,7 +277,10 @@ const entries = [
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.float a {
+		.float a,
+		.bars,
+		.bars::before,
+		.bars::after {
 			transition: none;
 		}
 	}

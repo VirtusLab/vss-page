@@ -67,12 +67,12 @@ const jsonLd = {
 		sections={sections}
 		homeLabel={labels.chapterHome}
 		snippetsLabel={labels.chapterSnippets}
-		startLabel={labels.chapterStart}
+		promptLabel={labels.chapterPrompt}
 		benefitsLabel={labels.chapterBenefits}
 		label={labels.chapterPicker}
 		menuLabel={labels.chapterMenu}
 	/>
-	{/* Four chapters, each opened by its own heading: the snippets show the code, the start chapter
+	{/* Four chapters, each opened by its own heading: the snippets show the code, the prompt chapter
 	    hands over the agent prompt, the benefits make the argument, and the components chapter lists
 	    the stack. A sprig closes the hero and another closes the benefits, leading straight into the
 	    components chapter; the snippets need none, because the band's top edge is already a line
@@ -89,9 +89,9 @@ const jsonLd = {
 				heading={labels.snippetsHeading}
 				note={labels.snippetsNote}
 			/>
-			{/* Its own chapter, still before the promos: the code, then how to start. */}
-			<AgentPrompt prompt={agentPrompt} />
 			{promos.afterSnippets.map((promo) => <Promo promo={promo} />)}
+			{/* After the VirtusLab promo: the code, who maintains it, then how to start. */}
+			<AgentPrompt prompt={agentPrompt} />
 		</div>
 		<BenefitsSection benefits={benefits} promos={promos.afterBenefits} />
 		<div class="page">

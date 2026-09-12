@@ -254,7 +254,7 @@ const labels = defineCollection({
 			chapterHome: z.string(),
 			// Name the floating picker's first three chapter entries.
 			chapterSnippets: z.string(),
-			chapterStart: z.string(),
+			chapterPrompt: z.string(),
 			chapterBenefits: z.string(),
 			// Accessible name of the floating chapter picker, the page's only `<nav>`.
 			chapterPicker: z.string(),

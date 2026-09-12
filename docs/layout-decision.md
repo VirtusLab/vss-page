@@ -16,7 +16,7 @@ compiled in CI.
 - No masthead beyond the picker strip. The first screen is hero + code, not chrome.
 - The page's only navigation is the chapter picker (`FloatingNav`), fixed to the top edge and always
   on screen: "VSS" → `#content` (the top of the page), a vertical rule, then "In action" →
-  `#snippets`, "Start" → `#start`, "Benefits" → `#benefits` and the six section titles. Ten pills,
+  `#snippets`, "Prompt" → `#prompt`, "Benefits" → `#benefits` and the six section titles. Ten pills,
   no repo link. The
   labels are the home and chapter names from `content/labels.md` and the YAML section titles, so
   nothing is written twice. The repo link lives in the footer instead. The home pill is never the
@@ -133,12 +133,12 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 - Everything that is not part of the open-source stack: one file per block in `content/promos/`,
   with `placement` picking one of the page's three slots and `order` the place within it. Each slot
   is the end of a chapter, so a promo never interrupts one.
-- Between the switcher and the first promo sits the "Start" chapter (`#start`,
+- After the first promo, before the benefits band, sits the "Prompt" chapter (`#prompt`,
   `content/agent-prompt.md`), opened by a `.chapter-heading` like the others: a prompt to paste into
   a coding agent that sets up a VSS project, in a wrapped `<pre>`, with a copy button. Green, not
   the promo amber: it is part of the stack's story, not a promo. The copy button stays hidden
   without a clipboard; the text is selectable either way.
-- `after-snippets`: directly under the start chapter, before the benefits band. VirtusLab's Scala
+- `after-snippets`: directly under the switcher, before the prompt chapter. VirtusLab's Scala
   work, where the reader has just seen the code the team maintains.
 - `after-benefits`: the last block inside the benefits band, after the fifth benefit and before the
   sprig that closes the chapter, so the tint carries it. `BenefitsSection.astro` renders it, in the

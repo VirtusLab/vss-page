@@ -11,7 +11,7 @@ snippetsHeading: "VSS in action!"
 snippetsNote: Each tab is an excerpt of a runnable scala-cli script.
 chapterHome: VSS
 chapterSnippets: In action
-chapterStart: Start
+chapterPrompt: Prompt
 chapterBenefits: Benefits
 chapterPicker: Chapters
 chapterMenu: Menu

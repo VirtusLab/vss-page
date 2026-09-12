@@ -13,7 +13,7 @@ green rule.
 
 ## Chapters
 
-Four — snippets, start, benefits, components — each opened by a `.chapter-heading` alone; nothing sits
+Four — snippets, prompt, benefits, components — each opened by a `.chapter-heading` alone; nothing sits
 over it, so the air above the heading is what marks the break. A divider strip closes the hero and
 another the benefits; the snippets need none, the band's top border being a line across the page already.
 Below 720px the strips are gone: the chapters already stack with air between them.
