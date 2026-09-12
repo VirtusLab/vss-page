@@ -1,6 +1,6 @@
 ---
 /**
- * The box between the snippets and the first promo that hands the reader a prompt for a coding
+ * The chapter between the snippets and the first promo that hands the reader a prompt for a coding
  * agent. `text` is shown in a `<pre>` and copied as it is. The button is hidden until the inline
  * script in `index.astro` finds a clipboard to write to; without one the text is still there to
  * select. Green, like the stack, and not the promos' amber: this is part of the story.
@@ -12,8 +12,8 @@ interface Props {
 const { title, note, copyLabel, copiedLabel, text } = Astro.props.prompt;
 ---
 
-<section id="agent-prompt" class="panel">
-	<h2>{title}</h2>
+<section id="start">
+	<h2 class="chapter-heading">{title}</h2>
 	<p class="note">{note}</p>
 	<div class="frame">
 		<button type="button" class="copy" data-copy data-copied-label={copiedLabel} hidden
@@ -24,15 +24,9 @@ const { title, note, copyLabel, copiedLabel, text } = Astro.props.prompt;
 </section>
 
 <style>
+	/* The snippets chapter's air, so the two chapters read on one rhythm. */
 	section {
 		margin: var(--space-6) 0 var(--space-5);
-		padding: var(--space-4);
-		background: var(--surface);
-	}
-
-	h2 {
-		margin: 0 0 var(--space-2);
-		font-size: var(--text-lg);
 	}
 
 	.note {
@@ -42,7 +36,7 @@ const { title, note, copyLabel, copiedLabel, text } = Astro.props.prompt;
 	}
 
 	/* `flow-root` keeps the floated button (wide screens) inside the box. Not a `.panel`: no shadow,
-	   the snippet frames are the page's hero content and this is a box in a box. */
+	   the snippet frames are the page's hero content and this is the plainer box after them. */
 	.frame {
 		display: flow-root;
 		border: var(--border) solid var(--line);
@@ -87,13 +81,9 @@ const { title, note, copyLabel, copiedLabel, text } = Astro.props.prompt;
 		color: var(--accent);
 	}
 
+	/* Top-right corner of the box, with the first lines of the prompt flowing around it. A float,
+	   not absolute positioning: nothing has to reserve room for it. */
 	@media (min-width: 720px) {
-		section {
-			padding: var(--space-5);
-		}
-
-		/* Top-right corner of the box, with the first lines of the prompt flowing around it. A float,
-		   not absolute positioning: nothing has to reserve room for it. */
 		.copy {
 			float: right;
 			margin: var(--space-3) var(--space-3) var(--space-2);

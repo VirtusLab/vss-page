@@ -22,11 +22,19 @@ import { withBase } from '../../lib/base';
 </div>
 
 <style>
-	/* Its own air above and below: the strip closes a chapter wherever it is placed. */
+	/* Its own air above and below: the strip closes a chapter wherever it is placed. Not on a phone:
+	   there the chapters already stack with air between them, and the branch would cost a screen's
+	   worth of scroll. */
 	.divider {
-		display: flex;
+		display: none;
 		justify-content: center;
 		margin: var(--space-4) 0;
+	}
+
+	@media (min-width: 720px) {
+		.divider {
+			display: flex;
+		}
 	}
 
 	/* Fixed at the image's CSS size, and never wider than a narrow window. */

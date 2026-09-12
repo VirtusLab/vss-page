@@ -252,11 +252,14 @@ const labels = defineCollection({
 			snippetsNote: z.string(),
 			// The floating picker's first pill, which jumps back to the top of the page.
 			chapterHome: z.string(),
-			// Name the floating picker's first two chapter entries.
+			// Name the floating picker's first three chapter entries.
 			chapterSnippets: z.string(),
+			chapterStart: z.string(),
 			chapterBenefits: z.string(),
 			// Accessible name of the floating chapter picker, the page's only `<nav>`.
 			chapterPicker: z.string(),
+			// Accessible name of the picker's hamburger button on a phone; not shown.
+			chapterMenu: z.string(),
 			// First focusable in the body; jumps to `#content`.
 			skipLink: z.string(),
 			// `og:image:alt` for `public/og.png`.

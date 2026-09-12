@@ -16,12 +16,13 @@ compiled in CI.
 - No masthead beyond the picker strip. The first screen is hero + code, not chrome.
 - The page's only navigation is the chapter picker (`FloatingNav`), fixed to the top edge and always
   on screen: "VSS" → `#content` (the top of the page), a vertical rule, then "In action" →
-  `#snippets`, "Benefits" → `#benefits` and the six section titles. Nine pills, no repo link. The
+  `#snippets`, "Start" → `#start`, "Benefits" → `#benefits` and the six section titles. Ten pills,
+  no repo link. The
   labels are the home and chapter names from `content/labels.md` and the YAML section titles, so
   nothing is written twice. The repo link lives in the footer instead. The home pill is never the
   current chapter.
 - The pill for the chapter the reader is in carries `aria-current="location"` and is filled with the
-  accent, the same as a checked snippet tab. Current is the last of the eight targets starting above
+  accent, the same as a checked snippet tab. Current is the last of the nine targets starting above
   a line 40% down the viewport, remeasured on scroll and resize (one read per frame). Geometry rather
   than an `IntersectionObserver`: a jump between two positions that both leave the line bare — an
   anchor, or the page's end, where the last section no longer reaches it — crosses nothing an
@@ -29,8 +30,10 @@ compiled in CI.
 - The picker is plain anchors and needs no JavaScript; the script only fills the pill of the current
   chapter. The hero pads its top by `--float-nav-height` so the bar never covers it. The pill's colour
   transition is off under `prefers-reduced-motion`.
-- Mobile: the picker is one row that scrolls sideways, never wrapping, with the scrollbar hidden.
-  No hamburger, no `<select>`.
+- Between 720px and 1000px the row scrolls sideways, never wrapping, with the scrollbar hidden.
+- Below 720px the bar is the "VSS" pill and a hamburger; a CSS-only checkbox opens a panel under the
+  bar with the chapters one per row. The script only unchecks it when a chapter is followed. No
+  `<select>`.
 
 ### Hero + tagline + CTAs
 
@@ -130,11 +133,12 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 - Everything that is not part of the open-source stack: one file per block in `content/promos/`,
   with `placement` picking one of the page's three slots and `order` the place within it. Each slot
   is the end of a chapter, so a promo never interrupts one.
-- Between the switcher and the first promo sits the agent-prompt box (`#agent-prompt`,
-  `content/agent-prompt.md`): a prompt to paste into a coding agent that sets up a VSS project, in a
-  wrapped `<pre>`, with a copy button. Green, not the promo amber: it is part of the stack's story.
-  The copy button stays hidden without a clipboard; the text is selectable either way.
-- `after-snippets`: directly under the agent-prompt box, before the benefits band. VirtusLab's Scala
+- Between the switcher and the first promo sits the "Start" chapter (`#start`,
+  `content/agent-prompt.md`), opened by a `.chapter-heading` like the others: a prompt to paste into
+  a coding agent that sets up a VSS project, in a wrapped `<pre>`, with a copy button. Green, not
+  the promo amber: it is part of the stack's story, not a promo. The copy button stays hidden
+  without a clipboard; the text is selectable either way.
+- `after-snippets`: directly under the start chapter, before the benefits band. VirtusLab's Scala
   work, where the reader has just seen the code the team maintains.
 - `after-benefits`: the last block inside the benefits band, after the fifth benefit and before the
   sprig that closes the chapter, so the tint carries it. `BenefitsSection.astro` renders it, in the
@@ -174,7 +178,7 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
    Page and source file agree, so humans and agents see the same stack.
 6. **Anchors** — an explicit `id` field on every section and every component in the YAML, used
    verbatim. Six section ids alone do not satisfy "quick navigation to any component".
-7. **Navigation** — one `<nav>`, not a masthead. The eight-entry picker is fixed over the page at
+7. **Navigation** — one `<nav>`, not a masthead. The nine-entry picker is fixed over the page at
    every width, and is what makes a long page navigable from anywhere. It is plain anchors; only the
    current-chapter mark needs the script.
 8. **Promos** — the paid and event blocks, one per file in `content/promos/`, each at the end of a
