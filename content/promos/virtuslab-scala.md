@@ -3,8 +3,8 @@ order: 1
 placement: after-snippets
 title: "VirtusLab: the company behind Scala"
 links:
-  - label: "Scala at VirtusLab"
-    url: https://virtuslab.com/expertise/scala
+  - label: "Scala Enterprise Support"
+    url: https://virtuslab.com/expertise/scala-enterprise-support
 ---
 
 VirtusLab maintains the Scala 3 compiler and the Scala runner (Scala CLI). We provide enterprise support,
