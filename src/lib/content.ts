@@ -121,13 +121,14 @@ export const loadSite = async () => {
 		})),
 	};
 
-	// The three promo slots, each in its own authored order and in page order here, which is what
+	// The four promo slots, each in its own authored order and in page order here, which is what
 	// llms.txt reads. The entries are passed on whole, not as `data`: the block renders the body.
 	const allPromos = byOrder(await getCollection('promos'));
 	const inSlot = (placement: string) => allPromos.filter((promo) => promo.data.placement === placement);
 	const promos = {
 		afterSnippets: inSlot('after-snippets'),
 		afterBenefits: inSlot('after-benefits'),
+		afterBackend: inSlot('after-backend'),
 		afterComponents: inSlot('after-components'),
 	};
 

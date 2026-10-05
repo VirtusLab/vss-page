@@ -132,8 +132,8 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 ### Promos
 
 - Everything that is not part of the open-source stack: one file per block in `content/promos/`,
-  with `placement` picking one of the page's three slots and `order` the place within it. Each slot
-  is the end of a chapter, so a promo never interrupts one.
+  with `placement` picking one of the page's four slots and `order` the place within it. Each slot
+  except `after-backend` is the end of a chapter.
 - After the first promo, before the benefits band, sits the "Prompt" chapter (`#prompt`,
   `content/agent-prompt.md`), opened by a `.chapter-heading` like the others: a prompt to paste into
   a coding agent that sets up a VSS project, in a wrapped `<pre>`, with a copy button. Green, not
@@ -144,6 +144,8 @@ Backend 6, AI tooling 6, DevOps 1, Templates 2 = 19.
 - `after-benefits`: the last block inside the benefits band, after the fifth benefit and before the
   sprig that closes the chapter, so the tint carries it. `BenefitsSection.astro` renders it, in the
   band's own column; the band's bottom padding is the air below it. The conferences block.
+- `after-backend`: inside the components chapter, between the Backend and AI tooling sections.
+  Scala Times, the newsletter.
 - `after-components`: after all six component sections, before the footer, wrapped in a
   `<section id="commercial">` that keeps the old anchor. Visdom, once the reader has seen the whole
   free stack.

@@ -96,7 +96,12 @@ const jsonLd = {
 		<BenefitsSection benefits={benefits} promos={promos.afterBenefits} />
 		<div class="page">
 			<Divider />
-			{sections.map((section) => <ComponentSection section={section} labels={labels} />)}
+			{sections.map((section) => (
+				<>
+					<ComponentSection section={section} labels={labels} />
+					{section.id === 'backend' && promos.afterBackend.map((promo) => <Promo promo={promo} />)}
+				</>
+			))}
 			{/* The wrapper holds `#commercial`, the anchor from when this was a single block; each
 			    block inside answers to its own `#promo-<id>`. */}
 			<section id="commercial">

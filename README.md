@@ -23,8 +23,9 @@ npm run check-links  # check links in the built site (run after npm run build)
   `content/snippets.yaml` pointing at it.
 - **A section**: add an entry under `sections:` in `content/components.yaml`.
 - **A promo block**: add a file to `content/promos/`. `placement` puts it under
-  the code examples (`after-snippets`), under the benefits (`after-benefits`) or
-  after the stack (`after-components`).
+  the code examples (`after-snippets`), under the benefits (`after-benefits`),
+  after the Backend section (`after-backend`) or after the stack
+  (`after-components`).
 
 ## Content files
 

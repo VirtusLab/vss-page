@@ -48,10 +48,15 @@ export const GET: APIRoute = async ({ site }) => {
 		blocks.push(...section.components.map(entry));
 	}
 
-	// Structural, like `## Snippets`: the entries below already carry their own names. All three
+	// Structural, like `## Snippets`: the entries below already carry their own names. All four
 	// promo slots land here, in page order — the file has no chapters to spread them between.
 	blocks.push('## Commercial');
-	for (const promo of [...promos.afterSnippets, ...promos.afterBenefits, ...promos.afterComponents]) {
+	for (const promo of [
+		...promos.afterSnippets,
+		...promos.afterBenefits,
+		...promos.afterBackend,
+		...promos.afterComponents,
+	]) {
 		const body = promo.body?.trim();
 		blocks.push(
 			[
